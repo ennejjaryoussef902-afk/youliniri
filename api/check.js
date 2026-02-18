@@ -1,38 +1,24 @@
-import { MongoClient } from 'mongodb';
-
-export default async function handler(req, res) {
-    // Gestione CORS obbligatoria per Vercel
+export default function handler(req, res) {
+    // Gestione CORS per evitare blocchi
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
     if (req.method === 'OPTIONS') return res.status(200).end();
+    if (req.method !== 'POST') return res.status(405).json({ message: 'Metodo non consentito' });
 
-    try {
-        const { pin } = req.body;
-        const uri = process.env.MONGODB_URI;
+    const { pin } = req.body;
 
-        if (!uri) {
-            console.error("ERRORE: La variabile MONGODB_URI non è configurata su Vercel!");
-            return res.status(500).json({ message: "Configurazione server mancante" });
-        }
+    // Qui elenchiamo i PIN prendendoli dalle variabili di Vercel
+    const PIN_10 = process.env.PIN_10_EURO; // Esempio: 43510Npy462A598317d
+    const PIN_5 = process.env.PIN_5_EURO;   // Esempio: 12345
 
-        const client = new MongoClient(uri);
-        await client.connect();
-        
-        const db = client.db('Fabbricachat'); 
-        const collection = db.collection('codici');
-
-        const result = await collection.findOne({ pin: pin });
-        await client.close();
-
-        if (result) {
-            return res.status(200).json({ success: true, amount: result.valore });
-        } else {
-            return res.status(401).json({ success: false, message: "PIN non trovato" });
-        }
-    } catch (error) {
-        console.error("ERRORE DETTAGLIATO:", error);
-        return res.status(500).json({ message: "Errore interno del database", details: error.message });
+    if (pin === PIN_10) {
+        return res.status(200).json({ success: true, amount: 10 });
+    } else if (pin === PIN_5) {
+        return res.status(200).json({ success: true, amount: 5 });
+    } else {
+        // Se il PIN non corrisponde a nessuno dei due, diamo 401
+        return res.status(401).json({ success: false, message: 'PIN non valido' });
     }
 }
