@@ -1,90 +1,115 @@
-import sqlite3
-import tkinter as tk
-import requests
-from tkinter import messagebox, simpledialog
-from datetime import datetime
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riscatta Codice</title>
+    <style>
+        body {
+            font-family: 'Consolas', monospace;
+            background-color: #0D1418;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1E2C33;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 320px;
+        }
+        h2 {
+            margin-top: 0;
+            color: #FFD700;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            border: none;
+            border-radius: 4px;
+            background-color: #2A3942;
+            color: white;
+            font-size: 1rem;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            background-color: #00A884;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:hover {
+            background-color: #008F6F;
+        }
+        #messaggio {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            min-height: 1.2em;
+        }
+        .successo { color: #25D366; }
+        .errore { color: #F15C5C; }
+    </style>
+</head>
+<body>
 
-class WalletDB:
-    @staticmethod
-    def init_tables(conn):
-        """Inizializza le tabelle per saldo e codici usati"""
-        conn.executescript("""
-        CREATE TABLE IF NOT EXISTS wallet(uid TEXT PRIMARY KEY, balance REAL DEFAULT 0.0);
-        CREATE TABLE IF NOT EXISTS wallet_codes(uid TEXT, code TEXT, PRIMARY KEY(uid, code));
-        """)
-        conn.commit()
+<div class="container">
+    <h2>Riscatta Codice</h2>
+    <input type="text" id="codiceInput" placeholder="Inserisci codice">
+    <button onclick="inviaCodice()">RISCATTA</button>
+    <div id="messaggio"></div>
+</div>
 
-    @staticmethod
-    def get_balance(conn, uid):
-        """Legge il saldo e corregge eventuali errori di struttura della tabella"""
-        try:
-            r = conn.execute("SELECT balance FROM wallet WHERE uid=?", (uid,)).fetchone()
-            if not r:
-                conn.execute("INSERT INTO wallet (uid, balance) VALUES (?, 0.0)", (uid,))
-                conn.commit()
-                return 0.0
-            return r[0]
-        except sqlite3.OperationalError:
-            conn.execute("DROP TABLE IF EXISTS wallet")
-            conn.execute("CREATE TABLE wallet(uid TEXT PRIMARY KEY, balance REAL DEFAULT 0.0)")
-            conn.execute("INSERT INTO wallet VALUES (?, 0.0)", (uid,))
-            conn.commit()
-            return 0.0
-
-    @staticmethod
-    def redeem_code(conn, uid, code):
-        """Invia il codice a vercel.app e aggiorna il db locale"""
-        VERCEL_URL = "https://riscatta.vercel.app/api/check"
+<script>
+    async function inviaCodice() {
+        const codice = document.getElementById('codiceInput').value.trim();
+        const messaggioDiv = document.getElementById('messaggio');
         
-        already_used = conn.execute("SELECT 1 FROM wallet_codes WHERE uid=? AND code=?", (uid, code)).fetchone()
-        if already_used:
-            return False, "Codice gia inserito"
+        if (!codice) {
+            messaggioDiv.className = 'errore';
+            messaggioDiv.innerText = "Inserire un codice";
+            return;
+        }
 
-        try:
-            res = requests.post(VERCEL_URL, json={"pin": code}, timeout=5)
-            data = res.json()
+        messaggioDiv.className = '';
+        messaggioDiv.innerText = "Verifica in corso...";
 
-            if res.status_code == 200 and data.get("success"):
-                amount = float(data.get("amount"))
-                conn.execute("UPDATE wallet SET balance = balance + ? WHERE uid = ?", (amount, uid))
-                conn.execute("INSERT INTO wallet_codes (uid, code) VALUES (?, ?)", (uid, code))
-                conn.commit()
-                return True, f"Accreditati {amount:.2f} FC"
-            else:
-                return False, "Codice non valido"
-        except:
-            return False, "Errore connessione server"
+        try {
+            // Punta direttamente alla tua API su Vercel
+            const response = await fetch('https://riscatta.vercel.app/api/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin: codice })
+            });
 
-class BalanceWidget(tk.Frame):
-    """Widget testuale per il saldo in alto a destra"""
-    def __init__(self, parent, db_conn, uid):
-        super().__init__(parent, bg="#1E2C33", padx=10, pady=5)
-        self.db_conn = db_conn
-        self.uid = uid
-        self.lbl = tk.Label(self, text="Saldo: 0.00 FC", font=("Consolas", 10, "bold"),
-                            bg="#1E2C33", fg="#FFD700", cursor="hand2")
-        self.lbl.pack()
-        self.lbl.bind("<Button-1>", self.ask_code)
-        self.refresh()
+            const data = await response.json();
 
-    def refresh(self):
-        b = WalletDB.get_balance(self.db_conn, self.uid)
-        self.lbl.config(text=f"Saldo: {b:.2f} FC")
+            if (data.success) {
+                messaggioDiv.className = 'successo';
+                messaggioDiv.innerText = "Codice valido: " + data.amount + " FC";
+            } else {
+                messaggioDiv.className = 'errore';
+                messaggioDiv.innerText = "Codice non valido";
+            }
+        } catch (error) {
+            messaggioDiv.className = 'errore';
+            messaggioDiv.innerText = "Errore di connessione";
+        }
+    }
+</script>
 
-    def ask_code(self, event):
-        code = simpledialog.askstring("Riscatta", "Inserisci codice:")
-        if code:
-            ok, msg = WalletDB.redeem_code(self.db_conn, self.uid, code)
-            if ok:
-                messagebox.showinfo("Wallet", msg)
-                self.refresh()
-            else:
-                messagebox.showerror("Errore", msg)
-
-def init_wallet_system(conn):
-    WalletDB.init_tables(conn)
-
-def create_balance_widget(parent, conn, uid):
-    w = BalanceWidget(parent, conn, uid)
-    w.place(relx=1.0, rely=0.0, anchor="ne", x=-10, y=10)
-    return w
+</body>
+</html>
