@@ -3,115 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riscatta Codice</title>
+    <title>Riscatta Codice FC</title>
     <style>
-        body {
-            font-family: 'Consolas', monospace;
-            background-color: #0D1418;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #1E2C33;
-            padding: 40px;
-            border-radius: 4px;
-            text-align: center;
-            width: 350px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        h2 {
-            margin-bottom: 25px;
-            color: #FFD700;
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #2A3942;
-            border-radius: 0;
-            background-color: #2A3942;
-            color: white;
-            font-size: 1rem;
-            box-sizing: border-box;
-            text-align: center;
-        }
-        input:focus {
-            outline: 1px solid #00A884;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            border: none;
-            background-color: #00A884;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 1rem;
-            text-transform: uppercase;
-        }
-        button:hover {
-            background-color: #008F6F;
-        }
-        #risultato {
-            margin-top: 25px;
-            font-size: 0.9rem;
-            min-height: 1.5em;
-        }
-        .successo { color: #25D366; }
-        .errore { color: #F15C5C; }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #121212; color: white; }
+        .card { background: #1e1e1e; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); text-align: center; }
+        input { padding: 10px; border-radius: 5px; border: none; width: 80%; margin-bottom: 20px; }
+        button { padding: 10px 20px; border-radius: 5px; border: none; background: #25D366; color: white; cursor: pointer; font-weight: bold; }
+        #risultato { margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h2>RISCATTA CODICE</h2>
-    <input type="text" id="codice" placeholder="Inserisci il pin">
-    <button onclick="valida()">Invia</button>
+<div class="card">
+    <h2>Riscatta il tuo PIN</h2>
+    <input type="text" id="pinInput" placeholder="Inserisci codice...">
+    <br>
+    <button onclick="valida()">RISCATTA</button>
     <div id="risultato"></div>
 </div>
 
 <script>
     async function valida() {
-        const pinInput = document.getElementById('codice');
-        const display = document.getElementById('risultato');
-        const pinValue = pinInput.value.trim();
-
-        if (!pinValue) {
-            display.className = 'errore';
-            display.innerText = "Inserire un codice";
-            return;
-        }
-
-        display.className = '';
-        display.innerText = "Verifica...";
+        const pin = document.getElementById('pinInput').value.trim();
+        const resDiv = document.getElementById('risultato');
+        resDiv.innerText = "Verifica in corso...";
 
         try {
-            const response = await fetch('/api/check/', {
+            const response = await fetch('/api/check', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ pin: pinValue })
+                body: JSON.stringify({ pin: pin })
             });
 
             const data = await response.json();
 
-            if (response.ok && data.success) {
-                display.className = 'successo';
-                display.innerText = "Codice valido: " + data.amount + " FC";
-                pinInput.value = ""; // Pulisce il campo dopo il successo
+            if (response.ok) {
+                resDiv.innerText = `Successo! Hai ottenuto ${data.amount} FC`;
+                resDiv.style.color = "#25D366";
             } else {
-                display.className = 'errore';
-                display.innerText = data.message || "Codice non valido";
+                resDiv.innerText = `Errore: ${data.message}`;
+                resDiv.style.color = "#F15C5C";
             }
         } catch (err) {
-            display.className = 'errore';
-            display.innerText = "Errore di rete o CORS";
-            console.error(err);
+            resDiv.innerText = "Errore di connessione al server";
         }
     }
 </script>
