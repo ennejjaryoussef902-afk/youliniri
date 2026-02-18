@@ -1,61 +1,42 @@
 <!DOCTYPE html>
-<html lang="it">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riscatta il tuo Premio</title>
+    <title>Test Riscatto</title>
     <style>
-        body { font-family: sans-serif; background: #121212; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: #1e1e1e; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 350px; }
-        input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 1px solid #333; background: #222; color: white; font-size: 16px; box-sizing: border-box; }
-        button { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #00ff88; color: black; font-weight: bold; cursor: pointer; font-size: 18px; }
-        button:hover { background: #00cc6e; }
-        #status { margin-top: 20px; font-weight: bold; }
+        body { background: #000; color: #00ff88; font-family: monospace; text-align: center; padding-top: 50px; }
+        input { padding: 10px; font-size: 18px; width: 250px; border: 2px solid #00ff88; background: #111; color: #fff; }
+        button { padding: 10px 20px; font-size: 18px; background: #00ff88; cursor: pointer; border: none; font-weight: bold; }
+        #debug { color: #888; margin-top: 30px; font-size: 12px; }
     </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>Riscatta FC</h2>
-    <p>Inserisci il codice segreto</p>
-    <input type="text" id="codice" placeholder="Esempio: 43510...">
-    <button onclick="verifica()">RISCATTA ORA</button>
-    <div id="status"></div>
-</div>
+    <h1>INSERISCI PIN</h1>
+    <input type="text" id="pinInput" placeholder="Scrivi qui...">
+    <button onclick="check()">OK</button>
+    <h2 id="risultato"></h2>
 
-<script>
-    function verifica() {
-        // Prendiamo il valore scritto, togliendo spazi extra
-        const input = document.getElementById('codice').value.trim();
-        const status = document.getElementById('status');
-        
-        // Il PIN che hai scelto
-        const pinSegreto = "43510Npy462A598317d";
+    <div id="debug"></div>
 
-        if (input === pinSegreto) {
-            status.style.color = "#00ff88";
-            status.innerText = "✅ CODICE VALIDO! Caricamento...";
-            
-            // Aspetta 1 secondo e poi dai il premio
-            setTimeout(() => {
-                alert("Congratulazioni! Hai riscattato 10€ in FC.");
-                // Se vuoi mandarlo a una pagina specifica, togli le // qui sotto:
-                // window.location.href = "premi_riscattati.html";
-            }, 1000);
-            
-        } else {
-            status.style.color = "#ff4444";
-            status.innerText = "❌ CODICE ERRATO. Riprova.";
+    <script>
+        function check() {
+            const input = document.getElementById('pinInput').value.trim();
+            const segreto = "43510Npy462A598317d";
+            const res = document.getElementById('risultato');
+            const debug = document.getElementById('debug');
+
+            // Debug: mostra cosa hai scritto e quanto è lungo
+            debug.innerHTML = "Hai scritto: [" + input + "]<br>Lunghezza: " + input.length + " caratteri<br>Atteso: 19 caratteri";
+
+            if (input === segreto) {
+                res.innerHTML = "✅ FUNZIONA! CODICE CORRETTO";
+                res.style.color = "#00ff88";
+                alert("SUCCESSO!");
+            } else {
+                res.innerHTML = "❌ ANCORA ERRATO";
+                res.style.color = "red";
+            }
         }
-    }
-
-    // Funzione per premere Invio sulla tastiera
-    document.getElementById('codice').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            verifica();
-        }
-    });
-</script>
-
+    </script>
 </body>
 </html>
