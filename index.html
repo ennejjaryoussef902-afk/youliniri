@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<body style="background:#121212; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;">
+    <div style="text-align:center; border:1px solid #333; padding:30px; border-radius:15px;">
+        <h3>Inserisci PIN</h3>
+        <input type="password" id="pinInput" style="padding:10px; border-radius:5px; border:none;">
+        <button onclick="invia()" style="padding:10px 20px; cursor:pointer;">RISCATTA</button>
+        <p id="output"></p>
+    </div>
+
+    <script>
+        async function invia() {
+            const pin = document.getElementById('pinInput').value;
+            const res = await fetch('/api/check', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ pin: pin })
+            });
+            const data = await res.json();
+            const out = document.getElementById('output');
+            
+            if (data.success) {
+                out.innerHTML = "Codice: " + data.code;
+                out.style.color = "lime";
+            } else {
+                out.innerHTML = "" + data.message;
+                out.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
