@@ -3,60 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riscatta FC</title>
+    <title>Riscatta il tuo Premio</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #0f0f0f; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background: #1a1a1a; padding: 30px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); text-align: center; width: 320px; border: 1px solid #333; }
-        h1 { font-size: 24px; margin-bottom: 20px; color: #00ff88; }
-        input { width: 100%; padding: 12px; margin-bottom: 20px; border-radius: 6px; border: 1px solid #444; background: #222; color: white; box-sizing: border-box; text-align: center; font-size: 16px; }
-        button { width: 100%; padding: 12px; border-radius: 6px; border: none; background: #00ff88; color: #000; font-weight: bold; cursor: pointer; font-size: 16px; transition: 0.3s; }
-        button:hover { background: #00cc6e; transform: scale(1.02); }
-        #messaggio { margin-top: 20px; font-size: 14px; min-height: 20px; }
-        .success { color: #00ff88; }
-        .error { color: #ff4444; }
+        body { font-family: sans-serif; background: #121212; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: #1e1e1e; padding: 40px; border-radius: 20px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 350px; }
+        input { width: 100%; padding: 15px; margin: 20px 0; border-radius: 10px; border: 1px solid #333; background: #222; color: white; font-size: 16px; box-sizing: border-box; }
+        button { width: 100%; padding: 15px; border-radius: 10px; border: none; background: #00ff88; color: black; font-weight: bold; cursor: pointer; font-size: 18px; }
+        button:hover { background: #00cc6e; }
+        #status { margin-top: 20px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Riscatta Codice</h1>
-    <input type="text" id="pinInput" placeholder="Inserisci il tuo PIN">
+<div class="box">
+    <h2>Riscatta FC</h2>
+    <p>Inserisci il codice segreto</p>
+    <input type="text" id="codice" placeholder="Esempio: 43510...">
     <button onclick="verifica()">RISCATTA ORA</button>
-    <div id="messaggio"></div>
+    <div id="status"></div>
 </div>
 
 <script>
     function verifica() {
-        const input = document.getElementById('pinInput').value.trim();
-        const msg = document.getElementById('messaggio');
+        // Prendiamo il valore scritto, togliendo spazi extra
+        const input = document.getElementById('codice').value.trim();
+        const status = document.getElementById('status');
+        
+        // Il PIN che hai scelto
+        const pinSegreto = "43510Npy462A598317d";
 
-        // Il tuo PIN (43510Npy462A598317d) "nascosto" in Base64
-        const chiaveSegreta = "NDM1MTBOcHk0NjJBNTk4MzE3ZA==";
-
-        if (input === "") {
-            msg.innerHTML = '<span class="error">Inserisci un codice!</span>';
-            return;
-        }
-
-        // Trasformiamo quello che scrive l'utente in Base64 per confrontarlo
-        const inputCodificato = btoa(input);
-
-        if (inputCodificato === chiaveSegreta) {
-            msg.innerHTML = '<span class="success">✅ Codice Corretto! Caricamento...</span>';
+        if (input === pinSegreto) {
+            status.style.color = "#00ff88";
+            status.innerText = "✅ CODICE VALIDO! Caricamento...";
             
-            // Qui decidi cosa succede dopo il successo:
+            // Aspetta 1 secondo e poi dai il premio
             setTimeout(() => {
-                alert("Hai riscattato 10€ in FC!");
-                // window.location.href = "grazie.html"; // Scommenta se hai una pagina di successo
+                alert("Congratulazioni! Hai riscattato 10€ in FC.");
+                // Se vuoi mandarlo a una pagina specifica, togli le // qui sotto:
+                // window.location.href = "premi_riscattati.html";
             }, 1000);
-
+            
         } else {
-            msg.innerHTML = '<span class="error">❌ PIN non valido. Riprova.</span>';
+            status.style.color = "#ff4444";
+            status.innerText = "❌ CODICE ERRATO. Riprova.";
         }
     }
 
-    // Permette di premere Invio sulla tastiera
-    document.getElementById('pinInput').addEventListener('keypress', function (e) {
+    // Funzione per premere Invio sulla tastiera
+    document.getElementById('codice').addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             verifica();
         }
