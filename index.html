@@ -1,43 +1,150 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
-    <title>Riscatta Pro</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riscatto Fabchat</title>
     <style>
-        body { background: #121212; color: #00ff88; font-family: sans-serif; text-align: center; padding-top: 100px; }
-        .box { border: 2px solid #333; display: inline-block; padding: 20px; border-radius: 10px; background: #1a1a1a; }
-        input { padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; margin-bottom: 10px; width: 250px; }
-        button { background: #00ff88; color: black; border: none; padding: 10px 20px; border-radius: 5px; font-weight: bold; cursor: pointer; }
+        /* Stile moderno e Dark */
+        body {
+            background-color: #0d1117;
+            color: #ffffff;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            background: #161b22;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            border: 1px solid #30363d;
+            width: 100%;
+            max-width: 400px;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #58a6ff;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        p {
+            color: #8b949e;
+            margin-bottom: 25px;
+        }
+
+        .fabchat-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border: 2px solid #30363d;
+            background: #0d1117;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: #58a6ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(45deg, #2188ff, #1f6feb);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: filter 0.3s, transform 0.1s;
+        }
+
+        button:hover {
+            filter: brightness(1.2);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        #messaggio {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 24px;
+        }
+
+        .success { color: #3fb950; }
+        .error { color: #f85149; }
     </style>
 </head>
 <body>
 
-    <div class="box">
-        <h2>Inserisci il Codice</h2>
-        <input type="text" id="codice" placeholder="PIN Segreto"><br>
-        <button onclick="verifica()">RISCATTA</button>
-        <p id="feedback"></p>
-    </div>
+<div class="container">
+    <div class="fabchat-icon">💎</div>
+    <h1>Fabchat Riscatto</h1>
+    <p>Inserisci il tuo codice segreto qui sotto</p>
+    
+    <input type="text" id="pinInput" placeholder="Esempio: 43510...">
+    <button onclick="valida()">RISCATTA FABCHAT</button>
+    
+    <div id="messaggio"></div>
+</div>
 
-    <script>
-        function verifica() {
-            const input = document.getElementById('codice').value.trim();
-            const feedback = document.getElementById('feedback');
+<script>
+    function valida() {
+        const input = document.getElementById('pinInput').value.trim();
+        const msg = document.getElementById('messaggio');
 
-            // Questa stringa NON È il PIN. È l'impronta SHA-256 del tuo PIN.
-            // Anche se la leggono, non possono sapere che il PIN originale è "43510Npy..."
-            const improntaSegreta = "7d566c1f1f0a28f77349635091771192e272b528b371f49615594b29f0323a6f";
+        // IL TUO CODICE IN BELLA VISTA (Come richiesto)
+        const codiceGiusto = "43510Npy462A598317d";
 
-            // Calcoliamo l'impronta di quello che scrive l'utente
-            const improntaInput = CryptoJS.SHA256(input).toString();
-
-            if (improntaInput === improntaSegreta) {
-                feedback.innerHTML = "✅ CODICE VALIDO!";
-                alert("Successo! Codice confermato.");
-            } else {
-                feedback.innerHTML = "❌ CODICE ERRATO";
-            }
+        if (input === codiceGiusto) {
+            msg.className = "success";
+            msg.innerText = "✅ Codice Valido! Fabchat aggiunti.";
+            
+            // Effetto wow: un alert dopo un piccolo ritardo
+            setTimeout(() => {
+                alert("CONGRATULAZIONI!\nHai riscattato i tuoi Fabchat con successo.");
+                // Se vuoi mandare a una pagina di ringraziamento:
+                // window.location.href = "grazie.html";
+            }, 500);
+            
+        } else {
+            msg.className = "error";
+            msg.innerText = "❌ Codice errato. Riprova.";
         }
-    </script>
+    }
+
+    // Premere Invio per confermare
+    document.getElementById('pinInput').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            valida();
+        }
+    });
+</script>
+
 </body>
 </html>
