@@ -3,163 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riscatto Fabchat</title>
+    <title>Z-TV Studios | LIVE</title>
     <style>
-        body {
-            background-color: #0d1117;
-            color: #ffffff;
-            font-family: 'Segoe UI', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            position: relative;
-            overflow: hidden;
+        body { 
+            background: #000; 
+            color: #fff; 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            margin: 0; 
+            overflow: hidden; 
         }
 
-        /* Badge in alto a destra */
-        #badgeFabchat {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(33, 136, 255, 0.2);
-            border: 2px solid #58a6ff;
-            padding: 12px 25px;
-            border-radius: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            opacity: 0;
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: translateX(120%);
-            box-shadow: 0 0 15px rgba(88, 166, 255, 0.3);
-            z-index: 10;
+        /* Logo Z-TV */
+        .logo { 
+            position: absolute; 
+            top: 30px; 
+            right: 40px; 
+            color: #ff0055; 
+            font-weight: bold; 
+            font-size: 28px; 
+            z-index: 100; 
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.8); 
+        }
+        .logo span { color: white; font-weight: 300; }
+
+        /* Contenitore TV */
+        .tv-container { 
+            width: 100vw; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background: #050505; 
         }
 
-        #badgeFabchat.show {
-            opacity: 1;
-            transform: translateX(0);
+        video { 
+            width: 85%; 
+            max-height: 80%; 
+            border-radius: 12px; 
+            box-shadow: 0 0 40px rgba(255, 0, 85, 0.2); 
+            background: #000;
         }
 
-        .counter-text { font-weight: bold; color: #58a6ff; font-size: 20px; }
-
-        .container {
-            background: #161b22;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-            text-align: center;
-            border: 1px solid #30363d;
-            width: 90%;
-            max-width: 380px;
+        /* Info Ora in Onda */
+        .info-bar { 
+            position: absolute; 
+            bottom: 30px; 
+            left: 30px; 
+            background: rgba(0,0,0,0.7); 
+            padding: 15px 25px; 
+            border-radius: 10px; 
+            border-left: 6px solid #ff0055; 
+            backdrop-filter: blur(10px); 
+            z-index: 90; 
         }
+        .info-title { font-size: 22px; font-weight: bold; }
 
-        h1 { color: #58a6ff; margin: 10px 0; font-size: 32px; }
-        p { color: #8b949e; margin-bottom: 30px; }
-
-        input {
-            width: 100%;
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            border: 2px solid #30363d;
-            background: #0d1117;
-            color: white;
-            font-size: 16px;
-            text-align: center;
-            box-sizing: border-box;
-            outline: none;
+        /* Banner Tra Poco */
+        #up-next { 
+            position: absolute; 
+            bottom: 30px; 
+            right: -450px; 
+            background: linear-gradient(90deg, #ff0055, #ff5500); 
+            padding: 15px 35px; 
+            border-radius: 10px 0 0 10px; 
+            transition: right 0.8s ease-out; 
+            z-index: 95; 
         }
+        #up-next.show { right: 0; }
 
-        button {
-            width: 100%;
-            padding: 15px;
-            border-radius: 12px;
-            border: none;
-            background: linear-gradient(135deg, #2188ff, #1f6feb);
-            color: white;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
+        /* Schermata iniziale per attivare audio/video */
+        #overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; display: flex; align-items: center;
+            justify-content: center; z-index: 1000; cursor: pointer;
         }
-
-        button:hover { transform: scale(1.02); filter: brightness(1.1); }
-
-        #messaggio {
-            margin-top: 20px;
-            font-weight: bold;
-            padding: 10px;
-            border-radius: 10px;
-            display: none;
+        .btn-play {
+            padding: 20px 40px; background: #ff0055; border: none;
+            color: white; font-size: 20px; font-weight: bold;
+            border-radius: 50px; box-shadow: 0 0 20px #ff0055;
         }
-
-        .success { background: rgba(63, 185, 80, 0.15); color: #3fb950; border: 1px solid #3fb950; display: block !important; }
-        .error { background: rgba(248, 81, 73, 0.15); color: #f85149; border: 1px solid #f85149; display: block !important; }
     </style>
 </head>
 <body>
 
-<div id="badgeFabchat">
-    <span style="font-size: 24px;">💎</span>
-    <span class="counter-text">+<span id="numeroFabchat">0</span> Fabchat</span>
-</div>
+    <div id="overlay" onclick="startTV()">
+        <button class="btn-play">SINTONIZZA Z-TV STUDIOS</button>
+    </div>
 
-<div class="container">
-    <div style="font-size: 60px;">💎</div>
-    <h1>Fabchat</h1>
-    <p>Riscatta i tuoi crediti</p>
-    
-    <input type="text" id="pinInput" placeholder="Inserisci il codice">
-    <button onclick="valida()">RISCATTA ORA</button>
-    
-    <div id="messaggio"></div>
-</div>
+    <div class="logo">Z-TV <span>STUDIOS</span></div>
 
-<script>
-    function valida() {
-        const input = document.getElementById('pinInput').value.trim();
-        const msg = document.getElementById('messaggio');
-        const badge = document.getElementById('badgeFabchat');
-        const numDisplay = document.getElementById('numeroFabchat');
+    <div class="tv-container">
+        <video id="tv-player" playsinline>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
 
-        // DATABASE CODICI E VALORI AGGIORNATI
-        const codiciDisponibili = {
-            "5329HL7614a646hN593": 5,
-            "1963RJS4359dsl16Fcs": 5,
-            "43510Npy462A598317d": 10
-        };
+    <div class="info-bar">
+        <div style="font-size: 11px; color: #ff0055; font-weight: bold;">ORA IN ONDA</div>
+        <div id="current-title" class="info-title">...</div>
+    </div>
 
-        if (codiciDisponibili[input]) {
-            const valoreVinto = codiciDisponibili[input];
-            
-            numDisplay.innerText = valoreVinto;
-            badge.classList.add('show');
+    <div id="up-next">
+        <div style="font-size: 12px; font-weight: bold;">Tra poco</div>
+        <div id="next-title" style="font-size: 20px; font-weight: bold;">...</div>
+    </div>
 
-            msg.className = "success";
-            msg.innerText = "✅ Codice corretto! +" + valoreVinto + " Fabchat.";
-            
-            setTimeout(() => {
-                alert("RISCATTATO!\nHai ricevuto " + valoreVinto + " Fabchat.");
-            }, 400);
+    <script>
+        const schedule = [
+            { 
+                id: "1deQW5fWv2idsuvWtEyIQgRJaX-fO3-8X", 
+                titolo: "Video di Prova Z-TV", 
+                durata: 60 
+            }
+            // Aggiungi qui altri video di Drive seguendo lo stesso stile
+        ];
 
-            setTimeout(() => { badge.classList.remove('show'); }, 5000);
+        const player = document.getElementById('tv-player');
+        const overlay = document.getElementById('overlay');
 
-        } else if (input === "") {
-            msg.className = "error";
-            msg.innerText = "⚠️ Inserisci un codice!";
-        } else {
-            msg.className = "error";
-            msg.innerText = "❌ Codice errato (rispetta Maiuscole/Minuscole!)";
-            badge.classList.remove('show');
+        function startTV() {
+            overlay.style.display = 'none';
+            updateTV();
+            // Ripete il controllo ogni secondo
+            setInterval(updateTV, 1000);
         }
-    }
 
-    document.getElementById('pinInput').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') { valida(); }
-    });
-</script>
+        function updateTV() {
+            const now = new Date();
+            let totalSecondsToday = (now.getHours() * 3600) + (now.getMinutes() * 60) + now.getSeconds();
+            let loopDuration = schedule.reduce((a, b) => a + b.durata, 0);
+            let currentCycleTime = totalSecondsToday % loopDuration;
 
+            let elapsedTime = 0;
+            let currentIdx = 0;
+
+            for (let i = 0; i < schedule.length; i++) {
+                if (currentCycleTime < elapsedTime + schedule[i].durata) {
+                    currentIdx = i;
+                    break;
+                }
+                elapsedTime += schedule[i].durata;
+            }
+
+            const currentVideo = schedule[currentIdx];
+            const nextVideo = schedule[(currentIdx + 1) % schedule.length];
+            const startAt = Math.floor(currentCycleTime - elapsedTime);
+            const remaining = currentVideo.durata - startAt;
+
+            // Aggiorna titoli
+            document.getElementById('current-title').innerText = currentVideo.titolo;
+            document.getElementById('next-title').innerText = nextVideo.titolo;
+
+            // Banner Tra Poco (mostra negli ultimi 15 secondi)
+            if (remaining <= 15) document.getElementById('up-next').classList.add('show');
+            else document.getElementById('up-next').classList.remove('show');
+
+            // Cambio sorgente video
+            const driveUrl = `https://drive.google.com/uc?export=download&id=${currentVideo.id}`;
+            
+            if (player.getAttribute('data-active-id') !== currentVideo.id) {
+                player.setAttribute('data-active-id', currentVideo.id);
+                player.src = driveUrl;
+                player.currentTime = startAt;
+                player.play().catch(e => console.log("Errore riproduzione"));
+            }
+        }
+    </script>
 </body>
 </html>
