@@ -1,32 +1,143 @@
 <!DOCTYPE html>
-<html>
-<body style="background:#121212; color:white; font-family:sans-serif; display:flex; justify-content:center; align-items:center; height:100vh;">
-    <div style="text-align:center; border:1px solid #333; padding:30px; border-radius:15px;">
-        <h3>Inserisci PIN</h3>
-        <input type="password" id="pinInput" style="padding:10px; border-radius:5px; border:none;">
-        <button onclick="invia()" style="padding:10px 20px; cursor:pointer;">RISCATTA</button>
-        <p id="output"></p>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>YOULINIRI_TERMINAL_V2</title>
+    <style>
+        body { 
+            background: #000; 
+            color: #0f0; 
+            font-family: 'Courier New', monospace; 
+            padding: 20px; 
+            margin: 0; 
+            overflow: hidden;
+        }
+
+        /* Box Youli in alto a sinistra */
+        #stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border: 1px solid #0f0;
+            padding: 5px 15px;
+            background: rgba(0, 255, 0, 0.05);
+            text-transform: uppercase;
+        }
+
+        .main-frame {
+            margin-top: 60px;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input { 
+            background: #000; 
+            color: #0f0; 
+            border: none;
+            border-bottom: 1px solid #0f0;
+            font-family: monospace; 
+            outline: none; 
+            padding: 5px; 
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button { 
+            background: #0f0; 
+            color: #000; 
+            border: 1px solid #0f0;
+            font-family: monospace; 
+            font-weight: bold; 
+            cursor: pointer; 
+            padding: 5px 15px;
+        }
+
+        button:hover {
+            background: #000;
+            color: #0f0;
+        }
+
+        #log { 
+            margin-top: 25px; 
+            white-space: pre-wrap; 
+            border-left: 2px solid #0f0;
+            padding-left: 15px;
+            color: #0c0;
+            height: 250px;
+            overflow-y: auto;
+        }
+
+        .cursor { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div id="stats">
+        WALLET: <span id="balance">0</span> YOULI
+    </div>
+
+    <div class="main-frame">
+        <div>> YOULINIRI_CORE_v2.0.5_STABLE</div>
+        <div>> LOGGED_AS: ADMIN</div>
+        <div>> DATABASE: UPDATED_TOKENS</div>
+        <div>---------------------------------------</div>
+        <br>
+        <div class="input-line">
+            <span>SYS@YOULINIRI:~$</span>
+            <input type="text" id="token" autofocus spellcheck="false" autocomplete="off" placeholder="ENTER_CODE">
+            <button onclick="execute()">EXEC</button>
+        </div>
+        <div id="log">SYSTEM ONLINE...<span class="cursor">_</span></div>
     </div>
 
     <script>
-        async function invia() {
-            const pin = document.getElementById('pinInput').value;
-            const res = await fetch('/api/check', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ pin: pin })
-            });
-            const data = await res.json();
-            const out = document.getElementById('output');
+        // Carica il saldo salvato
+        var totalYouli = parseInt(localStorage.getItem('youli_balance')) || 0;
+        document.getElementById('balance').innerText = totalYouli;
+
+        function execute() {
+            var input = document.getElementById('token').value.trim();
+            var log = document.getElementById('log');
+            var balanceDisp = document.getElementById('balance');
             
-            if (data.success) {
-                out.innerHTML = "Codice: " + data.code;
-                out.style.color = "lime";
+            // NUOVO DATABASE CODICI
+            var db = {
+                "youli10": 10,
+                "youli5": 5,
+                "youli5_2": 5
+            };
+
+            if (db[input]) {
+                var ammontare = db[input];
+                totalYouli += ammontare;
+                
+                // Salva nel browser
+                localStorage.setItem('youli_balance', totalYouli);
+                
+                balanceDisp.innerText = totalYouli;
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] OK: TOKEN '" + input + "' ACCEPTED";
+                log.innerText += "\n> YOULI_ADDED: +" + ammontare;
+                log.innerText += "\n> NEW_TOTAL: " + totalYouli;
+            } else if (input === "clear") {
+                log.innerText = "CONSOLE_CLEARED";
+            } else if (input === "") {
+                // Non fare nulla se l'input è vuoto
             } else {
-                out.innerHTML = "" + data.message;
-                out.style.color = "red";
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] FAILED: INVALID_TOKEN";
             }
+
+            document.getElementById('token').value = "";
+            log.scrollTop = log.scrollHeight; 
         }
+
+        document.getElementById('token').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') execute();
+        });
     </script>
 </body>
 </html>
