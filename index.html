@@ -2,70 +2,221 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>YOULINIRI_OS_ENCRYPTED</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOULINIRI_OS_v3_ITA</title>
     <style>
-        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; margin: 0; }
-        #stats { position: absolute; top: 10px; left: 10px; border: 1px solid #0f0; padding: 5px 15px; background: rgba(0, 255, 0, 0.05); }
-        .main-frame { margin-top: 60px; }
-        .input-line { display: flex; align-items: center; gap: 10px; }
-        input { background: #000; color: #0f0; border: none; border-bottom: 1px solid #0f0; font-family: monospace; outline: none; padding: 5px; width: 350px; font-size: 16px; }
-        button { background: #0f0; color: #000; border: 1px solid #0f0; font-family: monospace; font-weight: bold; cursor: pointer; padding: 5px 15px; }
-        #log { margin-top: 25px; white-space: pre-wrap; border-left: 2px solid #0f0; padding-left: 15px; color: #0c0; height: 300px; overflow-y: auto; }
-        .cursor { animation: blink 1s infinite; }
-        @keyframes blink { 50% { opacity: 0; } }
+        :root {
+            --bg-color: #0f111a;
+            --card-bg: #1a1d2e;
+            --text-color: #e6e6e6;
+            --accent-color: #007bff;
+            --error-color: #ff4757;
+            --success-color: #2ed573;
+        }
+
+        body { 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+        
+        .container { 
+            border-radius: 12px;
+            padding: 40px; 
+            background: var(--card-bg); 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
+            width: 100%;
+            max-width: 400px; 
+            text-align: center;
+        }
+
+        h2 { margin-bottom: 25px; font-weight: 600; letter-spacing: 1px; }
+        
+        input { 
+            background: #252941; 
+            color: white; 
+            border: 1px solid #333b5c; 
+            border-radius: 6px;
+            padding: 12px; 
+            margin: 8px 0; 
+            width: 100%; 
+            box-sizing: border-box;
+            outline: none; 
+            font-size: 14px;
+        }
+
+        input:focus { border-color: var(--accent-color); }
+        
+        button { 
+            background: var(--accent-color); 
+            color: white; 
+            border: none; 
+            border-radius: 6px;
+            padding: 12px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            width: 100%; 
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        button:hover { filter: brightness(1.2); }
+
+        .link-toggle { 
+            color: #888; 
+            font-size: 13px; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            display: block; 
+        }
+
+        #terminal-ui { display: none; max-width: 600px; text-align: left; }
+        
+        .header-terminal {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        #log { 
+            background: #0a0c14;
+            border-radius: 6px;
+            height: 200px; 
+            overflow-y: auto; 
+            margin-top: 20px; 
+            padding: 15px; 
+            color: #aaa; 
+            font-family: 'Consolas', monospace;
+            font-size: 13px;
+            border: 1px solid #222;
+        }
+        
+        .balance-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 123, 255, 0.1);
+            border-radius: 8px;
+            border: 1px dashed var(--accent-color);
+        }
+
+        .balance-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--accent-color);
+            display: block;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="stats">WALLET: <span id="balance">0</span> YOULI</div>
+    <div id="auth-ui" class="container">
+        <h2 id="auth-title">Area Riservata</h2>
+        <input type="text" id="user" placeholder="Nome utente">
+        <input type="password" id="pass" placeholder="Password">
+        <button id="auth-btn" onclick="handleAuth()">Accedi</button>
+        <span id="toggle-link" class="link-toggle" onclick="toggleAuth()">Nuovo utente? Registrati qui</span>
+    </div>
 
-    <div class="main-frame">
-        <div>> YOULINIRI_SECURE_LAYER [v3.0.0]</div>
-        <div>> MODE: RAW_STRING_COMPARE</div>
-        <div>---------------------------------------</div>
-        <br>
-        <div class="input-line">
-            <span>SYS@YOULINIRI:~$</span>
-            <input type="text" id="token" autofocus spellcheck="false" autocomplete="off" placeholder="ENTER_RAW_CODE">
-            <button onclick="execute()">EXEC</button>
+    <div id="terminal-ui" class="container">
+        <div class="header-terminal">
+            <span>Utente: <strong id="current-user">---</strong></span>
+            <button onclick="logout()" style="width: auto; margin: 0; padding: 5px 10px; font-size: 12px; background: #333;">Esci</button>
         </div>
-        <div id="log">READY...<span class="cursor">_</span></div>
+        
+        <div class="balance-container">
+            <span style="font-size: 12px; text-transform: uppercase; color: #888;">Saldo Attuale</span>
+            <span class="balance-value"><span id="balance">0</span> YOULI</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <label style="font-size: 13px;">Riscatta Codice Premio:</label>
+            <div style="display: flex; gap: 8px;">
+                <input type="text" id="token-input" placeholder="Inserisci qui il codice..." style="margin: 0;">
+                <button onclick="redeemToken()" style="width: auto; margin: 0; padding: 0 20px;">OK</button>
+            </div>
+        </div>
+
+        <div id="log">Benvenuto nel sistema Youliniri.</div>
     </div>
 
     <script>
-        var totalYouli = parseInt(localStorage.getItem('youli_balance')) || 0;
-        document.getElementById('balance').innerText = totalYouli;
+        let isLogin = true;
 
-        // DATABASE CON I TUOI CODICI ESATTI
-        var db = {
-            "}\x1c\u05c6M": 5,      // Questo è "}׆M"
-            "~ur\u3b407\u05f7": 10,  // Questo è "~ur㭀7׷"
-            "\x7fa\x1fR3c@": 5      // Questo è "aR3c@"
+        function toggleAuth() {
+            isLogin = !isLogin;
+            document.getElementById('auth-title').innerText = isLogin ? "Area Riservata" : "Crea Account";
+            document.getElementById('auth-btn').innerText = isLogin ? "Accedi" : "Registrati";
+            document.getElementById('toggle-link').innerText = isLogin ? "Nuovo utente? Registrati qui" : "Hai già un account? Accedi";
+        }
+
+        function handleAuth() {
+            const u = document.getElementById('user').value.trim();
+            const p = document.getElementById('pass').value.trim();
+            if (!u || !p) return;
+
+            if (isLogin) {
+                const savedPass = localStorage.getItem(`user_${u}`);
+                if (savedPass === p) {
+                    enterTerminal(u);
+                } else {
+                    alert("Errore: Credenziali non valide.");
+                }
+            } else {
+                if (localStorage.getItem(`user_${u}`)) return alert("Errore: Questo nome utente è già occupato.");
+                localStorage.setItem(`user_${u}`, p);
+                alert("Registrazione completata! Ora puoi accedere.");
+                toggleAuth();
+            }
+        }
+
+        function enterTerminal(username) {
+            document.getElementById('auth-ui').classList.add('hidden');
+            document.getElementById('terminal-ui').style.display = 'block';
+            document.getElementById('current-user').innerText = username;
+            updateBalance();
+        }
+
+        function logout() { location.reload(); }
+
+        const db = {
+            "5329HL7614a646hN593": 5,
+            "75nC639hH1L2M2NA": 5,
+            "43510Npy462A598317d": 10
         };
 
-        function execute() {
-            var input = document.getElementById('token').value; // Niente trim() per non rompere i caratteri speciali
-            var log = document.getElementById('log');
-            
-            if (db[input]) {
-                var ammontare = db[input];
-                totalYouli += ammontare;
-                localStorage.setItem('youli_balance', totalYouli);
-                document.getElementById('balance').innerText = totalYouli;
-                
-                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] RAW_KEY_ACCEPTED";
-                log.innerText += "\n> ADDED: +" + ammontare + " YOULI";
-            } else if (input !== "") {
-                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] ERROR: INVALID_RAW_KEY";
-            }
+        function redeemToken() {
+            const input = document.getElementById('token-input').value.trim();
+            const log = document.getElementById('log');
+            let balance = parseInt(localStorage.getItem('youli_balance')) || 0;
 
-            document.getElementById('token').value = "";
+            if (db[input]) {
+                const prize = db[input];
+                balance += prize;
+                localStorage.setItem('youli_balance', balance);
+                updateBalance();
+                log.innerHTML += `<br><span style="color:#2ed573">> +${prize} YOULI accreditati con successo!</span>`;
+            } else {
+                log.innerHTML += `<br><span style="color:#ff4757">> Errore: Codice non trovato o scaduto.</span>`;
+            }
+            document.getElementById('token-input').value = "";
             log.scrollTop = log.scrollHeight;
         }
 
-        document.getElementById('token').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') execute();
-        });
+        function updateBalance() {
+            const bal = localStorage.getItem('youli_balance') || 0;
+            document.getElementById('balance').innerText = bal;
+        }
     </script>
 </body>
 </html>
