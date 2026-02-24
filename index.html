@@ -2,137 +2,65 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>YOULINIRI_TERMINAL_V2</title>
+    <title>YOULINIRI_OS_ENCRYPTED</title>
     <style>
-        body { 
-            background: #000; 
-            color: #0f0; 
-            font-family: 'Courier New', monospace; 
-            padding: 20px; 
-            margin: 0; 
-            overflow: hidden;
-        }
-
-        /* Box Youli in alto a sinistra */
-        #stats {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            border: 1px solid #0f0;
-            padding: 5px 15px;
-            background: rgba(0, 255, 0, 0.05);
-            text-transform: uppercase;
-        }
-
-        .main-frame {
-            margin-top: 60px;
-        }
-
-        .input-line {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input { 
-            background: #000; 
-            color: #0f0; 
-            border: none;
-            border-bottom: 1px solid #0f0;
-            font-family: monospace; 
-            outline: none; 
-            padding: 5px; 
-            width: 300px;
-            font-size: 16px;
-        }
-
-        button { 
-            background: #0f0; 
-            color: #000; 
-            border: 1px solid #0f0;
-            font-family: monospace; 
-            font-weight: bold; 
-            cursor: pointer; 
-            padding: 5px 15px;
-        }
-
-        button:hover {
-            background: #000;
-            color: #0f0;
-        }
-
-        #log { 
-            margin-top: 25px; 
-            white-space: pre-wrap; 
-            border-left: 2px solid #0f0;
-            padding-left: 15px;
-            color: #0c0;
-            height: 250px;
-            overflow-y: auto;
-        }
-
+        body { background: #000; color: #0f0; font-family: 'Courier New', monospace; padding: 20px; margin: 0; }
+        #stats { position: absolute; top: 10px; left: 10px; border: 1px solid #0f0; padding: 5px 15px; background: rgba(0, 255, 0, 0.05); }
+        .main-frame { margin-top: 60px; }
+        .input-line { display: flex; align-items: center; gap: 10px; }
+        input { background: #000; color: #0f0; border: none; border-bottom: 1px solid #0f0; font-family: monospace; outline: none; padding: 5px; width: 350px; font-size: 16px; }
+        button { background: #0f0; color: #000; border: 1px solid #0f0; font-family: monospace; font-weight: bold; cursor: pointer; padding: 5px 15px; }
+        #log { margin-top: 25px; white-space: pre-wrap; border-left: 2px solid #0f0; padding-left: 15px; color: #0c0; height: 300px; overflow-y: auto; }
         .cursor { animation: blink 1s infinite; }
         @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div id="stats">
-        WALLET: <span id="balance">0</span> YOULI
-    </div>
+    <div id="stats">WALLET: <span id="balance">0</span> YOULI</div>
 
     <div class="main-frame">
-        <div>> YOULINIRI_CORE_v2.0.5_STABLE</div>
-        <div>> LOGGED_AS: ADMIN</div>
-        <div>> DATABASE: UPDATED_TOKENS</div>
+        <div>> YOULINIRI_SECURE_LAYER [v3.0.0]</div>
+        <div>> MODE: RAW_STRING_COMPARE</div>
         <div>---------------------------------------</div>
         <br>
         <div class="input-line">
             <span>SYS@YOULINIRI:~$</span>
-            <input type="text" id="token" autofocus spellcheck="false" autocomplete="off" placeholder="ENTER_CODE">
+            <input type="text" id="token" autofocus spellcheck="false" autocomplete="off" placeholder="ENTER_RAW_CODE">
             <button onclick="execute()">EXEC</button>
         </div>
-        <div id="log">SYSTEM ONLINE...<span class="cursor">_</span></div>
+        <div id="log">READY...<span class="cursor">_</span></div>
     </div>
 
     <script>
-        // Carica il saldo salvato
         var totalYouli = parseInt(localStorage.getItem('youli_balance')) || 0;
         document.getElementById('balance').innerText = totalYouli;
 
-        function execute() {
-            var input = document.getElementById('token').value.trim();
-            var log = document.getElementById('log');
-            var balanceDisp = document.getElementById('balance');
-            
-            // NUOVO DATABASE CODICI
-            var db = {
-                "youli10": 10,
-                "youli5": 5,
-                "youli5_2": 5
-            };
+        // DATABASE CON I TUOI CODICI ESATTI
+        var db = {
+            "}\x1c\u05c6M": 5,      // Questo è "}׆M"
+            "~ur\u3b407\u05f7": 10,  // Questo è "~ur㭀7׷"
+            "\x7fa\x1fR3c@": 5      // Questo è "aR3c@"
+        };
 
+        function execute() {
+            var input = document.getElementById('token').value; // Niente trim() per non rompere i caratteri speciali
+            var log = document.getElementById('log');
+            
             if (db[input]) {
                 var ammontare = db[input];
                 totalYouli += ammontare;
-                
-                // Salva nel browser
                 localStorage.setItem('youli_balance', totalYouli);
+                document.getElementById('balance').innerText = totalYouli;
                 
-                balanceDisp.innerText = totalYouli;
-                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] OK: TOKEN '" + input + "' ACCEPTED";
-                log.innerText += "\n> YOULI_ADDED: +" + ammontare;
-                log.innerText += "\n> NEW_TOTAL: " + totalYouli;
-            } else if (input === "clear") {
-                log.innerText = "CONSOLE_CLEARED";
-            } else if (input === "") {
-                // Non fare nulla se l'input è vuoto
-            } else {
-                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] FAILED: INVALID_TOKEN";
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] RAW_KEY_ACCEPTED";
+                log.innerText += "\n> ADDED: +" + ammontare + " YOULI";
+            } else if (input !== "") {
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] ERROR: INVALID_RAW_KEY";
             }
 
             document.getElementById('token').value = "";
-            log.scrollTop = log.scrollHeight; 
+            log.scrollTop = log.scrollHeight;
         }
 
         document.getElementById('token').addEventListener('keypress', function (e) {
