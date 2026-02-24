@@ -2,39 +2,142 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <title>YOULINIRI_TERMINAL_V2</title>
     <style>
-        body { background: #000; color: #0f0; font-family: monospace; padding: 20px; }
-        input { background: #000; color: #0f0; border: none; border-bottom: 1px solid #0f0; font-family: monospace; outline: none; width: 300px; }
-        button { background: #0f0; color: #000; border: none; font-family: monospace; cursor: pointer; margin-left: 10px; }
-        #o { margin-top: 20px; white-space: pre-wrap; }
+        body { 
+            background: #000; 
+            color: #0f0; 
+            font-family: 'Courier New', monospace; 
+            padding: 20px; 
+            margin: 0; 
+            overflow: hidden;
+        }
+
+        /* Box Youli in alto a sinistra */
+        #stats {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            border: 1px solid #0f0;
+            padding: 5px 15px;
+            background: rgba(0, 255, 0, 0.05);
+            text-transform: uppercase;
+        }
+
+        .main-frame {
+            margin-top: 60px;
+        }
+
+        .input-line {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        input { 
+            background: #000; 
+            color: #0f0; 
+            border: none;
+            border-bottom: 1px solid #0f0;
+            font-family: monospace; 
+            outline: none; 
+            padding: 5px; 
+            width: 300px;
+            font-size: 16px;
+        }
+
+        button { 
+            background: #0f0; 
+            color: #000; 
+            border: 1px solid #0f0;
+            font-family: monospace; 
+            font-weight: bold; 
+            cursor: pointer; 
+            padding: 5px 15px;
+        }
+
+        button:hover {
+            background: #000;
+            color: #0f0;
+        }
+
+        #log { 
+            margin-top: 25px; 
+            white-space: pre-wrap; 
+            border-left: 2px solid #0f0;
+            padding-left: 15px;
+            color: #0c0;
+            height: 250px;
+            overflow-y: auto;
+        }
+
+        .cursor { animation: blink 1s infinite; }
+        @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
-    <div>FABCHAT_OS v1.0.4</div>
-    <div>------------------</div>
-    <br>
-    <span>ENTER_PIN:</span>
-    <input type="text" id="i" autofocus>
-    <button onclick="v()">EXEC</button>
-    <div id="o"></div>
+
+    <div id="stats">
+        WALLET: <span id="balance">0</span> YOULI
+    </div>
+
+    <div class="main-frame">
+        <div>> YOULINIRI_CORE_v2.0.5_STABLE</div>
+        <div>> LOGGED_AS: ADMIN</div>
+        <div>> DATABASE: UPDATED_TOKENS</div>
+        <div>---------------------------------------</div>
+        <br>
+        <div class="input-line">
+            <span>SYS@YOULINIRI:~$</span>
+            <input type="text" id="token" autofocus spellcheck="false" autocomplete="off" placeholder="ENTER_CODE">
+            <button onclick="execute()">EXEC</button>
+        </div>
+        <div id="log">SYSTEM ONLINE...<span class="cursor">_</span></div>
+    </div>
 
     <script>
-        function v() {
-            var val = document.getElementById('i').value.trim();
-            var out = document.getElementById('o');
+        // Carica il saldo salvato
+        var totalYouli = parseInt(localStorage.getItem('youli_balance')) || 0;
+        document.getElementById('balance').innerText = totalYouli;
+
+        function execute() {
+            var input = document.getElementById('token').value.trim();
+            var log = document.getElementById('log');
+            var balanceDisp = document.getElementById('balance');
+            
+            // NUOVO DATABASE CODICI
             var db = {
-                "5329HL7614a646hN593": 5,
-                "75nC639hH1L2M2NA": 5,
-                "43510Npy462A598317d": 10
+                "youli10": 10,
+                "youli5": 5,
+                "youli5_2": 5
             };
 
-            if (db[val]) {
-                out.innerText = "> STATUS: VALID\n> CREDITS: " + db[val] + " FABCHAT ADDED\n> SYSTEM: READY";
+            if (db[input]) {
+                var ammontare = db[input];
+                totalYouli += ammontare;
+                
+                // Salva nel browser
+                localStorage.setItem('youli_balance', totalYouli);
+                
+                balanceDisp.innerText = totalYouli;
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] OK: TOKEN '" + input + "' ACCEPTED";
+                log.innerText += "\n> YOULI_ADDED: +" + ammontare;
+                log.innerText += "\n> NEW_TOTAL: " + totalYouli;
+            } else if (input === "clear") {
+                log.innerText = "CONSOLE_CLEARED";
+            } else if (input === "") {
+                // Non fare nulla se l'input è vuoto
             } else {
-                out.innerText = "> STATUS: ERROR\n> MSG: INVALID_CODE\n> SYSTEM: READY";
+                log.innerText += "\n\n> [" + new Date().toLocaleTimeString() + "] FAILED: INVALID_TOKEN";
             }
-            document.getElementById('i').value = "";
+
+            document.getElementById('token').value = "";
+            log.scrollTop = log.scrollHeight; 
         }
+
+        document.getElementById('token').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') execute();
+        });
     </script>
 </body>
 </html>
