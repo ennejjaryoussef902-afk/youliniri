@@ -2,141 +2,132 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOULINIRI OS</title>
+    <title>YOULINIRI</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
-        :root { --bg: #f2f2f7; --panel: #ffffff; --accent: #007aff; --text: #1c1c1e; --border: #d1d1d6; }
-        body { background: var(--bg); color: var(--text); font-family: -apple-system, sans-serif; margin: 0; display: flex; align-items: center; justify-content: center; height: 100vh; }
-        
-        /* LOGIN CARD */
-        #auth-screen { background: var(--panel); padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; width: 340px; }
-        .logo-box { font-size: 50px; margin-bottom: 10px; }
-        
-        /* OS INTERFACE */
-        #os-interface { display: none; width: 95%; max-width: 1100px; height: 85vh; grid-template-columns: 280px 1fr; grid-template-rows: auto 1fr; gap: 20px; }
-        .panel { background: var(--panel); border-radius: 18px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
-        .top-bar { grid-column: span 2; flex-direction: row; justify-content: space-between; align-items: center; padding: 15px 25px; }
-        
-        /* CHAT STYLE */
-        .chat-area { flex-grow: 1; overflow-y: auto; background: #f9f9f9; border-radius: 12px; padding: 15px; margin-bottom: 15px; border: 1px solid #eee; }
-        .msg { margin-bottom: 12px; padding: 10px 15px; border-radius: 15px; max-width: 75%; font-size: 15px; line-height: 1.4; background: #e5e5ea; }
-        .msg.me { background: var(--accent); color: white; margin-left: auto; border-bottom-right-radius: 4px; }
-        .msg.them { background: #e5e5ea; color: black; border-bottom-left-radius: 4px; }
-
-        /* INPUTS & BUTTONS */
-        input { background: #f2f2f7; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin: 8px 0; width: calc(100% - 26px); font-size: 15px; outline: none; }
-        input:focus { border-color: var(--accent); }
-        button { background: var(--accent); color: white; border: none; padding: 12px 20px; border-radius: 10px; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        button:hover { opacity: 0.9; }
-        .secondary-btn { background: none; color: var(--accent); }
-        
-        .status-dot { height: 10px; width: 10px; background-color: #34c759; border-radius: 50%; display: inline-block; margin-right: 5px; }
+        :root { --blue: #007aff; --white: #ffffff; }
+        body { background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); font-family: -apple-system, sans-serif; margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        #auth-screen, #main-interface { background: var(--white); padding: 40px; border-radius: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); text-align: center; width: 350px; }
+        .input-group { background: #f2f2f7; border-radius: 12px; margin-bottom: 12px; padding: 0 15px; display: flex; align-items: center; }
+        input { background: transparent; border: none; padding: 12px; width: 100%; outline: none; font-size: 15px; }
+        .btn-main { background: var(--blue); color: white; border: none; padding: 15px; border-radius: 12px; cursor: pointer; font-weight: bold; width: 100%; font-size: 16px; margin-top: 5px; transition: 0.2s; }
+        .btn-main:active { transform: scale(0.95); }
+        .points-box { margin-bottom: 20px; padding: 20px; background: #f8f9ff; border-radius: 20px; border: 2px solid #e0e7ff; }
+        #balance { font-size: 48px; font-weight: bold; color: var(--blue); }
+        .transfer-section { border-top: 1px solid #eee; margin-top: 20px; padding-top: 20px; }
+        h3 { font-size: 12px; color: #8e8e93; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        #msg { margin-top: 15px; font-weight: bold; font-size: 13px; min-height: 18px; }
     </style>
 </head>
 <body>
 
     <div id="auth-screen">
-        <div class="logo-box">☁️</div>
-        <h2 style="margin:0 0 20px 0;">YOULINIRI</h2>
-        <input type="text" id="username" placeholder="Username">
-        <input type="password" id="password" placeholder="Password">
-        <div style="margin-top: 15px;">
-            <button onclick="handleAuth('login')">Accedi</button>
-            <button class="secondary-btn" onclick="handleAuth('signup')">Crea Account</button>
-        </div>
+        <h2 style="letter-spacing: 2px;">YOULINIRI</h2>
+        <div class="input-group"><input id="u" placeholder="Username"></div>
+        <div class="input-group"><input id="p" type="password" placeholder="Password"></div>
+        <button class="btn-main" onclick="entra()">SIGN UP</button>
     </div>
 
-    <div id="os-interface">
-        <div class="panel top-bar">
-            <div style="font-weight: 700; letter-spacing: 1px;">YOULINIRI OS</div>
-            <div><span class="status-dot"></span> ID: <span id="my-id" style="font-family:monospace; font-weight:bold;">...</span></div>
-            <div id="display-user" style="color:var(--accent); font-weight:600;"></div>
+    <div id="main-interface" style="display:none;">
+        <div class="points-box">
+            <p style="color: #666; margin: 0; font-size: 14px;">I tuoi Youli</p>
+            <div id="balance">0</div>
         </div>
 
-        <div class="panel">
-            <h4 style="margin-top:0;">Info Sistema</h4>
-            <div id="log" style="font-size: 13px; color: #8e8e93;">
-                > Avvio moduli...<br>
-                > Rete YOULI pronta.
-            </div>
+        <div class="redeem-section">
+            <h3>Riscatto Codice</h3>
+            <div class="input-group"><input id="codice" placeholder="Inserisci codice YOULI..."></div>
+            <button class="btn-main" onclick="eseguiRiscatto()">RISCATTO</button>
         </div>
 
-        <div class="panel">
-            <div id="chat" class="chat-area">
-                <div class="msg them"><b>Sistema:</b> Benvenuto. Inserisci un ID per scambiare messaggi YOULI.</div>
-            </div>
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="dest-id" placeholder="ID Destinatario" style="width: 30%;">
-                <input type="text" id="msg-content" placeholder="Messaggio..." style="width: 50%;">
-                <button onclick="sendYouli()" style="width: 20%; margin: 8px 0;">Invia</button>
-            </div>
+        <div class="transfer-section">
+            <h3>Invia Youli</h3>
+            <div class="input-group"><input id="destinatario" placeholder="A chi? (Username)"></div>
+            <div class="input-group"><input id="quantita" type="number" placeholder="Quanti Youli?"></div>
+            <button class="btn-main" style="background: #34c759;" onclick="inviaYouli()">INVIA ORA</button>
         </div>
+        
+        <p id="msg"></p>
     </div>
 
     <script>
+        // LE TUE CHIAVI (USABILI ALL'INFINITO)
+        const KEYS = { 
+            "5329HL7614a646hN593": 5, 
+            "75nC639hH1L2M2NA": 5, 
+            "43510Npy462A598317d": 10 
+        };
+
+        let mioUsername = "";
+        let totaleYouli = 0;
         let peer;
-        let myName = "";
 
-        function handleAuth(type) {
-            const user = document.getElementById('username').value.trim();
-            const pass = document.getElementById('password').value;
-            if (!user || !pass) return alert("Inserisci i dati");
-
-            if (type === 'signup') {
-                localStorage.setItem('ypas_' + user, pass);
-                alert("Account creato con successo!");
+        function entra() {
+            mioUsername = document.getElementById('u').value.trim().toLowerCase();
+            if(mioUsername && document.getElementById('p').value) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-interface').style.display = 'block';
+                setupPeer();
             } else {
-                if (localStorage.getItem('ypas_' + user) === pass) {
-                    myName = user;
-                    startSystem();
-                } else { alert("Credenziali errate"); }
+                alert("Inserisci i dati per il Sign Up!");
             }
         }
 
-        function startSystem() {
-            document.getElementById('auth-screen').style.display = 'none';
-            document.getElementById('os-interface').style.display = 'grid';
-            document.getElementById('display-user').innerText = myName.toUpperCase();
-
-            peer = new Peer(undefined, { host: '0.peerjs.com', port: 443, secure: true });
-
-            peer.on('open', id => {
-                document.getElementById('my-id').innerText = id;
-                addLog("ID Online: " + id);
-            });
-
+        function setupPeer() {
+            peer = new Peer('yln_' + mioUsername);
             peer.on('connection', conn => {
                 conn.on('data', data => {
-                    renderMsg(data.u, data.m, false);
+                    if(data.tipo === 'invio_youli') {
+                        totaleYouli += data.quantita;
+                        aggiornaGrafica(`Hai ricevuto ${data.quantita} Youli da ${data.mittente}! 💸`, "#28a745");
+                    }
                 });
             });
         }
 
-        function sendYouli() {
-            const id = document.getElementById('dest-id').value;
-            const msg = document.getElementById('msg-content').value;
-            if (!id || !msg) return;
+        function eseguiRiscatto() {
+            const code = document.getElementById('codice').value.trim();
+            if(KEYS[code]) {
+                const valore = KEYS[code];
+                totaleYouli += valore;
+                aggiornaGrafica(`+${valore} Youli aggiunti! 🚀`, "#28a745");
+                // NOTA: La riga per cancellare il codice è stata rimossa, quindi è infinito!
+            } else {
+                aggiornaGrafica("Codice non valido ❌", "#dc3545");
+            }
+            document.getElementById('codice').value = "";
+        }
 
-            const conn = peer.connect(id);
+        function inviaYouli() {
+            const dest = document.getElementById('destinatario').value.trim().toLowerCase();
+            const qta = parseInt(document.getElementById('quantita').value);
+
+            if(!dest || isNaN(qta) || qta <= 0) return aggiornaGrafica("Dati mancanti o errati!", "#dc3545");
+            if(qta > totaleYouli) return aggiornaGrafica("Saldo insufficiente!", "#dc3545");
+
+            const conn = peer.connect('yln_' + dest);
             conn.on('open', () => {
-                conn.send({ u: myName, m: msg });
-                renderMsg("IO", msg, true);
-                document.getElementById('msg-content').value = "";
+                conn.send({
+                    tipo: 'invio_youli',
+                    quantita: qta,
+                    mittente: mioUsername
+                });
+                totaleYouli -= qta;
+                aggiornaGrafica(`Inviati ${qta} Youli a ${dest} ✅`, "#007aff");
+                document.getElementById('destinatario').value = "";
+                document.getElementById('quantita').value = "";
+            });
+
+            conn.on('error', err => {
+                aggiornaGrafica("L'utente non è online!", "#dc3545");
             });
         }
 
-        function renderMsg(user, text, isMe) {
-            const chat = document.getElementById('chat');
-            const div = document.createElement('div');
-            div.className = isMe ? 'msg me' : 'msg them';
-            div.innerHTML = `<b>${user}:</b> ${text}`;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
-        }
-
-        function addLog(txt) {
-            document.getElementById('log').innerHTML += `<br>> ${txt}`;
+        function aggiornaGrafica(testo, colore) {
+            document.getElementById('balance').innerText = totaleYouli;
+            const msg = document.getElementById('msg');
+            msg.innerText = testo;
+            msg.style.color = colore;
         }
     </script>
 </body>
