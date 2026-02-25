@@ -3,99 +3,118 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOULINIRI OS - P2P WebSocket</title>
+    <title>YOULINIRI OS - P2P Server</title>
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
         :root { --bg: #0b0e14; --card: #151921; --accent: #00a8ff; --text: #f0f0f0; }
-        body { background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: var(--card); padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; text-align: center; border: 1px solid #333; }
-        .balance { font-size: 45px; color: var(--accent); font-weight: bold; margin: 15px 0; }
-        input { background: #000; border: 1px solid #444; color: #0f0; padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border-radius: 8px; }
+        body { background: var(--bg); color: var(--text); font-family: 'Consolas', monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: var(--card); padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; text-align: center; border: 1px solid #333; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .balance { font-size: 45px; color: var(--accent); font-weight: bold; margin: 10px 0; }
+        input { background: #000; border: 1px solid #444; color: #0f0; padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border-radius: 8px; outline: none; }
         button { background: var(--accent); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
-        #log { font-size: 11px; color: #777; background: #000; padding: 10px; height: 60px; overflow-y: auto; text-align: left; margin-top: 15px; border-radius: 5px; }
-        .my-id-tag { color: #ffca28; font-family: monospace; font-weight: bold; }
+        #log { font-size: 11px; color: #777; background: #000; padding: 10px; height: 70px; overflow-y: auto; text-align: left; margin-top: 15px; border-radius: 5px; border: 1px solid #222; }
+        .id-tag { color: #ffca28; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <div id="auth-ui" class="box">
         <h2>YOULINIRI OS</h2>
-        <input type="text" id="username" placeholder="IL TUO NOME">
-        <button onclick="initP2P()">ENTRA NEL SISTEMA</button>
+        <p style="font-size: 11px; color: #666;">INIZIALIZZAZIONE SERVER LOCALE...</p>
+        <input type="text" id="username" placeholder="IL TUO NOME (es: youssef)">
+        <button onclick="startServer()">AVVIA SERVER</button>
     </div>
 
     <div id="dash-ui" class="box" style="display:none">
-        <div style="font-size: 11px;">IL TUO ID P2P: <span class="my-id-tag" id="display-id">...</span></div>
-        <div class="balance" id="bal-view">10</div>
-        <div style="font-size: 12px; color: #888; margin-bottom: 20px;">YOULI DISPONIBILI</div>
+        <div style="font-size: 11px; margin-bottom: 10px;">SERVER ID: <span class="id-tag" id="display-id">...</span></div>
+        <div class="balance" id="bal-view">0</div>
+        <div style="font-size: 12px; color: #888; margin-bottom: 20px;">YOULI</div>
 
-        <input type="text" id="dest-id" placeholder="ID AMICO (nome-xxxx)">
-        <input type="number" id="send-amt" placeholder="QUANTI YOULI?">
-        <button onclick="sendYouliP2P()">INVIA (P2P WEBSOCKET)</button>
+        <input type="text" id="dest-id" placeholder="ID DESTINATARIO (nome-xxxx)">
+        <input type="number" id="send-amt" placeholder="QUANTITÀ">
+        <button onclick="sendTransaction()">INVIA YOULI (P2P)</button>
         
-        <div id="log">> In attesa di connessione...</div>
+        <div id="log">> Server avviato e in ascolto...</div>
     </div>
 
     <script>
         let peer;
-        let myBalance = 10;
-        let myName = "";
+        let myData = JSON.parse(localStorage.getItem('yl_save')) || { balance: 10, name: "" };
 
-        function initP2P() {
-            myName = document.getElementById('username').value.trim().toLowerCase();
-            if(!myName) return alert("Inserisci un nome");
+        function startServer() {
+            const nameInput = document.getElementById('username').value.trim().toLowerCase();
+            if(!nameInput) return alert("Inserisci un nome");
+            
+            myData.name = nameInput;
+            // Genera ID temporaneo come nel tuo file Python: nome-4 caratteri
+            const tempID = nameInput + "-" + Math.random().toString(36).substring(2, 6);
 
-            // Crea un ID unico: nome-casuale
-            const randomID = Math.random().toString(36).substring(2, 6);
-            const fullID = `${myName}-${randomID}`;
-
-            peer = new Peer(fullID);
+            // Crea la connessione P2P (PeerJS fa da segnalatore per creare il server temporaneo)
+            peer = new Peer(tempID);
 
             peer.on('open', (id) => {
                 document.getElementById('auth-ui').style.display = 'none';
                 document.getElementById('dash-ui').style.display = 'block';
                 document.getElementById('display-id').innerText = id;
-                addLog("Connesso alla rete P2P.");
+                updateUI();
+                addLog(`Server temporaneo attivo su ID: ${id}`);
             });
 
-            // --- RICEZIONE YOULI (WebSocket P2P) ---
+            // --- LOGICA SERVER (Ricezione Dati) ---
             peer.on('connection', (conn) => {
                 conn.on('data', (data) => {
-                    if(data.type === "SEND_YOULI") {
-                        myBalance += data.amount;
-                        updateUI();
-                        addLog(`RICEVUTI ${data.amount} YOULI da un amico!`);
+                    if(data.type === "TRANSACTION") {
+                        myData.balance += data.amount;
+                        saveAndRefresh();
+                        addLog(`[RICEVUTO] +${data.amount} YOULI da un client esterno.`);
                     }
                 });
             });
+
+            peer.on('error', (err) => {
+                addLog("ERRORE: Connessione fallita. L'ID potrebbe non esistere.");
+            });
         }
 
-        function sendYouliP2P() {
+        function sendTransaction() {
             const target = document.getElementById('dest-id').value.trim();
             const amount = parseInt(document.getElementById('send-amt').value);
 
-            if(amount > 0 && amount <= myBalance) {
-                addLog(`Connessione a ${target}...`);
+            if(amount > 0 && amount <= myData.balance) {
+                addLog(`Tentativo di connessione al server ${target}...`);
+                
+                // Si connette al "server temporaneo" dell'altro telefono
                 const conn = peer.connect(target);
 
                 conn.on('open', () => {
                     conn.send({
-                        type: "SEND_YOULI",
+                        type: "TRANSACTION",
                         amount: amount
                     });
-                    myBalance -= amount;
-                    updateUI();
-                    addLog(`Inviati ${amount} YOULI con successo.`);
+                    myData.balance -= amount;
+                    saveAndRefresh();
+                    addLog(`[INVIATO] ${amount} YOULI a ${target} completato.`);
+                    document.getElementById('send-amt').value = "";
                 });
-
-                conn.on('error', () => alert("Impossibile trovare l'ID dell'amico!"));
             } else {
                 alert("Saldo insufficiente!");
             }
         }
 
-        function updateUI() { document.getElementById('bal-view').innerText = myBalance; }
-        function addLog(m) { document.getElementById('log').innerHTML += `<br>> ${m}`; }
+        function saveAndRefresh() {
+            localStorage.setItem('yl_save', JSON.stringify(myData));
+            updateUI();
+        }
+
+        function updateUI() {
+            document.getElementById('bal-view').innerText = myData.balance;
+        }
+
+        function addLog(m) {
+            const l = document.getElementById('log');
+            l.innerHTML += `<br>> ${m}`;
+            l.scrollTop = l.scrollHeight;
+        }
     </script>
 </body>
 </html>
