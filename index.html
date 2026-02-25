@@ -3,101 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOULINIRI OS</title>
+    <title>YOULINIRI OS - P2P WebSocket</title>
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
     <style>
-        :root { --bg: #0d0f14; --card: #161b22; --accent: #00a8ff; --text: #c9d1d9; }
-        body { background: var(--bg); color: var(--text); font-family: 'Courier New', Courier, monospace; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .box { background: var(--card); padding: 30px; border-radius: 12px; width: 90%; max-width: 340px; text-align: center; border: 1px solid #30363d; box-shadow: 0 10px 50px rgba(0,0,0,0.5); }
-        .balance { font-size: 40px; color: #58a6ff; font-weight: bold; margin: 20px 0; text-shadow: 0 0 10px rgba(88,166,255,0.3); }
-        input { background: #010409; border: 1px solid #30363d; color: #3fb950; padding: 12px; width: 100%; box-sizing: border-box; margin-bottom: 10px; border-radius: 6px; outline: none; }
-        button { background: #238636; color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 5px; }
-        button.sync { background: #1f6feb; margin-top: 10px; }
-        .log { background: #010409; padding: 10px; font-size: 11px; color: #8b949e; text-align: left; height: 60px; overflow-y: auto; border-radius: 4px; margin-top: 15px; border: 1px solid #30363d; }
+        :root { --bg: #0b0e14; --card: #151921; --accent: #00a8ff; --text: #f0f0f0; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: var(--card); padding: 25px; border-radius: 15px; width: 90%; max-width: 340px; text-align: center; border: 1px solid #333; }
+        .balance { font-size: 45px; color: var(--accent); font-weight: bold; margin: 15px 0; }
+        input { background: #000; border: 1px solid #444; color: #0f0; padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border-radius: 8px; }
+        button { background: var(--accent); color: white; border: none; padding: 12px; width: 100%; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        #log { font-size: 11px; color: #777; background: #000; padding: 10px; height: 60px; overflow-y: auto; text-align: left; margin-top: 15px; border-radius: 5px; }
+        .my-id-tag { color: #ffca28; font-family: monospace; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <div class="box">
-        <div style="font-size: 12px; color: #8b949e;">LOCAL DATABASE ACTIVE</div>
-        <div class="balance"><span id="yl-val">0</span> YL</div>
+    <div id="auth-ui" class="box">
+        <h2>YOULINIRI OS</h2>
+        <input type="text" id="username" placeholder="IL TUO NOME">
+        <button onclick="initP2P()">ENTRA NEL SISTEMA</button>
+    </div>
+
+    <div id="dash-ui" class="box" style="display:none">
+        <div style="font-size: 11px;">IL TUO ID P2P: <span class="my-id-tag" id="display-id">...</span></div>
+        <div class="balance" id="bal-view">10</div>
+        <div style="font-size: 12px; color: #888; margin-bottom: 20px;">YOULI DISPONIBILI</div>
+
+        <input type="text" id="dest-id" placeholder="ID AMICO (nome-xxxx)">
+        <input type="number" id="send-amt" placeholder="QUANTI YOULI?">
+        <button onclick="sendYouliP2P()">INVIA (P2P WEBSOCKET)</button>
         
-        <input type="text" id="token" placeholder="CODICE RISCATTO">
-        <button onclick="redeem()">ESEGUI RISCATTO</button>
-        
-        <button class="sync" onclick="generateLink()">GENERA LINK PER AMICO</button>
-        
-        <div class="log" id="log">> Sistema pronto.</div>
+        <div id="log">> In attesa di connessione...</div>
     </div>
 
     <script>
-        // Carica i dati dal telefono
-        let balance = parseInt(localStorage.getItem('yl_balance')) || 0;
-        document.getElementById('yl-val').innerText = balance;
+        let peer;
+        let myBalance = 10;
+        let myName = "";
 
-        // I tuoi codici premio
-        const KEYS = { "5329HL7614a646hN593": 5, "75nC639hH1L2M2NA": 5, "43510Npy462A598317d": 10 };
+        function initP2P() {
+            myName = document.getElementById('username').value.trim().toLowerCase();
+            if(!myName) return alert("Inserisci un nome");
 
-        // 1. CONTROLLO SE SEI ENTRATO CON UN LINK DI UN AMICO
-        const params = new URLSearchParams(window.location.search);
-        const sharedData = params.get('share');
-        if (sharedData) {
-            try {
-                // Decodifica i dati dall'URL (Base64)
-                const decoded = atob(sharedData); 
-                const bonus = parseInt(decoded);
-                if (!isNaN(bonus)) {
-                    balance += bonus;
-                    updateData(`Ricevuti ${bonus} YL da un link!`);
-                    // Pulisce l'URL dopo il riscatto
-                    window.history.replaceState({}, document.title, "/");
-                }
-            } catch(e) { console.error("Link non valido"); }
+            // Crea un ID unico: nome-casuale
+            const randomID = Math.random().toString(36).substring(2, 6);
+            const fullID = `${myName}-${randomID}`;
+
+            peer = new Peer(fullID);
+
+            peer.on('open', (id) => {
+                document.getElementById('auth-ui').style.display = 'none';
+                document.getElementById('dash-ui').style.display = 'block';
+                document.getElementById('display-id').innerText = id;
+                addLog("Connesso alla rete P2P.");
+            });
+
+            // --- RICEZIONE YOULI (WebSocket P2P) ---
+            peer.on('connection', (conn) => {
+                conn.on('data', (data) => {
+                    if(data.type === "SEND_YOULI") {
+                        myBalance += data.amount;
+                        updateUI();
+                        addLog(`RICEVUTI ${data.amount} YOULI da un amico!`);
+                    }
+                });
+            });
         }
 
-        function redeem() {
-            const code = document.getElementById('token').value.trim();
-            if (KEYS[code]) {
-                balance += KEYS[code];
-                updateData(`Riscattati +${KEYS[code]} YL`);
-                document.getElementById('token').value = "";
+        function sendYouliP2P() {
+            const target = document.getElementById('dest-id').value.trim();
+            const amount = parseInt(document.getElementById('send-amt').value);
+
+            if(amount > 0 && amount <= myBalance) {
+                addLog(`Connessione a ${target}...`);
+                const conn = peer.connect(target);
+
+                conn.on('open', () => {
+                    conn.send({
+                        type: "SEND_YOULI",
+                        amount: amount
+                    });
+                    myBalance -= amount;
+                    updateUI();
+                    addLog(`Inviati ${amount} YOULI con successo.`);
+                });
+
+                conn.on('error', () => alert("Impossibile trovare l'ID dell'amico!"));
             } else {
-                addLog("Codice non valido.");
+                alert("Saldo insufficiente!");
             }
         }
 
-        // 2. GENERA IL LINK DA 29+ CARATTERI
-        function generateLink() {
-            const amount = prompt("Quanti Youli vuoi inviare al tuo amico?", "5");
-            const val = parseInt(amount);
-            
-            if (val > 0 && val <= balance) {
-                balance -= val; // Li toglie a te per darli a lui
-                // Trasforma il valore in una stringa codificata (Base64) per creare l'indirizzo casuale
-                const encoded = btoa(val.toString());
-                const randomSalt = [...Array(20)].map(() => Math.random().toString(36)[2]).join('');
-                const shareLink = `${window.location.origin}/?share=${encoded}&id=${randomSalt}`;
-                
-                updateData(`Inviati ${val} YL.`);
-                addLog("COPIA QUESTO LINK:");
-                addLog(shareLink);
-                console.log("Link generato:", shareLink);
-                alert("Link Generato! Copialo dal log nero in basso.");
-            } else {
-                alert("Saldo insufficiente o valore non valido!");
-            }
-        }
-
-        function updateData(msg) {
-            localStorage.setItem('yl_balance', balance);
-            document.getElementById('yl-val').innerText = balance;
-            addLog(msg);
-        }
-
-        function addLog(m) {
-            const l = document.getElementById('log');
-            l.innerHTML += `<br>> ` + m;
-            l.scrollTop = l.scrollHeight;
-        }
+        function updateUI() { document.getElementById('bal-view').innerText = myBalance; }
+        function addLog(m) { document.getElementById('log').innerHTML += `<br>> ${m}`; }
     </script>
 </body>
 </html>
