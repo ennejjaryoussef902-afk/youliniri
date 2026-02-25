@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YOULINIRI_OS</title>
     <style>
         :root { --bg: #0f111a; --card: #1a1d2e; --accent: #007bff; --text: #e6e6e6; }
@@ -16,54 +17,74 @@
 <body>
 
     <div id="auth-ui" class="box">
-        <h2 id="title">Sistema Youliniri</h2>
-        <input type="text" id="user" placeholder="Username">
-        <input type="password" id="pass" placeholder="Password">
-        <button onclick="handleAuth()">Accedi / Registrati</button>
+        <h2>Sistema Youliniri</h2>
+        <form onsubmit="event.preventDefault(); handleAuth();">
+            <input type="text" id="user" placeholder="Username" required>
+            <input type="password" id="pass" placeholder="Password" required>
+            <button type="submit">Accedi / Registrati</button>
+        </form>
     </div>
 
     <div id="dash-ui" class="box hidden">
         <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
             <span id="user-display" style="font-weight: bold;"></span>
-            <span style="color: var(--accent);"><span id="balance">0</span> YOULI</span>
+            <span style="color: var(--accent); font-weight: bold;"><span id="balance">0</span> YOULI</span>
         </div>
-        <input type="text" id="token" placeholder="Inserisci Codice Segreto">
-        <button onclick="redeem()">Riscatta Codice</button>
+        <form onsubmit="event.preventDefault(); redeem();">
+            <input type="text" id="token" placeholder="Inserisci Codice Segreto" required>
+            <button type="submit">Riscatta Codice</button>
+        </form>
         <div id="log">Pronto.</div>
     </div>
 
     <script>
         async function handleAuth() {
-            const username = document.getElementById('user').value;
+            const username = document.getElementById('user').value.trim();
             const password = document.getElementById('pass').value;
-            const res = await fetch('/api/auth', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
-            if (res.ok) {
-                document.getElementById('auth-ui').classList.add('hidden');
-                document.getElementById('dash-ui').classList.remove('hidden');
-                document.getElementById('user-display').innerText = data.username.toUpperCase();
-                document.getElementById('balance').innerText = data.balance;
-            } else { alert(data.msg); }
+
+            try {
+                const res = await fetch('/api/auth', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    document.getElementById('auth-ui').classList.add('hidden');
+                    document.getElementById('dash-ui').classList.remove('hidden');
+                    document.getElementById('user-display').innerText = data.username.toUpperCase();
+                    document.getElementById('balance').innerText = data.balance;
+                } else {
+                    alert(data.msg || "Errore di accesso");
+                }
+            } catch (e) {
+                alert("Errore di connessione al server");
+            }
         }
 
         async function redeem() {
-            const token = document.getElementById('token').value;
+            const token = document.getElementById('token').value.trim();
             const username = document.getElementById('user-display').innerText.toLowerCase();
-            const res = await fetch('/api/redeem', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, token })
-            });
-            const data = await res.json();
-            if (data.success) {
-                document.getElementById('balance').innerText = data.nuovoSaldo;
-                document.getElementById('log').innerHTML += `<br><span style="color:#2ed573">> Codice Valido!</span>`;
-            } else {
-                document.getElementById('log').innerHTML += `<br><span style="color:#ff4757">> Codice Errato.</span>`;
+
+            try {
+                const res = await fetch('/api/redeem', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, token })
+                });
+
+                const data = await res.json();
+                const log = document.getElementById('log');
+                if (data.success) {
+                    document.getElementById('balance').innerText = data.nuovoSaldo;
+                    log.innerHTML += `<br><span style="color:#2ed573">> +${data.premio} youli riscattati!</span>`;
+                } else {
+                    log.innerHTML += `<br><span style="color:#ff4757">> Codice Errato.</span>`;
+                }
+                document.getElementById('token').value = "";
+            } catch (e) {
+                alert("Errore durante il riscatto");
             }
         }
     </script>
