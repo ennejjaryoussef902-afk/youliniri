@@ -2,220 +2,69 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YOULINIRI_OS_v3_ITA</title>
+    <title>YOULINIRI_OS</title>
     <style>
-        :root {
-            --bg-color: #0f111a;
-            --card-bg: #1a1d2e;
-            --text-color: #e6e6e6;
-            --accent-color: #007bff;
-            --error-color: #ff4757;
-            --success-color: #2ed573;
-        }
-
-        body { 
-            background-color: var(--bg-color); 
-            color: var(--text-color); 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            margin: 0; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-        }
-        
-        .container { 
-            border-radius: 12px;
-            padding: 40px; 
-            background: var(--card-bg); 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
-            width: 100%;
-            max-width: 400px; 
-            text-align: center;
-        }
-
-        h2 { margin-bottom: 25px; font-weight: 600; letter-spacing: 1px; }
-        
-        input { 
-            background: #252941; 
-            color: white; 
-            border: 1px solid #333b5c; 
-            border-radius: 6px;
-            padding: 12px; 
-            margin: 8px 0; 
-            width: 100%; 
-            box-sizing: border-box;
-            outline: none; 
-            font-size: 14px;
-        }
-
-        input:focus { border-color: var(--accent-color); }
-        
-        button { 
-            background: var(--accent-color); 
-            color: white; 
-            border: none; 
-            border-radius: 6px;
-            padding: 12px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            width: 100%; 
-            margin-top: 15px;
-            font-size: 15px;
-        }
-
-        button:hover { filter: brightness(1.2); }
-
-        .link-toggle { 
-            color: #888; 
-            font-size: 13px; 
-            cursor: pointer; 
-            margin-top: 20px; 
-            display: block; 
-        }
-
-        #terminal-ui { display: none; max-width: 600px; text-align: left; }
-        
-        .header-terminal {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-
-        #log { 
-            background: #0a0c14;
-            border-radius: 6px;
-            height: 200px; 
-            overflow-y: auto; 
-            margin-top: 20px; 
-            padding: 15px; 
-            color: #aaa; 
-            font-family: 'Consolas', monospace;
-            font-size: 13px;
-            border: 1px solid #222;
-        }
-        
-        .balance-container {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background: rgba(0, 123, 255, 0.1);
-            border-radius: 8px;
-            border: 1px dashed var(--accent-color);
-        }
-
-        .balance-value {
-            font-size: 32px;
-            font-weight: 800;
-            color: var(--accent-color);
-            display: block;
-        }
-
+        :root { --bg: #0f111a; --card: #1a1d2e; --accent: #007bff; --text: #e6e6e6; }
+        body { background: var(--bg); color: var(--text); font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .box { background: var(--card); padding: 30px; border-radius: 12px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        input { background: #252941; border: 1px solid #333b5c; color: white; padding: 12px; margin: 8px 0; width: 100%; box-sizing: border-box; border-radius: 6px; outline: none; }
+        button { background: var(--accent); color: white; border: none; padding: 12px; width: 100%; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        #log { background: #0a0c14; padding: 10px; height: 80px; overflow-y: auto; font-size: 12px; text-align: left; margin-top: 15px; border-radius: 4px; color: #888; }
         .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div id="auth-ui" class="container">
-        <h2 id="auth-title">Area Riservata</h2>
-        <input type="text" id="user" placeholder="Nome utente">
+    <div id="auth-ui" class="box">
+        <h2 id="title">Sistema Youliniri</h2>
+        <input type="text" id="user" placeholder="Username">
         <input type="password" id="pass" placeholder="Password">
-        <button id="auth-btn" onclick="handleAuth()">Accedi</button>
-        <span id="toggle-link" class="link-toggle" onclick="toggleAuth()">Nuovo utente? Registrati qui</span>
+        <button onclick="handleAuth()">Accedi / Registrati</button>
     </div>
 
-    <div id="terminal-ui" class="container">
-        <div class="header-terminal">
-            <span>Utente: <strong id="current-user">---</strong></span>
-            <button onclick="logout()" style="width: auto; margin: 0; padding: 5px 10px; font-size: 12px; background: #333;">Esci</button>
+    <div id="dash-ui" class="box hidden">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+            <span id="user-display" style="font-weight: bold;"></span>
+            <span style="color: var(--accent);"><span id="balance">0</span> YOULI</span>
         </div>
-        
-        <div class="balance-container">
-            <span style="font-size: 12px; text-transform: uppercase; color: #888;">Saldo Attuale</span>
-            <span class="balance-value"><span id="balance">0</span> YOULI</span>
-        </div>
-
-        <div style="display: flex; flex-direction: column; gap: 5px;">
-            <label style="font-size: 13px;">Riscatta Codice Premio:</label>
-            <div style="display: flex; gap: 8px;">
-                <input type="text" id="token-input" placeholder="Inserisci qui il codice..." style="margin: 0;">
-                <button onclick="redeemToken()" style="width: auto; margin: 0; padding: 0 20px;">OK</button>
-            </div>
-        </div>
-
-        <div id="log">Benvenuto nel sistema Youliniri.</div>
+        <input type="text" id="token" placeholder="Inserisci Codice Segreto">
+        <button onclick="redeem()">Riscatta Codice</button>
+        <div id="log">Pronto.</div>
     </div>
 
     <script>
-        let isLogin = true;
-
-        function toggleAuth() {
-            isLogin = !isLogin;
-            document.getElementById('auth-title').innerText = isLogin ? "Area Riservata" : "Crea Account";
-            document.getElementById('auth-btn').innerText = isLogin ? "Accedi" : "Registrati";
-            document.getElementById('toggle-link').innerText = isLogin ? "Nuovo utente? Registrati qui" : "Hai già un account? Accedi";
+        async function handleAuth() {
+            const username = document.getElementById('user').value;
+            const password = document.getElementById('pass').value;
+            const res = await fetch('/api/auth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+            if (res.ok) {
+                document.getElementById('auth-ui').classList.add('hidden');
+                document.getElementById('dash-ui').classList.remove('hidden');
+                document.getElementById('user-display').innerText = data.username.toUpperCase();
+                document.getElementById('balance').innerText = data.balance;
+            } else { alert(data.msg); }
         }
 
-        function handleAuth() {
-            const u = document.getElementById('user').value.trim();
-            const p = document.getElementById('pass').value.trim();
-            if (!u || !p) return;
-
-            if (isLogin) {
-                const savedPass = localStorage.getItem(`user_${u}`);
-                if (savedPass === p) {
-                    enterTerminal(u);
-                } else {
-                    alert("Errore: Credenziali non valide.");
-                }
+        async function redeem() {
+            const token = document.getElementById('token').value;
+            const username = document.getElementById('user-display').innerText.toLowerCase();
+            const res = await fetch('/api/redeem', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, token })
+            });
+            const data = await res.json();
+            if (data.success) {
+                document.getElementById('balance').innerText = data.nuovoSaldo;
+                document.getElementById('log').innerHTML += `<br><span style="color:#2ed573">> Codice Valido!</span>`;
             } else {
-                if (localStorage.getItem(`user_${u}`)) return alert("Errore: Questo nome utente è già occupato.");
-                localStorage.setItem(`user_${u}`, p);
-                alert("Registrazione completata! Ora puoi accedere.");
-                toggleAuth();
+                document.getElementById('log').innerHTML += `<br><span style="color:#ff4757">> Codice Errato.</span>`;
             }
-        }
-
-        function enterTerminal(username) {
-            document.getElementById('auth-ui').classList.add('hidden');
-            document.getElementById('terminal-ui').style.display = 'block';
-            document.getElementById('current-user').innerText = username;
-            updateBalance();
-        }
-
-        function logout() { location.reload(); }
-
-        const db = {
-            "5329HL7614a646hN593": 5,
-            "75nC639hH1L2M2NA": 5,
-            "43510Npy462A598317d": 10
-        };
-
-        function redeemToken() {
-            const input = document.getElementById('token-input').value.trim();
-            const log = document.getElementById('log');
-            let balance = parseInt(localStorage.getItem('youli_balance')) || 0;
-
-            if (db[input]) {
-                const prize = db[input];
-                balance += prize;
-                localStorage.setItem('youli_balance', balance);
-                updateBalance();
-                log.innerHTML += `<br><span style="color:#2ed573">> +${prize} YOULI accreditati con successo!</span>`;
-            } else {
-                log.innerHTML += `<br><span style="color:#ff4757">> Errore: Codice non trovato o scaduto.</span>`;
-            }
-            document.getElementById('token-input').value = "";
-            log.scrollTop = log.scrollHeight;
-        }
-
-        function updateBalance() {
-            const bal = localStorage.getItem('youli_balance') || 0;
-            document.getElementById('balance').innerText = bal;
         }
     </script>
 </body>
