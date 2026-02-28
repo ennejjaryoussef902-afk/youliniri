@@ -1,8 +1,8 @@
-\# ⚡ NeonChat
+\# ⚡ youliniri
 
 
 
-NeonChat è un'applicazione di messaggistica istantanea leggera, veloce e con un'interfaccia moderna in stile "Neon". Progettata per essere sicura e semplice da usare.
+Youliniri è un'applicazione di messaggistica istantanea leggera, veloce e con un'interfaccia moderna in stile "whatsapp". Progettata per essere sicura e semplice da usare.
 
 
 
@@ -28,5 +28,6 @@ NeonChat è un'applicazione di messaggistica istantanea leggera, veloce e con un
 
 &nbsp;  ```bash
 
-&nbsp;  git clone \[https://github.com/tuo-username/neonchat.git](https://github.com/tuo-username/neonchat.git)
+&nbsp;  git clone \[https://github.com/ennejjaryoussef902-afk/youliniri.git](https://github.com/ennejjaryoussef902-afk/youliniri.git)
+poi digita: python server.py per avviare il server in locale
 
