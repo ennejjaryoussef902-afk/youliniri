@@ -2,1700 +2,1400 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>YOULINIRI PRO v5.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>YOULINIRI PRO v6.0</title>
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <style>
-/* ════════════════════════════════════════
-   YOULINIRI PRO — Design System
-   Estetica: Apple-premium + crypto-neon
-════════════════════════════════════════ */
-:root {
-  --blue:#007aff; --blue2:#0055d4; --green:#34c759; --red:#ff3b30;
-  --orange:#ff9500; --purple:#af52de; --pink:#ff2d55;
-  --bg:#f2f2f7; --bg2:#e5e5ea; --white:#ffffff;
-  --text:#1c1c1e; --text2:#636366; --text3:#aeaeb2;
-  --card:#ffffff; --border:rgba(0,0,0,0.08);
-  --shadow:0 4px 20px rgba(0,0,0,0.08);
-  --radius:18px; --radius-sm:10px;
-  --youli:#f0c040; --youli2:#e6a800;
-  --font:-apple-system,BlinkMacSystemFont,'SF Pro Text',sans-serif;
+:root{
+  --blue:#007aff;--blue2:#0055d4;--green:#34c759;--red:#ff3b30;
+  --orange:#ff9500;--purple:#af52de;--youli:#f0c040;
+  --bg:#f2f2f7;--bg2:#e5e5ea;--white:#fff;--text:#1c1c1e;--text2:#636366;--text3:#aeaeb2;
+  --border:rgba(0,0,0,.08);--font:-apple-system,BlinkMacSystemFont,sans-serif;
+  --sidebar-w:290px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:var(--bg);font-family:var(--font);color:var(--text);overflow:hidden;height:100vh;display:flex}
+html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:2px}
 
-/* ── SCROLLBAR ── */
-::-webkit-scrollbar{width:5px}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:3px}
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:900;display:flex;align-items:center;justify-content:center;animation:fi .2s}
+.overlay.hidden{display:none!important}
+@keyframes fi{from{opacity:0}to{opacity:1}}
+.mcard{background:#fff;border-radius:22px;padding:24px 20px;width:340px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25);animation:su .22s cubic-bezier(.34,1.56,.64,1)}
+@keyframes su{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:none}}
+.mtitle{font-size:18px;font-weight:700;margin-bottom:5px}
+.msub{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:14px}
 
-/* ── OVERLAY/MODALI BASE ── */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:900;display:flex;align-items:center;justify-content:center;animation:fade-in .2s ease}
-.overlay.hidden{display:none}
-@keyframes fade-in{from{opacity:0}to{opacity:1}}
-.modal-card{background:var(--white);border-radius:24px;padding:28px 24px;width:340px;max-width:92vw;box-shadow:0 20px 60px rgba(0,0,0,0.25);animation:slide-up .25s cubic-bezier(.34,1.56,.64,1)}
-@keyframes slide-up{from{opacity:0;transform:translateY(30px) scale(.96)}to{opacity:1;transform:none}}
-.modal-title{font-size:20px;font-weight:700;margin-bottom:6px;color:var(--text)}
-.modal-sub{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:16px}
-
-/* ── INPUT ── */
-.inp{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:var(--radius-sm);font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:border-color .2s}
+/* INPUTS */
+.inp{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;transition:border .2s;-webkit-appearance:none}
 .inp:focus{border-color:var(--blue)}
-.inp-wrap{margin-bottom:12px}
-.inp-label{font-size:12px;font-weight:600;color:var(--text2);letter-spacing:.5px;margin-bottom:5px;display:block}
+.inp-wrap{margin-bottom:11px}
+.ilabel{display:block;font-size:11px;font-weight:700;color:var(--text2);letter-spacing:.4px;margin-bottom:4px}
 
-/* ── BUTTONS ── */
-.btn{padding:13px 20px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:600;cursor:pointer;transition:all .15s;font-family:var(--font)}
-.btn-primary{background:var(--blue);color:#fff;width:100%}
-.btn-primary:hover{background:var(--blue2)}
-.btn-primary:active{transform:scale(.97)}
-.btn-ghost{background:transparent;color:var(--blue);width:100%;margin-top:6px}
-.btn-danger{background:var(--red);color:#fff;width:100%}
-.btn-green{background:var(--green);color:#fff}
-.btn-sm{padding:8px 14px;font-size:13px}
-.btn-icon{background:var(--bg2);border:none;width:44px;height:44px;border-radius:50%;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
-.btn-icon:hover{background:var(--bg)}
-.btn-icon.active{background:var(--blue);color:#fff}
-.btn-icon.red{background:var(--red);color:#fff}
+/* BUTTONS */
+.btn{padding:12px 18px;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s}
+.btn:active{transform:scale(.96)}
+.bp{background:var(--blue);color:#fff;width:100%}
+.bp:hover{background:var(--blue2)}
+.bg{background:transparent;color:var(--blue);width:100%;margin-top:5px}
+.bd{background:var(--red);color:#fff;width:100%}
+.bico{background:var(--bg2);border:none;width:40px;height:40px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.bico:hover{background:var(--bg)}
+.bico.act{background:var(--blue);color:#fff}
+.bico.red{background:var(--red);color:#fff}
 
-/* ═══════════════════════
-   PRIVACY MODAL
-═══════════════════════ */
-#privacy-overlay .modal-card{max-height:90vh;overflow-y:auto}
-.privacy-body{max-height:220px;overflow-y:auto;background:var(--bg);border-radius:var(--radius-sm);padding:14px;font-size:12px;line-height:1.7;color:var(--text2);margin-bottom:16px}
-.privacy-body h4{color:var(--text);margin:10px 0 4px}
-.check-row{display:flex;align-items:center;gap:10px;margin-bottom:10px;cursor:pointer;font-size:14px}
-.check-row input[type=checkbox]{width:18px;height:18px;accent-color:var(--blue);cursor:pointer}
+/* AUTH */
+.tabs{display:flex;background:var(--bg);border-radius:10px;padding:3px;margin-bottom:18px}
+.tabb{flex:1;padding:7px;border:none;background:transparent;border-radius:7px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text2);transition:.2s}
+.tabb.act{background:#fff;color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.alogo{text-align:center;margin-bottom:18px}
+.alogo-ico{font-size:44px;display:block;margin-bottom:6px}
+.alogo h1{font-size:20px;font-weight:800;color:var(--blue);letter-spacing:.5px}
+.alogo p{font-size:11px;color:var(--text3);letter-spacing:.5px;margin-top:2px}
+#auth-err{color:var(--red);font-size:12px;text-align:center;margin-top:8px;min-height:16px}
 
-/* ═══════════════════════
-   AUTH SCREEN
-═══════════════════════ */
-#auth-overlay .tabs{display:flex;background:var(--bg);border-radius:var(--radius-sm);padding:3px;margin-bottom:20px}
-.tab-btn{flex:1;padding:8px;border:none;background:transparent;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;color:var(--text2);transition:all .2s}
-.tab-btn.active{background:var(--white);color:var(--text);box-shadow:0 1px 4px rgba(0,0,0,0.12)}
-.auth-logo{text-align:center;margin-bottom:20px}
-.auth-logo-icon{font-size:48px;display:block;margin-bottom:8px}
-.auth-logo h1{font-size:22px;font-weight:800;color:var(--blue)}
-.auth-logo p{font-size:12px;color:var(--text3);letter-spacing:.5px}
-.divider{border:none;border-top:1px solid var(--border);margin:14px 0}
+/* PRIVACY */
+.pbody{max-height:200px;overflow-y:auto;background:var(--bg);border-radius:10px;padding:12px;font-size:12px;line-height:1.7;color:var(--text2);margin-bottom:14px}
+.pbody h4{color:var(--text);margin:8px 0 3px;font-size:12px}
+.crow{display:flex;align-items:center;gap:9px;margin-bottom:9px;cursor:pointer;font-size:13px}
+.crow input{width:17px;height:17px;accent-color:var(--blue);cursor:pointer}
 
-/* ═══════════════════════
-   LAYOUT PRINCIPALE
-═══════════════════════ */
+/* APP LAYOUT */
 #app{display:flex;height:100vh;width:100%;opacity:0;transition:opacity .3s}
-#app.visible{opacity:1}
+#app.vis{opacity:1}
 
 /* SIDEBAR */
-.sidebar{width:300px;min-width:300px;background:var(--white);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh}
-.sidebar-header{padding:16px;background:linear-gradient(135deg,#007aff,#0055d4);color:#fff}
-.me-row{display:flex;align-items:center;gap:10px}
-.avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:700;flex-shrink:0;cursor:pointer;position:relative}
-.avatar-img{width:100%;height:100%;border-radius:50%;object-fit:cover}
-.status-dot{position:absolute;bottom:0;right:0;width:11px;height:11px;background:var(--green);border-radius:50%;border:2px solid #007aff}
-.me-name{font-weight:700;font-size:15px}
-.me-id{font-size:11px;opacity:.7;font-family:monospace;margin-top:2px;display:flex;align-items:center;gap:6px}
-.copy-btn{font-size:10px;background:rgba(255,255,255,.2);border:none;color:#fff;padding:2px 7px;border-radius:20px;cursor:pointer}
+.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;transition:transform .25s;z-index:20}
+.shdr{padding:14px;background:linear-gradient(135deg,#007aff,#0055d4);color:#fff;flex-shrink:0}
+.merow{display:flex;align-items:center;gap:9px}
+.av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0;position:relative;cursor:pointer}
+.avdot{position:absolute;bottom:0;right:0;width:10px;height:10px;background:var(--green);border-radius:50%;border:2px solid #007aff}
+.mename{font-weight:700;font-size:14px}
+.meid{font-size:10px;opacity:.7;font-family:monospace;margin-top:1px;display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.cpbtn{font-size:9px;background:rgba(255,255,255,.2);border:none;color:#fff;padding:2px 6px;border-radius:20px;cursor:pointer;white-space:nowrap}
 
-/* WALLET */
-.wallet-card{margin:12px;background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:16px;padding:14px;color:#fff}
-.wallet-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
-.wallet-label{font-size:10px;letter-spacing:1px;opacity:.6;text-transform:uppercase}
-.wallet-balance{font-size:28px;font-weight:900;color:var(--youli);line-height:1;margin:4px 0}
-.wallet-sub{font-size:10px;opacity:.5}
-.wallet-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.btn-wallet{padding:8px;border:none;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;transition:.15s}
-.btn-wallet.earn{background:rgba(240,192,64,.15);color:var(--youli);border:1px solid rgba(240,192,64,.3)}
-.btn-wallet.redeem{background:var(--youli);color:#1c1c1e}
-.btn-wallet:hover{opacity:.85}
+/* WALLET MINI */
+.wcard{margin:10px;background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:14px;padding:12px;color:#fff;flex-shrink:0}
+.wbal{font-size:26px;font-weight:900;color:var(--youli);line-height:1;margin:3px 0}
+.wlbl{font-size:9px;letter-spacing:1px;opacity:.5;text-transform:uppercase}
+.wacts{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.wb{padding:7px;border:none;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;transition:.15s}
+.wb.earn{background:rgba(240,192,64,.15);color:var(--youli);border:1px solid rgba(240,192,64,.3)}
+.wb.red2{background:var(--youli);color:#1c1c1e}
+.wb:hover{opacity:.85}
 
-/* CONTATTI */
-.section-label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.8px;padding:10px 14px 4px;text-transform:uppercase}
-.contact-list{flex:1;overflow-y:auto;padding:4px 10px}
-.contact-item{display:flex;align-items:center;gap:10px;padding:10px;border-radius:14px;cursor:pointer;transition:.15s;position:relative}
-.contact-item:hover{background:var(--bg)}
-.contact-item.active{background:#e8f0ff}
-.c-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0;font-size:16px}
-.c-info{flex:1;min-width:0}
-.c-name{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.c-preview{font-size:12px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.c-time{font-size:10px;color:var(--text3)}
-.unread-badge{background:var(--blue);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.online-dot{width:10px;height:10px;background:var(--green);border-radius:50%;border:2px solid #fff;position:absolute;bottom:8px;left:44px}
+/* CONTACTS */
+.slbl{font-size:10px;font-weight:700;color:var(--text3);letter-spacing:.7px;padding:8px 12px 3px;text-transform:uppercase;flex-shrink:0}
+.clist{flex:1;overflow-y:auto;padding:3px 8px}
+.ci{display:flex;align-items:center;gap:9px;padding:9px;border-radius:12px;cursor:pointer;transition:.15s;position:relative}
+.ci:hover{background:var(--bg)}
+.ci.act{background:#e8f0ff}
+.cav{width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:#fff;flex-shrink:0}
+.cinfo{flex:1;min-width:0}
+.cname{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cprev{font-size:11px;color:var(--text3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctime{font-size:10px;color:var(--text3);flex-shrink:0}
+.odot{width:9px;height:9px;background:var(--green);border-radius:50%;border:2px solid #fff;position:absolute;bottom:7px;left:41px}
 
-.sidebar-footer{padding:10px;border-top:1px solid var(--border);display:flex;gap:8px}
-.sidebar-footer .btn-icon{flex:1;width:auto;border-radius:10px;font-size:15px}
+.sfooter{padding:8px;border-top:1px solid var(--border);display:flex;gap:6px;flex-shrink:0}
+.sfooter .bico{flex:1;width:auto;border-radius:9px;font-size:14px}
 
 /* CHAT MAIN */
-.chat-main{flex:1;display:flex;flex-direction:column;background:var(--bg);min-width:0}
-.chat-header{background:var(--white);padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
-.chat-header-info{flex:1}
-.chat-header-name{font-size:16px;font-weight:700}
-.chat-header-status{font-size:12px;color:var(--green)}
-.chat-header-actions{display:flex;gap:8px}
-.chat-header-actions .btn-icon{width:38px;height:38px;font-size:17px}
+.cmain{flex:1;display:flex;flex-direction:column;background:var(--bg);min-width:0;height:100vh}
+.chdr{background:#fff;padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chinfo{flex:1;min-width:0}
+.chname{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chstatus{font-size:11px;color:var(--green)}
+.chacts{display:flex;gap:6px}
+.chacts .bico{width:36px;height:36px;font-size:15px}
+.hamburger{display:none;background:none;border:none;font-size:22px;cursor:pointer;padding:4px;margin-right:4px}
 
-/* MESSAGGI */
-#msg-box{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px}
-.msg-wrap{display:flex;flex-direction:column;max-width:72%;animation:msg-pop .2s ease}
-@keyframes msg-pop{from{opacity:0;transform:scale(.95) translateY(6px)}to{opacity:1;transform:none}}
-.msg-wrap.me{align-self:flex-end;align-items:flex-end}
-.msg-wrap.them{align-self:flex-start;align-items:flex-start}
-.msg-name{font-size:11px;color:var(--text3);margin-bottom:3px;font-weight:600}
-.bubble{padding:10px 14px;border-radius:18px;font-size:14px;line-height:1.5;word-break:break-word;position:relative}
-.me .bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
-.them .bubble{background:var(--white);color:var(--text);border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.msg-time{font-size:10px;color:var(--text3);margin-top:3px;padding:0 4px}
-.msg-status{font-size:10px;margin-left:4px}
-
-/* File bubble */
-.file-bubble{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:18px;max-width:240px;cursor:pointer}
-.me .file-bubble{background:var(--blue2)}
-.them .file-bubble{background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.file-icon{font-size:28px;flex-shrink:0}
-.file-info .file-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:150px}
-.file-info .file-size{font-size:11px;opacity:.7}
-.me .file-info{color:#fff}
-
-/* Audio bubble */
-.audio-bubble{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:18px;min-width:180px}
-.me .audio-bubble{background:var(--blue2)}
-.them .audio-bubble{background:var(--white);box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.audio-play{width:36px;height:36px;border-radius:50%;border:none;font-size:14px;cursor:pointer;flex-shrink:0}
-.me .audio-play{background:rgba(255,255,255,.2);color:#fff}
-.them .audio-play{background:var(--blue);color:#fff}
-.audio-wave{flex:1;height:32px;border-radius:4px;background:repeating-linear-gradient(90deg,currentColor 0,currentColor 2px,transparent 2px,transparent 6px);opacity:.3}
-.audio-duration{font-size:11px;opacity:.7}
-.me .audio-duration,.me .audio-wave{color:#fff}
-
-/* Poll bubble */
-.poll-bubble{padding:12px;min-width:200px;max-width:280px}
-.poll-q{font-weight:700;margin-bottom:10px;font-size:14px}
-.poll-opt{padding:8px 12px;border-radius:8px;margin-bottom:6px;cursor:pointer;font-size:13px;border:none;width:100%;text-align:left;transition:.15s}
-.me .poll-opt{background:rgba(255,255,255,.2);color:#fff}
-.me .poll-opt:hover{background:rgba(255,255,255,.3)}
-.them .poll-opt{background:var(--bg);color:var(--text)}
-.them .poll-opt:hover{background:var(--bg2)}
-.poll-bar{height:4px;border-radius:2px;margin-top:3px;background:var(--green);transition:width .5s}
-
-/* MAP bubble */
-.map-bubble{border-radius:14px;overflow:hidden;cursor:pointer;position:relative}
-.map-bubble img{width:220px;height:120px;object-fit:cover;display:block}
-.map-label{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.6));color:#fff;padding:8px;font-size:12px;font-weight:600}
-
-/* YOULI reward */
-.youli-bubble{background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:16px;padding:14px;color:#fff;text-align:center;min-width:200px}
-.youli-amount{font-size:24px;font-weight:900;color:var(--youli)}
-.youli-code{font-family:monospace;font-size:11px;background:rgba(240,192,64,.15);padding:6px;border-radius:6px;margin-top:8px;letter-spacing:1px;color:var(--youli)}
-
-/* DAY DIVIDER */
-.day-div{text-align:center;font-size:11px;color:var(--text3);margin:6px 0;font-weight:500}
-.day-div span{background:var(--bg);padding:3px 10px;border-radius:20px}
+/* MESSAGES */
+#msgbox{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:8px}
+.mwrap{display:flex;flex-direction:column;max-width:75%;animation:mpop .18s ease}
+@keyframes mpop{from{opacity:0;transform:scale(.94) translateY(5px)}to{opacity:1;transform:none}}
+.mwrap.me{align-self:flex-end;align-items:flex-end}
+.mwrap.them{align-self:flex-start;align-items:flex-start}
+.mauthor{font-size:10px;color:var(--text3);margin-bottom:2px;font-weight:600}
+.bub{padding:9px 13px;border-radius:17px;font-size:14px;line-height:1.5;word-break:break-word}
+.me .bub{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.them .bub{background:#fff;color:var(--text);border-bottom-left-radius:4px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.mtime{font-size:10px;color:var(--text3);margin-top:2px;padding:0 3px}
+.daydiv{text-align:center;font-size:11px;color:var(--text3);margin:4px 0}
+.daydiv span{background:var(--bg);padding:2px 9px;border-radius:20px}
+/* file bubble */
+.fbub{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:17px;max-width:230px;cursor:pointer;text-decoration:none}
+.me .fbub{background:#0055d4}
+.them .fbub{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.ficon{font-size:26px;flex-shrink:0}
+.fname{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
+.fsize{font-size:10px;opacity:.7}
+.me .fname,.me .fsize{color:#fff}
+.them .fname{color:var(--text)}
+/* audio bubble */
+.abub{display:flex;align-items:center;gap:7px;padding:8px 11px;border-radius:17px;min-width:160px}
+.me .abub{background:#0055d4}
+.them .abub{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.aplay{width:34px;height:34px;border-radius:50%;border:none;font-size:13px;cursor:pointer;flex-shrink:0}
+.me .aplay{background:rgba(255,255,255,.2);color:#fff}
+.them .aplay{background:var(--blue);color:#fff}
+.adur{font-size:10px;opacity:.7}
+.me .adur{color:#fff}
+/* poll */
+.pbub{padding:11px;min-width:190px;max-width:270px;border-radius:17px}
+.pq{font-weight:700;margin-bottom:9px;font-size:13px}
+.popt{padding:7px 11px;border-radius:8px;margin-bottom:5px;cursor:pointer;font-size:12px;border:none;width:100%;text-align:left;transition:.15s}
+.me .popt{background:rgba(255,255,255,.2);color:#fff}
+.me .popt:hover{background:rgba(255,255,255,.3)}
+.them .popt{background:var(--bg);color:var(--text)}
+.them .popt:hover{background:var(--bg2)}
+/* youli gift */
+.ygift{background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:16px;padding:13px;color:#fff;text-align:center;min-width:180px}
+.yamount{font-size:22px;font-weight:900;color:var(--youli)}
+.ycode{font-family:monospace;font-size:10px;background:rgba(240,192,64,.15);padding:5px;border-radius:6px;margin-top:7px;color:var(--youli);word-break:break-all}
+/* group badge */
+.gbadge{display:inline-block;font-size:10px;background:var(--purple);color:#fff;padding:1px 6px;border-radius:20px;margin-left:5px;vertical-align:middle}
 
 /* INPUT BAR */
-.input-bar{background:var(--white);border-top:1px solid var(--border);padding:10px 12px;display:flex;align-items:flex-end;gap:8px}
-#msg-input{flex:1;border:1.5px solid var(--border);border-radius:22px;padding:10px 16px;font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;resize:none;max-height:120px;overflow-y:auto;line-height:1.4;transition:border-color .2s}
-#msg-input:focus{border-color:var(--blue)}
-.send-btn{width:44px;height:44px;border-radius:50%;background:var(--blue);border:none;color:#fff;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
-.send-btn:hover{background:var(--blue2)}
-.send-btn:active{transform:scale(.92)}
+.ibar{background:#fff;border-top:1px solid var(--border);padding:8px 10px;display:flex;align-items:flex-end;gap:7px;flex-shrink:0}
+#msginput{flex:1;border:1.5px solid var(--border);border-radius:20px;padding:9px 14px;font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);outline:none;resize:none;max-height:110px;overflow-y:auto;line-height:1.4;transition:border .2s;-webkit-appearance:none}
+#msginput:focus{border-color:var(--blue)}
+.sendbtn{width:42px;height:42px;border-radius:50%;background:var(--blue);border:none;color:#fff;font-size:19px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:.15s}
+.sendbtn:hover{background:var(--blue2)}
+.sendbtn:active{transform:scale(.91)}
 
 /* ATTACH MENU */
-.attach-menu{position:absolute;bottom:80px;left:12px;background:var(--white);border-radius:20px;padding:14px;box-shadow:0 8px 32px rgba(0,0,0,.15);display:grid;grid-template-columns:repeat(4,1fr);gap:10px;z-index:50;animation:slide-up .2s ease;border:1px solid var(--border)}
-.attach-menu.hidden{display:none}
-.attach-item{cursor:pointer;text-align:center;padding:8px;border-radius:12px;transition:.15s}
-.attach-item:hover{background:var(--bg)}
-.attach-item .icon{font-size:28px;display:block;margin-bottom:4px}
-.attach-item .label{font-size:11px;font-weight:600;color:var(--text2)}
+.amenu{background:#fff;border-top:1px solid var(--border);padding:10px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;flex-shrink:0}
+.amenu.hidden{display:none}
+.aitem{cursor:pointer;text-align:center;padding:7px;border-radius:11px;transition:.15s}
+.aitem:hover{background:var(--bg)}
+.aicon{font-size:26px;display:block;margin-bottom:3px}
+.alabel{font-size:10px;font-weight:600;color:var(--text2)}
 
-/* RECORDING UI */
-.recording-bar{background:var(--white);border-top:1px solid var(--border);padding:14px 16px;display:flex;align-items:center;gap:12px}
-.recording-bar.hidden{display:none}
-.rec-indicator{width:12px;height:12px;border-radius:50%;background:var(--red);animation:blink 1s infinite}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.rec-time{font-family:monospace;font-size:18px;font-weight:700;flex:1;color:var(--text)}
-.rec-wave{flex:2;height:30px;display:flex;align-items:center;gap:2px}
-.rec-wave span{width:3px;border-radius:2px;background:var(--blue);animation:wave 1s ease-in-out infinite;flex-shrink:0}
-.rec-wave span:nth-child(2n){animation-delay:.15s;height:60%}
-.rec-wave span:nth-child(3n){animation-delay:.3s;height:80%}
-@keyframes wave{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.8)}}
+/* RECORDING BAR */
+.recbar{background:#fff;border-top:1px solid var(--border);padding:12px 14px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.recbar.hidden{display:none}
+.recind{width:10px;height:10px;border-radius:50%;background:var(--red);animation:bl 1s infinite;flex-shrink:0}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:.2}}
+.rectime{font-family:monospace;font-size:17px;font-weight:700;flex:1}
+.recwave{flex:2;height:28px;display:flex;align-items:center;gap:2px;overflow:hidden}
+.recwave span{width:2px;border-radius:1px;background:var(--blue);animation:wv 1s ease-in-out infinite;flex-shrink:0;min-height:4px}
+.recwave span:nth-child(even){animation-delay:.15s;height:55%!important}
+.recwave span:nth-child(3n){animation-delay:.3s}
+@keyframes wv{0%,100%{transform:scaleY(1)}50%{transform:scaleY(2)}}
 
-/* NO CHAT placeholder */
-.no-chat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);gap:10px}
-.no-chat-icon{font-size:64px}
-.no-chat h3{font-size:18px;font-weight:600;color:var(--text2)}
-.no-chat p{font-size:13px}
+/* NO CHAT */
+.nochat{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text3);gap:9px}
+.nochat-ico{font-size:60px}
 
-/* ═══════════════════════
-   CHIAMATA (Video/Audio)
-═══════════════════════ */
-#call-overlay{position:fixed;inset:0;background:#0a0a0a;z-index:800;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .3s}
-#call-overlay.hidden{display:none}
-#call-overlay.pip-mode{position:fixed;bottom:20px;right:20px;width:320px;height:240px;border-radius:20px;overflow:hidden;inset:auto;z-index:1000;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:move}
-#call-overlay.pip-mode .call-controls{padding:8px;gap:8px}
-#call-overlay.pip-mode .call-controls .btn-icon{width:36px;height:36px;font-size:15px}
-#call-overlay.pip-mode #call-label{display:none}
-#call-overlay.pip-mode .call-info{display:none}
+/* CONNECTION STATUS */
+.connstatus{font-size:10px;padding:3px 8px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+.connstatus.online{background:rgba(52,199,89,.15);color:var(--green)}
+.connstatus.offline{background:rgba(255,59,48,.1);color:var(--red)}
+.connstatus.connecting{background:rgba(0,122,255,.1);color:var(--blue)}
 
-#remote-video{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
-#local-video{position:absolute;bottom:80px;right:20px;width:120px;height:90px;border-radius:14px;object-fit:cover;border:2px solid rgba(255,255,255,.3);z-index:2;transition:.3s}
-#call-overlay.pip-mode #local-video{width:70px;height:52px;bottom:50px;right:8px}
+/* ════ CALL OVERLAY ════ */
+#callover{position:fixed;inset:0;background:#0a0a0a;z-index:800;display:flex;flex-direction:column;align-items:center;justify-content:center}
+#callover.hidden{display:none}
+#callover.pip{position:fixed;bottom:16px;right:16px;inset:auto;width:300px;height:210px;border-radius:18px;overflow:hidden;z-index:1000;box-shadow:0 8px 40px rgba(0,0,0,.5);cursor:grab}
+#callover.pip:active{cursor:grabbing}
+#remotev{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;display:none}
+#localv{position:absolute;bottom:70px;right:12px;width:100px;height:75px;border-radius:12px;object-fit:cover;border:2px solid rgba(255,255,255,.3);z-index:2;display:none}
+#callover.pip #localv{width:65px;height:48px;bottom:44px;right:7px}
+.callbg{position:absolute;inset:0;background:radial-gradient(ellipse at center,#1a1a2e,#0a0a0a)}
+.callav{width:90px;height:90px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#fff;margin-bottom:14px;position:relative;z-index:2;border:3px solid rgba(255,255,255,.2)}
+.callav::after{content:"";position:absolute;inset:-7px;border-radius:50%;border:2px solid rgba(255,255,255,.12);animation:rp 2s infinite}
+@keyframes rp{0%{transform:scale(1);opacity:1}100%{transform:scale(1.4);opacity:0}}
+.callinfo{position:relative;z-index:2;text-align:center;color:#fff;margin-bottom:18px}
+.callinfo h2{font-size:24px;font-weight:700}
+.callinfo p{font-size:13px;opacity:.65;margin-top:5px}
+#calllbl{font-size:11px;color:rgba(255,255,255,.4);font-family:monospace;margin-top:3px}
+.callctrl{display:flex;gap:10px;position:relative;z-index:2;padding:14px 18px;background:rgba(0,0,0,.4);border-radius:28px;backdrop-filter:blur(10px)}
+.callctrl .bico{width:48px;height:48px;font-size:20px}
+#callover.pip .callctrl{padding:6px 8px;gap:6px;border-radius:20px}
+#callover.pip .callctrl .bico{width:32px;height:32px;font-size:14px}
+#callover.pip .callinfo,.callover.pip #calllbl{display:none}
+#filterbar{position:absolute;top:14px;left:0;right:0;display:flex;justify-content:center;gap:7px;z-index:3;flex-wrap:wrap;padding:0 10px}
+#filterbar.hidden{display:none}
+.fbtn{padding:5px 11px;border-radius:18px;border:1.5px solid rgba(255,255,255,.25);background:rgba(0,0,0,.45);color:#fff;font-size:11px;cursor:pointer;backdrop-filter:blur(6px);transition:.15s}
+.fbtn:hover,.fbtn.act{background:rgba(255,255,255,.18);border-color:#fff}
 
-.call-bg{position:absolute;inset:0;background:radial-gradient(ellipse at center,#1a1a2e,#0a0a0a)}
-.call-avatar{width:100px;height:100px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:700;color:#fff;margin-bottom:16px;position:relative;z-index:2;border:3px solid rgba(255,255,255,.2)}
-.call-avatar::after{content:"";position:absolute;inset:-8px;border-radius:50%;border:2px solid rgba(255,255,255,.15);animation:ring-pulse 2s infinite}
-@keyframes ring-pulse{0%{transform:scale(1);opacity:1}100%{transform:scale(1.4);opacity:0}}
-.call-info{position:relative;z-index:2;text-align:center;color:#fff;margin-bottom:20px}
-.call-info h2{font-size:26px;font-weight:700}
-.call-info p{font-size:14px;opacity:.7;margin-top:6px}
-#call-label{font-size:12px;color:rgba(255,255,255,.5);font-family:monospace;margin-top:4px}
-.call-controls{display:flex;gap:12px;position:relative;z-index:2;padding:20px;background:rgba(0,0,0,.4);border-radius:30px;backdrop-filter:blur(10px)}
-.call-controls .btn-icon{width:52px;height:52px;font-size:22px}
+/* INCOMING CALL */
+#incall .mcard{text-align:center}
+.incav{width:72px;height:72px;border-radius:50%;margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:700;color:#fff}
+.inacts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
 
-/* Filtri video */
-#filter-bar{position:absolute;top:20px;left:0;right:0;display:flex;justify-content:center;gap:10px;z-index:3}
-#filter-bar.hidden{display:none}
-.filter-btn{padding:6px 14px;border-radius:20px;border:1.5px solid rgba(255,255,255,.3);background:rgba(0,0,0,.5);color:#fff;font-size:12px;cursor:pointer;backdrop-filter:blur(8px);transition:.15s}
-.filter-btn:hover,.filter-btn.active{background:rgba(255,255,255,.2);border-color:#fff}
+/* WALLET MODAL */
+.ycodeshow{font-family:monospace;font-size:14px;letter-spacing:2px;background:linear-gradient(135deg,#1c1c2e,#2d2d44);color:var(--youli);padding:12px;border-radius:11px;text-align:center;margin:12px 0;user-select:all;word-break:break-all}
+.hitem{padding:7px;border-radius:8px;background:var(--bg);margin-bottom:5px;font-size:11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.hcode{font-family:monospace;color:var(--text);font-size:10px;word-break:break-all;flex:1}
+.hamount{font-weight:700;color:var(--youli);white-space:nowrap}
+.hamount.in{color:var(--green)}
 
-/* ═══════════════════════
-   MODAL INCOMING CALL
-═══════════════════════ */
-#incoming-overlay .modal-card{text-align:center}
-.incoming-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff}
-.call-type-badge{font-size:11px;color:var(--text3);margin-bottom:14px}
-.incoming-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+/* CODE INPUT */
+.cinpbox{background:linear-gradient(135deg,rgba(240,192,64,.07),rgba(240,192,64,.02));border:1.5px solid rgba(240,192,64,.22);border-radius:13px;padding:13px;margin-bottom:12px}
+.cinprow{display:flex;gap:7px;align-items:center}
+.cinprow .inp{flex:1;font-family:monospace;font-size:12px;letter-spacing:.4px;margin:0}
+.cbtn{background:var(--youli);border:none;border-radius:9px;padding:9px 12px;font-weight:700;font-size:12px;cursor:pointer;color:#1c1c1e;white-space:nowrap;flex-shrink:0}
+#codefb{font-size:11px;margin-top:7px;min-height:15px;font-family:monospace;text-align:center}
 
-/* ═══════════════════════
-   WALLET MODAL
-═══════════════════════ */
-.youli-code-display{font-family:monospace;font-size:16px;letter-spacing:2px;background:linear-gradient(135deg,#1c1c2e,#2d2d44);color:var(--youli);padding:14px;border-radius:12px;text-align:center;margin:14px 0;user-select:all}
-.history-item{padding:8px;border-radius:8px;background:var(--bg);margin-bottom:6px;font-size:12px;display:flex;justify-content:space-between;align-items:center}
-.history-item .code{font-family:monospace;color:var(--text);font-size:11px}
-.history-item .amount{font-weight:700;color:var(--youli)}
+/* GROUP MODAL */
+.gm-members{max-height:180px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:6px;margin-bottom:10px}
+.gm-member{display:flex;align-items:center;gap:8px;padding:6px;border-radius:8px;cursor:pointer;transition:.15s}
+.gm-member:hover{background:var(--bg)}
+.gm-member input[type=checkbox]{accent-color:var(--blue);width:16px;height:16px}
 
-/* ═══════════════════════
-   SNAKE GAME
-═══════════════════════ */
-#snake-modal canvas{border-radius:12px;display:block;margin:0 auto;max-width:100%}
-.snake-stats{display:flex;justify-content:space-between;margin-bottom:10px;font-size:13px;font-weight:600}
-.snake-score{color:var(--blue)}
-.snake-youli{color:var(--youli)}
-
-/* ═══════════════════════
-   ADD CONTACT
-═══════════════════════ */
-.scan-id-btn{background:var(--bg);border:1.5px dashed var(--border);border-radius:10px;padding:12px;text-align:center;cursor:pointer;font-size:13px;color:var(--text2);margin-bottom:12px;transition:.2s}
-.scan-id-btn:hover{border-color:var(--blue);color:var(--blue)}
-
-/* ═══════════════════════
-   LOADING
-═══════════════════════ */
-.spinner{width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto}
-@keyframes spin{to{transform:rotate(360deg)}}
-
-@keyframes shake {
-  0%,100%{transform:translateX(0)}
-  20%{transform:translateX(-6px)}
-  40%{transform:translateX(6px)}
-  60%{transform:translateX(-4px)}
-  80%{transform:translateX(4px)}
-}
-
-/* ═══════════════════════
-   TOAST
-═══════════════════════ */
-#toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:rgba(28,28,30,.9);color:#fff;padding:10px 20px;border-radius:20px;font-size:14px;font-weight:500;z-index:9999;backdrop-filter:blur(10px);pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap}
+/* TOAST */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:rgba(28,28,30,.9);color:#fff;padding:9px 18px;border-radius:20px;font-size:13px;font-weight:500;z-index:9999;backdrop-filter:blur(10px);pointer-events:none;opacity:0;transition:opacity .3s;white-space:nowrap;max-width:90vw;text-align:center}
 #toast.show{opacity:1}
 
-/* ── RESPONSIVE ── */
-@media(max-width:700px){
-  .sidebar{width:100%;position:fixed;inset:0;z-index:50;transform:translateX(-100%);transition:.25s}
-  .sidebar.open{transform:none}
-  .chat-main{width:100%}
+/* SNAKE */
+#sCanvas{border-radius:12px;display:block;margin:0 auto;touch-action:none}
+.snakestats{display:flex;justify-content:space-between;margin-bottom:9px;font-size:13px;font-weight:600}
+
+/* SHAKE ANIM */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+/* DIVIDER */
+hr.div{border:none;border-top:1px solid var(--border);margin:13px 0}
+
+/* ── RESPONSIVE MOBILE ── */
+@media(max-width:640px){
+  :root{--sidebar-w:100vw}
+  .sidebar{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);width:100vw;z-index:100;box-shadow:4px 0 20px rgba(0,0,0,.15)}
+  .sidebar.open{transform:translateX(0)}
+  .hamburger{display:flex!important;align-items:center;justify-content:center}
+  .chacts .bico{width:32px;height:32px;font-size:13px}
+  .mwrap{max-width:86%}
+  .bub{font-size:14px}
+  #msginput{font-size:16px}
+  .wbal{font-size:22px}
+  .amenu{grid-template-columns:repeat(4,1fr);gap:6px}
+  #callover.pip{width:240px;height:170px;bottom:12px;right:12px}
+  .callctrl .bico{width:44px;height:44px;font-size:18px}
 }
 </style>
 </head>
 <body>
-
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- ═══ PRIVACY MODAL ═══ -->
-<div class="overlay" id="privacy-overlay">
-  <div class="modal-card" style="max-width:360px">
-    <div style="text-align:center;font-size:40px;margin-bottom:10px">🔐</div>
-    <div class="modal-title" style="text-align:center">Privacy & Termini</div>
-    <div class="modal-sub" style="text-align:center">Prima di continuare, leggi e accetta</div>
-    <div class="privacy-body">
-      <h4>1. Raccolta Dati</h4>
-      YOULINIRI PRO non invia i tuoi dati a server esterni. Tutte le comunicazioni sono peer-to-peer crittografate tramite WebRTC. Username e password sono salvati localmente nel tuo browser.
-      <h4>2. Messaggi</h4>
-      I messaggi non sono conservati su server centrali. Vengono trasmessi direttamente tra utenti. Stai condividendo i contenuti sotto tua responsabilità.
-      <h4>3. Valuta YOULI</h4>
-      YOULI è una valuta virtuale a scopo ludico. I codici di riscatto non hanno valore monetario reale. Non è previsto alcun rimborso.
-      <h4>4. File e Media</h4>
-      I file inviati transitano direttamente tra i dispositivi. Non garantiamo la disponibilità continua del canale.
-      <h4>5. Cookie & Storage</h4>
-      Utilizziamo localStorage e cookie solo per mantenere la sessione di login. Nessun cookie di terze parti.
-      <h4>6. Età minima</h4>
-      Devi avere almeno 13 anni per usare questo servizio.
+<!-- PRIVACY -->
+<div class="overlay" id="priv-ov">
+  <div class="mcard">
+    <div style="text-align:center;font-size:38px;margin-bottom:9px">🔐</div>
+    <div class="mtitle" style="text-align:center">Privacy & Termini</div>
+    <div class="msub" style="text-align:center">Leggi e accetta prima di continuare</div>
+    <div class="pbody">
+      <h4>1. Dati & Privacy</h4>Le comunicazioni sono peer-to-peer cifrate via WebRTC. Account e saldo vengono sincronizzati sul server locale che hai avviato.
+      <h4>2. Messaggi</h4>I messaggi transitano direttamente tra dispositivi. Non esistono server di messaggi centralizzati.
+      <h4>3. Valuta YOULI</h4>YOULI è una valuta virtuale a scopo ludico senza valore monetario reale.
+      <h4>4. Login multi-device</h4>Puoi accedere dallo stesso account su più dispositivi purché il server Python sia raggiungibile.
+      <h4>5. Cookie & Storage</h4>Usiamo cookie e localStorage solo per la sessione di login.
+      <h4>6. Età minima</h4>Devi avere almeno 13 anni.
     </div>
-    <label class="check-row">
-      <input type="checkbox" id="chk-privacy"/> Ho letto e accetto la Privacy Policy
-    </label>
-    <label class="check-row">
-      <input type="checkbox" id="chk-terms"/> Accetto i Termini di Servizio
-    </label>
-    <button class="btn btn-primary" id="privacy-accept-btn" disabled>ACCETTA E CONTINUA</button>
+    <label class="crow"><input type="checkbox" id="chk1"/> Accetto la Privacy Policy</label>
+    <label class="crow"><input type="checkbox" id="chk2"/> Accetto i Termini di Servizio</label>
+    <button class="btn bp" id="priv-btn" disabled>ACCETTA E CONTINUA</button>
   </div>
 </div>
 
-<!-- ═══ AUTH OVERLAY ═══ -->
-<div class="overlay hidden" id="auth-overlay">
-  <div class="modal-card">
-    <div class="auth-logo">
-      <span class="auth-logo-icon">💬</span>
+<!-- AUTH -->
+<div class="overlay hidden" id="auth-ov">
+  <div class="mcard">
+    <div class="alogo">
+      <span class="alogo-ico">💬</span>
       <h1>YOULINIRI PRO</h1>
       <p>CHAT · CALL · EARN YOULI</p>
     </div>
     <div class="tabs">
-      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Accedi</button>
-      <button class="tab-btn" id="tab-signup" onclick="switchTab('signup')">Registrati</button>
+      <button class="tabb act" id="tl" onclick="stab('l')">Accedi</button>
+      <button class="tabb" id="ts" onclick="stab('s')">Registrati</button>
     </div>
     <!-- LOGIN -->
-    <div id="login-form">
-      <div class="inp-wrap">
-        <label class="inp-label">NOME UTENTE</label>
-        <input class="inp" id="l-user" placeholder="Il tuo nome" autocomplete="username"/>
-      </div>
-      <div class="inp-wrap">
-        <label class="inp-label">PASSWORD</label>
-        <input class="inp" id="l-pass" type="password" placeholder="••••••••" autocomplete="current-password"/>
-      </div>
-      <button class="btn btn-primary" onclick="doLogin()">ACCEDI</button>
-      <button class="btn btn-ghost" onclick="switchTab('signup')">Non hai un account? Registrati</button>
+    <div id="lform">
+      <div class="inp-wrap"><label class="ilabel">NOME UTENTE</label><input class="inp" id="l-u" placeholder="username" autocomplete="username"/></div>
+      <div class="inp-wrap"><label class="ilabel">PASSWORD</label><input class="inp" id="l-p" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <button class="btn bp" onclick="doLogin()">ACCEDI</button>
+      <button class="btn bg" onclick="stab('s')">Non hai un account? Registrati</button>
     </div>
     <!-- SIGNUP -->
-    <div id="signup-form" style="display:none">
-      <div class="inp-wrap">
-        <label class="inp-label">NOME COMPLETO</label>
-        <input class="inp" id="s-name" placeholder="Mario Rossi" autocomplete="name"/>
-      </div>
-      <div class="inp-wrap">
-        <label class="inp-label">USERNAME</label>
-        <input class="inp" id="s-user" placeholder="mario_rossi" autocomplete="username"/>
-      </div>
-      <div class="inp-wrap">
-        <label class="inp-label">PASSWORD</label>
-        <input class="inp" id="s-pass" type="password" placeholder="Min. 6 caratteri" autocomplete="new-password"/>
-      </div>
-      <div class="inp-wrap">
-        <label class="inp-label">CONFERMA PASSWORD</label>
-        <input class="inp" id="s-pass2" type="password" placeholder="Ripeti la password" autocomplete="new-password"/>
-      </div>
-      <button class="btn btn-primary" onclick="doSignup()">CREA ACCOUNT</button>
-      <button class="btn btn-ghost" onclick="switchTab('login')">Hai già un account? Accedi</button>
+    <div id="sform" style="display:none">
+      <div class="inp-wrap"><label class="ilabel">NOME COMPLETO</label><input class="inp" id="s-n" placeholder="Mario Rossi" autocomplete="name"/></div>
+      <div class="inp-wrap"><label class="ilabel">USERNAME</label><input class="inp" id="s-u" placeholder="mario_rossi" autocomplete="username"/></div>
+      <div class="inp-wrap"><label class="ilabel">PASSWORD</label><input class="inp" id="s-p" type="password" placeholder="Min. 6 caratteri" autocomplete="new-password"/></div>
+      <div class="inp-wrap"><label class="ilabel">CONFERMA</label><input class="inp" id="s-p2" type="password" placeholder="Ripeti password" autocomplete="new-password" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+      <button class="btn bp" onclick="doSignup()">CREA ACCOUNT</button>
+      <button class="btn bg" onclick="stab('l')">Hai già un account? Accedi</button>
     </div>
-    <div id="auth-error" style="color:var(--red);font-size:13px;text-align:center;margin-top:10px;min-height:18px"></div>
+    <div id="auth-err"></div>
   </div>
 </div>
 
-<!-- ═══ APP PRINCIPALE ═══ -->
+<!-- APP -->
 <div id="app">
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <div class="me-row">
-        <div class="avatar" id="my-avatar" onclick="showProfileModal()">
-          <span id="my-avatar-letter">?</span>
-          <div class="status-dot"></div>
-        </div>
-        <div style="flex:1">
-          <div class="me-name" id="my-display-name">---</div>
-          <div class="me-id">
-            <span id="my-peer-id">connessione...</span>
-            <button class="copy-btn" onclick="copyID()">copia</button>
+    <div class="shdr">
+      <div class="merow">
+        <div class="av" id="myav"><span id="myavl">?</span><div class="avdot" id="peerdot"></div></div>
+        <div style="flex:1;min-width:0">
+          <div class="mename" id="myname">---</div>
+          <div class="meid">
+            <span id="mypeerid" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:160px">connessione...</span>
+            <button class="cpbtn" onclick="copyID()">copia</button>
           </div>
+          <div style="margin-top:4px" id="connbadge"></div>
         </div>
       </div>
     </div>
-
-    <!-- WALLET -->
-    <div class="wallet-card">
-      <div class="wallet-top">
-        <div>
-          <div class="wallet-label">Saldo YOULI</div>
-          <div class="wallet-balance" id="bal-val">0.00</div>
-          <div class="wallet-sub">≈ valuta virtuale</div>
-        </div>
-        <div style="font-size:28px">🪙</div>
+    <div class="wcard">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div><div class="wlbl">Saldo YOULI</div><div class="wbal" id="balval">0.00</div><div style="font-size:9px;opacity:.4;color:#fff">TOKEN VIRTUALI</div></div>
+        <div style="font-size:26px">🪙</div>
       </div>
-      <div class="wallet-actions">
-        <button class="btn-wallet earn" onclick="openSnakeModal()">🐍 Guadagna</button>
-        <button class="btn-wallet redeem" onclick="showWalletModal()">💰 Riscatta</button>
+      <div class="wacts">
+        <button class="wb earn" onclick="openSnake()">🐍 Guadagna</button>
+        <button class="wb red2" onclick="showWallet()">💰 Portafoglio</button>
       </div>
     </div>
-
-    <!-- CONTATTI -->
-    <div class="section-label">Conversazioni</div>
-    <div class="contact-list" id="contact-list">
-      <div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">
-        Nessun contatto ancora.<br/>Aggiungi un amico!
-      </div>
-    </div>
-
-    <div class="sidebar-footer">
-      <button class="btn-icon" title="Aggiungi contatto" onclick="showModal('add-contact-overlay')">➕</button>
-      <button class="btn-icon" title="Nuovo gruppo" onclick="toast('Gruppi prossimamente!')">👥</button>
-      <button class="btn-icon" title="Impostazioni" onclick="showModal('settings-overlay')">⚙️</button>
-      <button class="btn-icon" title="Logout" onclick="doLogout()">🚪</button>
+    <div class="slbl">Conversazioni</div>
+    <div class="clist" id="clist"><div style="text-align:center;padding:28px;color:var(--text3);font-size:13px">Nessun contatto.<br/>Aggiungine uno!</div></div>
+    <div class="sfooter">
+      <button class="bico" title="Aggiungi contatto" onclick="showM('addcont-ov')">➕</button>
+      <button class="bico" title="Nuovo gruppo" onclick="showM('group-ov')">👥</button>
+      <button class="bico" title="Impostazioni" onclick="showM('sett-ov')">⚙️</button>
+      <button class="bico" title="Logout" onclick="doLogout()">🚪</button>
     </div>
   </aside>
 
   <!-- CHAT MAIN -->
-  <div class="chat-main" id="chat-main">
-    <div class="no-chat" id="no-chat">
-      <div class="no-chat-icon">💬</div>
-      <h3>Seleziona una conversazione</h3>
-      <p>Scegli un contatto dalla lista o aggiungine uno nuovo</p>
+  <div class="cmain" id="cmain">
+    <!-- NO CHAT -->
+    <div class="nochat" id="nochat">
+      <div class="nochat-ico">💬</div>
+      <h3 style="font-size:17px;font-weight:600;color:var(--text2)">Seleziona una conversazione</h3>
+      <p style="font-size:13px;color:var(--text3)">o aggiungi un contatto</p>
     </div>
-
-    <!-- CHAT ATTIVA (nascosta finché non selezionata) -->
-    <div id="active-chat" style="display:none;flex-direction:column;height:100%">
-      <div class="chat-header">
-        <div class="c-avatar" id="chat-hdr-avatar" style="width:38px;height:38px;font-size:16px">?</div>
-        <div class="chat-header-info">
-          <div class="chat-header-name" id="chat-hdr-name">---</div>
-          <div class="chat-header-status" id="chat-hdr-status">●  online</div>
+    <!-- ACTIVE CHAT -->
+    <div id="activechat" style="display:none;flex-direction:column;height:100%">
+      <div class="chdr">
+        <button class="hamburger" id="hbtn" onclick="toggleSidebar()">☰</button>
+        <div class="cav" id="chhav" style="width:36px;height:36px;font-size:15px;flex-shrink:0">?</div>
+        <div class="chinfo">
+          <div class="chname" id="chname">---</div>
+          <div class="chstatus" id="chstatus">● online</div>
         </div>
-        <div class="chat-header-actions">
-          <button class="btn-icon" title="Chiamata audio" onclick="startCall('audio')">📞</button>
-          <button class="btn-icon" title="Videochiamata" onclick="startCall('video')">📹</button>
-          <button class="btn-icon" title="Condividi schermo" onclick="startCall('screen')">🖥️</button>
-          <button class="btn-icon" title="Altro" onclick="showChatMenu()">⋯</button>
+        <div class="chacts">
+          <button class="bico" title="Chiamata audio" onclick="startCall('audio')">📞</button>
+          <button class="bico" title="Videochiamata" onclick="startCall('video')">📹</button>
+          <button class="bico" title="Schermo" onclick="startCall('screen')">🖥️</button>
         </div>
       </div>
-
-      <div id="msg-box"></div>
-
-      <!-- RECORDING BAR (nascosta di default) -->
-      <div class="recording-bar hidden" id="recording-bar">
-        <div class="rec-indicator"></div>
-        <div class="rec-time" id="rec-time">0:00</div>
-        <div class="rec-wave">
-          <span style="height:40%"></span><span></span><span style="height:70%"></span>
-          <span style="height:50%"></span><span style="height:90%"></span><span style="height:60%"></span>
-          <span style="height:35%"></span><span style="height:80%"></span>
+      <div id="msgbox"></div>
+      <!-- RECORDING BAR -->
+      <div class="recbar hidden" id="recbar">
+        <div class="recind"></div>
+        <div class="rectime" id="rectime">0:00</div>
+        <div class="recwave">
+          <span style="height:35%"></span><span style="height:75%"></span><span style="height:50%"></span>
+          <span style="height:90%"></span><span style="height:40%"></span><span style="height:70%"></span>
+          <span style="height:55%"></span><span style="height:85%"></span>
         </div>
-        <button class="btn-icon red" onclick="stopRecording(true)" title="Elimina">✕</button>
-        <button class="btn-icon active" onclick="stopRecording(false)" title="Invia">✓</button>
+        <button class="bico red" onclick="stopRec(true)">✕</button>
+        <button class="bico act" onclick="stopRec(false)">✓</button>
       </div>
-
       <!-- ATTACH MENU -->
-      <div class="attach-menu hidden" id="attach-menu" style="position:relative;bottom:auto;left:auto">
-        <div class="attach-item" onclick="triggerFile('any')"><span class="icon">📁</span><span class="label">File</span></div>
-        <div class="attach-item" onclick="triggerFile('image/*')"><span class="icon">🖼️</span><span class="label">Foto</span></div>
-        <div class="attach-item" onclick="triggerFile('video/*')"><span class="icon">🎬</span><span class="label">Video</span></div>
-        <div class="attach-item" onclick="triggerFile('audio/*')"><span class="icon">🎵</span><span class="label">Audio</span></div>
-        <div class="attach-item" onclick="sendLocation()"><span class="icon">📍</span><span class="label">Posizione</span></div>
-        <div class="attach-item" onclick="showModal('poll-overlay')"><span class="icon">📊</span><span class="label">Sondaggio</span></div>
-        <div class="attach-item" onclick="sendYouliGift()"><span class="icon">🪙</span><span class="label">YOULI</span></div>
-        <div class="attach-item" onclick="openSnakeModal()"><span class="icon">🐍</span><span class="label">Snake</span></div>
+      <div class="amenu hidden" id="amenu">
+        <div class="aitem" onclick="trigF('')"><span class="aicon">📁</span><span class="alabel">File</span></div>
+        <div class="aitem" onclick="trigF('image/*')"><span class="aicon">🖼️</span><span class="alabel">Foto</span></div>
+        <div class="aitem" onclick="trigF('video/*')"><span class="aicon">🎬</span><span class="alabel">Video</span></div>
+        <div class="aitem" onclick="trigF('audio/*')"><span class="aicon">🎵</span><span class="alabel">Audio</span></div>
+        <div class="aitem" onclick="sendLoc()"><span class="aicon">📍</span><span class="alabel">Posizione</span></div>
+        <div class="aitem" onclick="showM('poll-ov')"><span class="aicon">📊</span><span class="alabel">Sondaggio</span></div>
+        <div class="aitem" onclick="sendYouliGift()"><span class="aicon">🪙</span><span class="alabel">YOULI</span></div>
+        <div class="aitem" onclick="openSnake()"><span class="aicon">🐍</span><span class="alabel">Snake</span></div>
       </div>
-
-      <input type="file" id="file-input" hidden onchange="handleFileSend(this)"/>
-
-      <div class="input-bar">
-        <button class="btn-icon" onclick="toggleAttachMenu()" id="attach-btn">➕</button>
-        <button class="btn-icon" id="record-btn" onclick="toggleRecording()" title="Registra audio">🎙️</button>
-        <textarea id="msg-input" placeholder="Messaggio..." rows="1" onkeydown="handleMsgKey(event)" oninput="autoResize(this)"></textarea>
-        <button class="send-btn" onclick="sendTextMessage()">➤</button>
+      <input type="file" id="finput" hidden onchange="handleFile(this)"/>
+      <div class="ibar">
+        <button class="bico" onclick="togAmenu()" id="abtn">➕</button>
+        <button class="bico" id="recbtn" onclick="togRec()">🎙️</button>
+        <textarea id="msginput" placeholder="Messaggio..." rows="1" onkeydown="msgKey(event)" oninput="autoR(this)"></textarea>
+        <button class="sendbtn" onclick="sendText()">➤</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ CHIAMATA IN CORSO ═══ -->
-<div id="call-overlay" class="hidden">
-  <div class="call-bg"></div>
-  <video id="remote-video" autoplay playsinline></video>
-  <video id="local-video" autoplay playsinline muted></video>
-
-  <div id="filter-bar" class="hidden">
-    <button class="filter-btn active" data-filter="none" onclick="applyFilter('none',this)">Normale</button>
-    <button class="filter-btn" data-filter="grayscale(1)" onclick="applyFilter('grayscale(1)',this)">B&N</button>
-    <button class="filter-btn" data-filter="sepia(1)" onclick="applyFilter('sepia(1)',this)">Vintage</button>
-    <button class="filter-btn" data-filter="hue-rotate(90deg) saturate(2)" onclick="applyFilter('hue-rotate(90deg) saturate(2)',this)">Neon</button>
-    <button class="filter-btn" data-filter="invert(.8) hue-rotate(180deg)" onclick="applyFilter('invert(.8) hue-rotate(180deg)',this)">Matrix</button>
-    <button class="filter-btn" data-filter="blur(2px) brightness(1.2)" onclick="applyFilter('blur(2px) brightness(1.2)',this)">Soft</button>
+<!-- CALL OVERLAY -->
+<div id="callover" class="hidden">
+  <div class="callbg"></div>
+  <video id="remotev" autoplay playsinline></video>
+  <video id="localv" autoplay playsinline muted></video>
+  <div id="filterbar" class="hidden">
+    <button class="fbtn act" onclick="applyF('none',this)">Normale</button>
+    <button class="fbtn" onclick="applyF('grayscale(1)',this)">B&N</button>
+    <button class="fbtn" onclick="applyF('sepia(1)',this)">Vintage</button>
+    <button class="fbtn" onclick="applyF('hue-rotate(90deg) saturate(2)',this)">Neon</button>
+    <button class="fbtn" onclick="applyF('invert(.8) hue-rotate(180deg)',this)">Matrix</button>
   </div>
-
-  <div class="call-avatar" id="call-avatar">?</div>
-  <div class="call-info">
-    <h2 id="call-name">---</h2>
-    <p id="call-status">In chiamata...</p>
-  </div>
-  <div id="call-label">🔒 WebRTC End-to-End</div>
-
-  <div class="call-controls">
-    <button class="btn-icon" id="btn-mute" onclick="toggleMute()" title="Muto">🎤</button>
-    <button class="btn-icon" id="btn-cam" onclick="toggleCamera()" title="Camera">📷</button>
-    <button class="btn-icon" id="btn-speaker" onclick="toggleSpeaker()" title="Altoparlante">🔊</button>
-    <button class="btn-icon" id="btn-filter" onclick="toggleFilters()" title="Filtri">✨</button>
-    <button class="btn-icon" id="btn-pip" onclick="togglePiP()" title="Picture in Picture">⛶</button>
-    <button class="btn-icon red" onclick="endCall()" title="Termina">📵</button>
+  <div class="callav" id="callav">?</div>
+  <div class="callinfo"><h2 id="callname">---</h2><p id="callst">In attesa...</p></div>
+  <div id="calllbl">🔒 WebRTC E2E</div>
+  <div class="callctrl">
+    <button class="bico" id="bmute" onclick="togMute()">🎤</button>
+    <button class="bico" id="bcam" onclick="togCam()">📷</button>
+    <button class="bico" id="bspk" onclick="toast('Altoparlante OS')">🔊</button>
+    <button class="bico" id="bfilt" onclick="togFilters()">✨</button>
+    <button class="bico" id="bpip" onclick="togPiP()" title="Picture in Picture — trascina ovunque">⛶</button>
+    <button class="bico red" onclick="endCall()">📵</button>
   </div>
 </div>
 
-<!-- ═══ CHIAMATA IN ARRIVO ═══ -->
-<div class="overlay hidden" id="incoming-overlay">
-  <div class="modal-card">
-    <div class="incoming-avatar" id="inc-avatar">?</div>
-    <div style="font-size:18px;font-weight:700;text-align:center" id="inc-name">---</div>
-    <div class="call-type-badge" id="inc-type">📹 Videochiamata in arrivo</div>
-    <div class="incoming-actions">
-      <button class="btn btn-danger btn-sm" onclick="rejectCall()">✕ Rifiuta</button>
-      <button class="btn btn-green btn-sm" onclick="acceptCall()">✓ Rispondi</button>
+<!-- INCOMING CALL -->
+<div class="overlay hidden" id="incall">
+  <div class="mcard">
+    <div class="incav" id="incav">?</div>
+    <div style="font-size:17px;font-weight:700;text-align:center" id="incname">---</div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin:6px 0" id="inctype">📞 Chiamata</div>
+    <div class="inacts">
+      <button class="btn bd" style="padding:10px" onclick="rejCall()">✕ Rifiuta</button>
+      <button class="btn" style="padding:10px;background:var(--green);color:#fff" onclick="accCall()">✓ Rispondi</button>
     </div>
   </div>
 </div>
 
-<!-- ═══ ADD CONTACT MODAL ═══ -->
-<div class="overlay hidden" id="add-contact-overlay">
-  <div class="modal-card">
-    <div class="modal-title">➕ Nuovo Contatto</div>
-    <div class="modal-sub">Inserisci i dati del tuo contatto</div>
-    <div class="scan-id-btn" onclick="pasteFromClipboard()">📋 Incolla ID dagli appunti</div>
-    <div class="inp-wrap">
-      <label class="inp-label">NOME</label>
-      <input class="inp" id="fc-name" placeholder="Nome del contatto"/>
-    </div>
-    <div class="inp-wrap">
-      <label class="inp-label">ID PEER (yln_...)</label>
-      <input class="inp" id="fc-id" placeholder="yln_username"/>
-    </div>
-    <button class="btn btn-primary" onclick="addContact()">AGGIUNGI</button>
-    <button class="btn btn-ghost" onclick="hideModal('add-contact-overlay')">Annulla</button>
+<!-- ADD CONTACT -->
+<div class="overlay hidden" id="addcont-ov">
+  <div class="mcard">
+    <div class="mtitle">➕ Nuovo Contatto</div>
+    <div class="msub">Aggiungi un amico tramite il suo ID</div>
+    <div class="inp-wrap"><label class="ilabel">NOME</label><input class="inp" id="fc-n" placeholder="Nome contatto"/></div>
+    <div class="inp-wrap"><label class="ilabel">ID PEER</label><input class="inp" id="fc-i" placeholder="yln_username"/></div>
+    <button class="btn bp" onclick="addCont()">AGGIUNGI</button>
+    <button class="btn bg" onclick="hideM('addcont-ov')">Annulla</button>
   </div>
 </div>
 
-<!-- ═══ WALLET MODAL ═══ -->
-<div class="overlay hidden" id="wallet-overlay">
-  <div class="modal-card">
-    <div class="modal-title">🪙 Portafoglio YOULI</div>
-    <div style="background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:14px;padding:16px;text-align:center;margin-bottom:16px">
-      <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase">Saldo disponibile</div>
-      <div style="font-size:36px;font-weight:900;color:var(--youli)" id="wallet-modal-bal">0.00</div>
-      <div style="font-size:11px;color:rgba(255,255,255,.4)">YOULI TOKEN</div>
+<!-- GROUP CREATE -->
+<div class="overlay hidden" id="group-ov">
+  <div class="mcard">
+    <div class="mtitle">👥 Nuovo Gruppo</div>
+    <div class="inp-wrap"><label class="ilabel">NOME GRUPPO</label><input class="inp" id="g-n" placeholder="Nome del gruppo"/></div>
+    <div class="inp-wrap"><label class="ilabel">SELEZIONA MEMBRI</label></div>
+    <div class="gm-members" id="gmembers"></div>
+    <button class="btn bp" onclick="createGroup()">CREA GRUPPO</button>
+    <button class="btn bg" onclick="hideM('group-ov')">Annulla</button>
+  </div>
+</div>
+
+<!-- WALLET -->
+<div class="overlay hidden" id="wallet-ov">
+  <div class="mcard">
+    <div class="mtitle">🪙 Portafoglio YOULI</div>
+    <div style="background:linear-gradient(135deg,#1c1c2e,#2d2d44);border-radius:13px;padding:14px;text-align:center;margin-bottom:14px">
+      <div style="font-size:10px;color:rgba(255,255,255,.45);letter-spacing:1px;text-transform:uppercase">Saldo</div>
+      <div style="font-size:34px;font-weight:900;color:var(--youli)" id="wmodbal">0.00</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.35)">YOULI TOKEN</div>
     </div>
-    <div id="redeem-result" style="display:none">
-      <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:6px">Codice Riscatto:</div>
-      <div class="youli-code-display" id="redeem-code-display">---</div>
-      <button class="btn btn-ghost btn-sm" style="width:auto;margin:4px auto" onclick="copyRedeemCode()">📋 Copia Codice</button>
+    <div id="redeem-result" style="display:none;margin-bottom:12px">
+      <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:5px">Voucher creato:</div>
+      <div class="ycodeshow" id="rcode">---</div>
+      <button class="btn bg" style="width:auto;padding:6px 14px;font-size:12px;margin:0 auto" onclick="copyRcode()">📋 Copia</button>
     </div>
-    <button class="btn btn-primary" onclick="riscattaYouli()" id="redeem-btn">💰 CONVERTI IN CODICE</button>
-    <div class="modal-sub" style="margin-top:6px;font-size:11px">Minimo: 1.00 YOULI · converti il saldo in un codice voucher</div>
-    <hr class="divider"/>
-    <!-- INSERISCI CODICE YOULINIRI -->
-    <div style="background:linear-gradient(135deg,rgba(240,192,64,.08),rgba(240,192,64,.03));border:1.5px solid rgba(240,192,64,.25);border-radius:14px;padding:14px;margin-bottom:14px">
-      <div style="font-size:12px;font-weight:700;color:var(--youli);letter-spacing:.5px;margin-bottom:10px">🎟 INSERISCI CODICE YOULINIRI</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input class="inp" id="code-input" placeholder="es. 5329HL7614a646hN593" style="flex:1;font-family:monospace;font-size:13px;letter-spacing:.5px;margin:0" oninput="resetCodeFeedback()" onkeydown="if(event.key==='Enter')redeemCode()"/>
-        <button onclick="redeemCode()" style="background:var(--youli);border:none;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;cursor:pointer;color:#1c1c1e;white-space:nowrap;flex-shrink:0">RISCATTA</button>
+    <button class="btn bp" onclick="riscatta()">💰 CONVERTI IN VOUCHER</button>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:6px">Min. 1.00 YOULI</div>
+    <hr class="div"/>
+    <!-- INSERISCI CODICE -->
+    <div class="cinpbox">
+      <div style="font-size:11px;font-weight:700;color:var(--youli);letter-spacing:.4px;margin-bottom:9px">🎟 INSERISCI CODICE</div>
+      <div class="cinprow">
+        <input class="inp" id="cinp" placeholder="5329HL7614a646hN593 o YLN-XXXX-..." oninput="resetFb()" onkeydown="if(event.key==='Enter')redeemCode()"/>
+        <button class="cbtn" onclick="redeemCode()">RISCATTA</button>
       </div>
-      <div id="code-feedback" style="font-size:12px;margin-top:8px;min-height:16px;font-family:monospace;text-align:center"></div>
+      <div id="codefb"></div>
     </div>
-    <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:8px">Storico</div>
-    <div id="redeem-history" style="max-height:140px;overflow-y:auto"></div>
-    <button class="btn btn-ghost" onclick="hideModal('wallet-overlay')">Chiudi</button>
+    <hr class="div"/>
+    <div style="font-size:11px;font-weight:700;color:var(--text2);margin-bottom:7px">Storico</div>
+    <div id="whistory" style="max-height:130px;overflow-y:auto"></div>
+    <button class="btn bg" onclick="hideM('wallet-ov')">Chiudi</button>
   </div>
 </div>
 
-<!-- ═══ POLL MODAL ═══ -->
-<div class="overlay hidden" id="poll-overlay">
-  <div class="modal-card">
-    <div class="modal-title">📊 Nuovo Sondaggio</div>
-    <div class="inp-wrap">
-      <label class="inp-label">DOMANDA</label>
-      <input class="inp" id="poll-q" placeholder="Cosa preferisci?"/>
-    </div>
-    <div class="inp-wrap">
-      <label class="inp-label">OPZIONE A</label>
-      <input class="inp" id="poll-a" placeholder="Prima opzione"/>
-    </div>
-    <div class="inp-wrap">
-      <label class="inp-label">OPZIONE B</label>
-      <input class="inp" id="poll-b" placeholder="Seconda opzione"/>
-    </div>
-    <button class="btn btn-primary" onclick="sendPoll()">INVIA SONDAGGIO</button>
-    <button class="btn btn-ghost" onclick="hideModal('poll-overlay')">Annulla</button>
+<!-- POLL -->
+<div class="overlay hidden" id="poll-ov">
+  <div class="mcard">
+    <div class="mtitle">📊 Sondaggio</div>
+    <div class="inp-wrap"><label class="ilabel">DOMANDA</label><input class="inp" id="pq" placeholder="Cosa preferisci?"/></div>
+    <div class="inp-wrap"><label class="ilabel">OPZIONE A</label><input class="inp" id="pa" placeholder="Prima scelta"/></div>
+    <div class="inp-wrap"><label class="ilabel">OPZIONE B</label><input class="inp" id="pb" placeholder="Seconda scelta"/></div>
+    <button class="btn bp" onclick="sendPoll()">INVIA</button>
+    <button class="btn bg" onclick="hideM('poll-ov')">Annulla</button>
   </div>
 </div>
 
-<!-- ═══ SNAKE MODAL ═══ -->
-<div class="overlay hidden" id="snake-overlay">
-  <div class="modal-card" style="width:320px">
-    <div class="snake-stats">
-      <span>Punteggio: <span id="snake-score" class="snake-score">0</span></span>
-      <span>+YOULI: <span id="snake-youli" class="snake-youli">+0.00</span></span>
+<!-- SNAKE -->
+<div class="overlay hidden" id="snake-ov">
+  <div class="mcard" style="width:320px;max-width:96vw">
+    <div class="snakestats">
+      <span>Punti: <b id="sscore" style="color:var(--blue)">0</b></span>
+      <span>Guadagnato: <b id="syouli" style="color:var(--youli)">+0.00 YL</b></span>
     </div>
     <canvas id="sCanvas" width="280" height="280"></canvas>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:8px">Usa le frecce o swipe per muoverti. Ogni mela = +0.10 YL</div>
-    <button class="btn btn-danger" style="margin-top:10px" onclick="hideModal('snake-overlay');clearInterval(snakeLoop)">ESCI</button>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:7px">⬆⬇⬅➡ oppure swipe · Ogni mela = <b>+0.01 YL</b></div>
+    <button class="btn bd" style="margin-top:9px" onclick="hideM('snake-ov');clearInterval(snakeLoop)">ESCI</button>
   </div>
 </div>
 
-<!-- ═══ SETTINGS MODAL ═══ -->
-<div class="overlay hidden" id="settings-overlay">
-  <div class="modal-card">
-    <div class="modal-title">⚙️ Impostazioni</div>
-    <div class="inp-wrap" style="margin-top:12px">
-      <label class="inp-label">CAMBIA PASSWORD</label>
-      <input class="inp" id="new-pass" type="password" placeholder="Nuova password"/>
-    </div>
-    <button class="btn btn-primary" onclick="changePassword()">AGGIORNA PASSWORD</button>
-    <hr class="divider"/>
+<!-- SETTINGS -->
+<div class="overlay hidden" id="sett-ov">
+  <div class="mcard">
+    <div class="mtitle">⚙️ Impostazioni</div>
+    <hr class="div"/>
+    <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:10px">🔒 Cambia Password</div>
+    <div class="inp-wrap"><label class="ilabel">PASSWORD ATTUALE</label><input class="inp" id="oldp" type="password" placeholder="Password corrente"/></div>
+    <div class="inp-wrap"><label class="ilabel">NUOVA PASSWORD</label><input class="inp" id="newp" type="password" placeholder="Nuova password (min. 6)"/></div>
+    <div class="inp-wrap"><label class="ilabel">CONFERMA NUOVA</label><input class="inp" id="newp2" type="password" placeholder="Ripeti nuova password"/></div>
+    <button class="btn bp" onclick="changePwd()">AGGIORNA PASSWORD</button>
+    <hr class="div"/>
     <button class="btn" style="background:var(--bg);color:var(--text);width:100%;margin-bottom:8px" onclick="exportData()">📤 Esporta Dati</button>
-    <button class="btn btn-danger" onclick="resetApp()">🗑 RESET TOTALE</button>
-    <button class="btn btn-ghost" onclick="hideModal('settings-overlay')">Chiudi</button>
+    <button class="btn bd" onclick="resetApp()">🗑 RESET TOTALE</button>
+    <button class="btn bg" onclick="hideM('sett-ov')">Chiudi</button>
+    <div id="pwderr" style="color:var(--red);font-size:12px;text-align:center;margin-top:8px;min-height:14px"></div>
   </div>
 </div>
 
 <script>
-/* ════════════════════════════════════════════════════════
-   YOULINIRI PRO v5.0 — JavaScript Core
-════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════
+   YOULINIRI PRO v6.0 — Core JS
+════════════════════════════════════════ */
+const $=id=>document.getElementById(id),qs=s=>document.querySelector(s);
 
-/* ── UTILITY ── */
-const $ = s => document.getElementById(s);
-const qs = s => document.querySelector(s);
+/* ── TOAST ── */
+function toast(m,d=2500){const e=$('toast');e.textContent=m;e.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(()=>e.classList.remove('show'),d);}
 
-function toast(msg, dur = 2500) {
-  const el = $('toast');
-  el.textContent = msg;
-  el.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => el.classList.remove('show'), dur);
-}
+/* ── MODAL ── */
+function showM(id){$(id).classList.remove('hidden')}
+function hideM(id){$(id).classList.add('hidden')}
 
-function showModal(id) { $(id).classList.remove('hidden'); }
-function hideModal(id) { $(id).classList.add('hidden'); }
+/* ── COOKIE ── */
+function setCk(n,v,d=365){const e=new Date();e.setTime(e.getTime()+d*86400000);document.cookie=`${n}=${encodeURIComponent(v)};expires=${e.toUTCString()};path=/;SameSite=Strict`}
+function getCk(n){const m=document.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null}
+function delCk(n){setCk(n,'',-1)}
 
-/* ── COOKIE HELPERS ── */
-function setCookie(name, value, days = 365) {
-  const d = new Date(); d.setTime(d.getTime() + days * 86400000);
-  document.cookie = `${name}=${encodeURIComponent(value)};expires=${d.toUTCString()};path=/;SameSite=Strict`;
-}
-function getCookie(name) {
-  const m = document.cookie.match(new RegExp('(?:^|; )' + name + '=([^;]*)'));
-  return m ? decodeURIComponent(m[1]) : null;
-}
-function delCookie(name) { setCookie(name, '', -1); }
+/* ── LOCAL STORAGE ── */
+const LS={get:k=>{try{return JSON.parse(localStorage.getItem(k))}catch{return null}},set:(k,v)=>localStorage.setItem(k,JSON.stringify(v)),del:k=>localStorage.removeItem(k)};
 
-/* ── STORAGE ── */
-const LS = {
-  get: k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } },
-  set: (k, v) => localStorage.setItem(k, JSON.stringify(v)),
-  del: k => localStorage.removeItem(k)
-};
+/* ── COLORS ── */
+const COLORS=['#007aff','#34c759','#ff9500','#ff3b30','#af52de','#ff2d55','#5ac8fa','#ff6b35'];
+function colorFor(n){let h=0;for(const c of(n||'?'))h=(h*31+c.charCodeAt(0))&0xffff;return COLORS[h%COLORS.length]}
+const EMOJIS=['😀','🦊','🐼','🦁','🐯','🐻','🦄','🐸','🐙','🦋','🚀','🌟','🎭','🐬','🎮'];
+function randEmoji(){return EMOJIS[Math.floor(Math.random()*EMOJIS.length)]}
 
-/* ═══════════════════════════════════
+/* ── HTML ESCAPE ── */
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function fmtT(d){return new Date(d).toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}
+function fmtSz(b){return b<1024?b+' B':b<1048576?(b/1024).toFixed(1)+' KB':(b/1048576).toFixed(1)+' MB'}
+
+/* ═══════════════════════
    PRIVACY
-═══════════════════════════════════ */
-function initPrivacy() {
-  if (getCookie('yl_privacy') === '1') {
-    hideModal('privacy-overlay');
-    initAuth();
-    return;
-  }
-  showModal('privacy-overlay');
-  const chk1 = $('chk-privacy'), chk2 = $('chk-terms'), btn = $('privacy-accept-btn');
-  const check = () => { btn.disabled = !(chk1.checked && chk2.checked); };
-  chk1.onchange = chk2.onchange = check;
-  btn.onclick = () => {
-    setCookie('yl_privacy', '1');
-    hideModal('privacy-overlay');
-    initAuth();
-  };
+═══════════════════════ */
+function initPrivacy(){
+  if(getCk('yl_priv')==='1'){hideM('priv-ov');initAuth();return}
+  showM('priv-ov');
+  const c1=$('chk1'),c2=$('chk2'),b=$('priv-btn');
+  const chk=()=>{b.disabled=!(c1.checked&&c2.checked)};
+  c1.onchange=c2.onchange=chk;
+  b.onclick=()=>{setCk('yl_priv','1');hideM('priv-ov');initAuth()};
 }
 
-/* ═══════════════════════════════════
-   AUTH
-═══════════════════════════════════ */
-let currentUser = null;
+/* ═══════════════════════
+   AUTH — dati sul server
+═══════════════════════ */
+let CU=null; // currentUser
 
-function initAuth() {
-  // Auto-login via cookie
-  const saved = getCookie('yl_session');
-  if (saved) {
-    const users = LS.get('yl_users') || {};
-    if (users[saved]) {
-      currentUser = users[saved];
-      currentUser.username = saved;
-      launchApp();
-      return;
+function initAuth(){
+  const s=getCk('yl_ses');
+  if(s){
+    // Prova login automatico
+    const u=getCk('yl_u'),p=getCk('yl_p');
+    if(u&&p){doLoginDirect(u,atob(p),true);return}
+  }
+  showM('auth-ov');
+}
+
+function stab(t){
+  $('tl').classList.toggle('act',t==='l');
+  $('ts').classList.toggle('act',t==='s');
+  $('lform').style.display=t==='l'?'block':'none';
+  $('sform').style.display=t==='s'?'block':'none';
+  $('auth-err').textContent='';
+}
+
+function authErr(m){$('auth-err').textContent=m}
+
+function doLogin(){doLoginDirect($('l-u').value.trim(),$('l-p').value,false)}
+
+function doLoginDirect(u,p,auto){
+  if(!u||!p){authErr('Compila tutti i campi');return}
+  const users=LS.get('yl_users')||{};
+  if(!users[u]){authErr('Utente non trovato');return}
+  if(users[u].pass!==btoa(p)){authErr('Password errata');return}
+  CU={...users[u],username:u};
+  setCk('yl_ses','1');setCk('yl_u',u);setCk('yl_p',btoa(p));
+  hideM('auth-ov');
+  launchApp();
+}
+
+function doSignup(){
+  const name=$('s-n').value.trim();
+  const u=$('s-u').value.trim().toLowerCase().replace(/\s+/g,'_').replace(/[^a-z0-9_]/g,'');
+  const p=$('s-p').value,p2=$('s-p2').value;
+  if(!name||!u||!p){authErr('Compila tutti i campi');return}
+  if(u.length<2){authErr('Username troppo corto');return}
+  if(p.length<6){authErr('Password min. 6 caratteri');return}
+  if(p!==p2){authErr('Le password non coincidono');return}
+  const users=LS.get('yl_users')||{};
+  if(users[u]){authErr('Username già in uso');return}
+  const nu={name,pass:btoa(p),balance:0,redemptions:[],emoji:randEmoji(),contacts:[]};
+  users[u]=nu;
+  LS.set('yl_users',users);
+  CU={...nu,username:u};
+  setCk('yl_ses','1');setCk('yl_u',u);setCk('yl_p',btoa(p));
+  hideM('auth-ov');
+  launchApp();
+}
+
+function doLogout(){
+  if(!confirm('Vuoi uscire?'))return;
+  delCk('yl_ses');delCk('yl_u');delCk('yl_p');
+  peer&&peer.destroy();location.reload();
+}
+
+function saveU(){
+  const users=LS.get('yl_users')||{};
+  users[CU.username]={...CU};
+  LS.set('yl_users',users);
+}
+
+function changePwd(){
+  const op=$('oldp').value,np=$('newp').value,np2=$('newp2').value;
+  const e=$('pwderr');e.textContent='';
+  if(!op||!np){e.textContent='Compila tutti i campi';return}
+  if(CU.pass!==btoa(op)){e.textContent='❌ Password attuale errata';return}
+  if(np.length<6){e.textContent='Nuova password min. 6 caratteri';return}
+  if(np!==np2){e.textContent='Le password non coincidono';return}
+  CU.pass=btoa(np);
+  saveU();
+  setCk('yl_p',btoa(np));
+  $('oldp').value='';$('newp').value='';$('newp2').value='';
+  hideM('sett-ov');
+  toast('✅ Password aggiornata con successo!');
+}
+
+/* ═══════════════════════
+   PEERJS — connessione con retry
+═══════════════════════ */
+let peer,myPeerID,conns={},callCon,callTimer;
+let peerRetries=0;
+
+function initPeer(){
+  if(peer){try{peer.destroy()}catch{}}
+  const pid='yln_'+CU.username;
+  peer=new Peer(pid,{debug:0});
+  setConnStatus('connecting');
+
+  peer.on('open',id=>{
+    myPeerID=id;
+    $('mypeerid').textContent=id;
+    setConnStatus('online');
+    peerRetries=0;
+    toast('🟢 Connesso come '+id,2000);
+  });
+
+  peer.on('connection',conn=>{
+    conn.on('open',()=>{conns[conn.peer]=conn;updateCstatus(conn.peer,true)});
+    conn.on('data',d=>recvData(d,conn.peer));
+    conn.on('close',()=>{updateCstatus(conn.peer,false);delete conns[conn.peer]});
+    conn.on('error',()=>{updateCstatus(conn.peer,false);delete conns[conn.peer]});
+  });
+
+  peer.on('call',handleIncoming);
+
+  peer.on('disconnected',()=>{
+    setConnStatus('offline');
+    // Auto-reconnect
+    setTimeout(()=>{
+      if(peer.disconnected){
+        try{peer.reconnect()}catch{
+          peerRetries++;
+          if(peerRetries<5)setTimeout(initPeer,3000*peerRetries);
+        }
+      }
+    },2000);
+  });
+
+  peer.on('error',err=>{
+    if(err.type==='unavailable-id'){
+      // ID già preso, aggiungi suffisso
+      myPeerID='yln_'+CU.username+'_'+Date.now().toString(36).slice(-4);
+      peer.destroy();
+      setTimeout(()=>{
+        peer=new Peer(myPeerID);
+        peer.on('open',id=>{$('mypeerid').textContent=id;setConnStatus('online')});
+        peer.on('connection',conn=>{conn.on('open',()=>{conns[conn.peer]=conn});conn.on('data',d=>recvData(d,conn.peer))});
+        peer.on('call',handleIncoming);
+      },500);
+    }else{
+      setConnStatus('offline');
+      setTimeout(()=>{if(peerRetries<5){peerRetries++;initPeer()}},4000);
     }
-  }
-  showModal('auth-overlay');
-}
-
-function switchTab(tab) {
-  $('tab-login').classList.toggle('active', tab === 'login');
-  $('tab-signup').classList.toggle('active', tab === 'signup');
-  $('login-form').style.display = tab === 'login' ? 'block' : 'none';
-  $('signup-form').style.display = tab === 'signup' ? 'block' : 'none';
-  $('auth-error').textContent = '';
-}
-
-function authError(msg) { $('auth-error').textContent = msg; }
-
-function doLogin() {
-  const u = $('l-user').value.trim(), p = $('l-pass').value;
-  if (!u || !p) { authError('Compila tutti i campi'); return; }
-  const users = LS.get('yl_users') || {};
-  if (!users[u]) { authError('Utente non trovato'); return; }
-  if (users[u].pass !== btoa(p)) { authError('Password errata'); return; }
-  currentUser = { ...users[u], username: u };
-  setCookie('yl_session', u);
-  hideModal('auth-overlay');
-  launchApp();
-}
-
-function doSignup() {
-  const name = $('s-name').value.trim(), u = $('s-user').value.trim().toLowerCase().replace(/\s+/g,'_');
-  const p = $('s-pass').value, p2 = $('s-pass2').value;
-  if (!name || !u || !p) { authError('Compila tutti i campi'); return; }
-  if (p.length < 6) { authError('Password minimo 6 caratteri'); return; }
-  if (p !== p2) { authError('Le password non coincidono'); return; }
-  if (!/^[a-z0-9_]+$/.test(u)) { authError('Username: solo lettere, numeri e _'); return; }
-  const users = LS.get('yl_users') || {};
-  if (users[u]) { authError('Username già in uso'); return; }
-  users[u] = { name, pass: btoa(p), balance: 0, redemptions: [], emoji: randomEmoji() };
-  LS.set('yl_users', users);
-  currentUser = { ...users[u], username: u };
-  setCookie('yl_session', u);
-  hideModal('auth-overlay');
-  launchApp();
-}
-
-function doLogout() {
-  if (!confirm('Vuoi uscire?')) return;
-  delCookie('yl_session');
-  peer && peer.destroy();
-  location.reload();
-}
-
-function changePassword() {
-  const np = $('new-pass').value;
-  if (np.length < 6) { toast('Password troppo corta'); return; }
-  const users = LS.get('yl_users') || {};
-  users[currentUser.username].pass = btoa(np);
-  LS.set('yl_users', users);
-  hideModal('settings-overlay');
-  toast('✅ Password aggiornata');
-}
-
-function randomEmoji() {
-  const pool = ['😀','🦊','🐼','🦁','🐯','🐻','🦄','🐸','🐙','🦋','🐬','🦊','🎭','🚀','🌟'];
-  return pool[Math.floor(Math.random() * pool.length)];
-}
-
-/* ═══════════════════════════════════
-   PEER / APP INIT
-═══════════════════════════════════ */
-let peer, myPeerID, contacts, connections = {}, callCon;
-
-function launchApp() {
-  contacts = LS.get(`yl_contacts_${currentUser.username}`) || [];
-  // Inizializza PeerJS
-  peer = new Peer('yln_' + currentUser.username);
-  peer.on('open', id => {
-    myPeerID = id;
-    $('my-peer-id').textContent = id;
   });
-  peer.on('connection', conn => {
-    conn.on('open', () => { connections[conn.peer] = conn; updateContactStatus(conn.peer, true); });
-    conn.on('data', d => receiveData(d, conn.peer));
-    conn.on('close', () => { updateContactStatus(conn.peer, false); delete connections[conn.peer]; });
-  });
-  peer.on('call', handleIncomingCall);
+}
 
-  // UI
-  $('my-display-name').textContent = currentUser.name;
-  $('my-avatar-letter').textContent = currentUser.emoji || currentUser.name[0].toUpperCase();
-  updateBalUI();
+function setConnStatus(s){
+  const b=$('connbadge');
+  const labels={online:'🟢 Online',offline:'🔴 Offline',connecting:'🟡 Connessione...'};
+  b.innerHTML=`<span class="connstatus ${s}">${labels[s]||s}</span>`;
+  // Aggiorna dot sull'avatar
+  const d=$('peerdot');
+  if(d){d.style.background=s==='online'?'var(--green)':s==='offline'?'var(--red)':'var(--orange)'}
+}
+
+/* ═══════════════════════
+   APP LAUNCH
+═══════════════════════ */
+let contacts=[], chatMsgs={};
+
+function launchApp(){
+  contacts=CU.contacts||[];
+  $('myname').textContent=CU.name;
+  $('myavl').textContent=CU.emoji||CU.name[0];
+  $('myav').style.background=colorFor(CU.name);
+  updateBal();
   renderContacts();
-  $('app').classList.add('visible');
-
-  // Keydown globale per snake
-  document.addEventListener('keydown', snakeKeyHandler);
+  $('app').classList.add('vis');
+  initPeer();
+  // Seed vault
+  const vault=LS.get('yl_vault')||{};
+  if(!vault['YLN-D3QV-GGR5-VYHQ-P3TN']){vault['YLN-D3QV-GGR5-VYHQ-P3TN']={value:1,used:false};LS.set('yl_vault',vault)}
+  document.addEventListener('keydown',snakeKey);
 }
 
-function saveUser() {
-  const users = LS.get('yl_users') || {};
-  users[currentUser.username] = { ...currentUser };
-  LS.set('yl_users', users);
-}
+/* ═══════════════════════
+   CONTACTS
+═══════════════════════ */
+let activeCont=null;
 
-/* ═══════════════════════════════════
-   CONTATTI
-═══════════════════════════════════ */
-let activeContact = null;
-let chatMessages = {}; // peer_id → [{...}]
+function saveCont(){CU.contacts=contacts;saveU()}
 
-function saveContacts() { LS.set(`yl_contacts_${currentUser.username}`, contacts); }
-
-function renderContacts() {
-  const list = $('contact-list');
-  if (contacts.length === 0) {
-    list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px">Nessun contatto ancora.<br/>Aggiungi un amico!</div>';
-    return;
-  }
-  list.innerHTML = '';
-  contacts.forEach(c => {
-    const div = document.createElement('div');
-    div.className = 'contact-item' + (activeContact?.id === c.id ? ' active' : '');
-    div.id = 'ci_' + c.id.replace(/[^a-z0-9]/gi,'_');
-    const msgs = chatMessages[c.id] || [];
-    const last = msgs[msgs.length - 1];
-    div.innerHTML = `
-      <div class="c-avatar" style="background:${colorFor(c.name)}">${c.emoji || c.name[0]}</div>
-      <div class="c-info">
-        <div class="c-name">${escHtml(c.name)}</div>
-        <div class="c-preview">${last ? previewMsg(last) : '<span style="opacity:.5">Nessun messaggio</span>'}</div>
+function renderContacts(){
+  const l=$('clist');
+  if(!contacts.length){l.innerHTML='<div style="text-align:center;padding:28px;color:var(--text3);font-size:13px">Nessun contatto.<br/>Aggiungine uno!</div>';return}
+  l.innerHTML='';
+  contacts.forEach(c=>{
+    const isG=!!c.isGroup;
+    const d=document.createElement('div');
+    d.className='ci'+(activeCont?.id===c.id?' act':'');
+    d.id='ci_'+c.id.replace(/\W/g,'_');
+    const msgs=chatMsgs[c.id]||[];
+    const last=msgs[msgs.length-1];
+    d.innerHTML=`
+      <div class="cav" style="background:${colorFor(c.name)}">${c.emoji||c.name[0]}</div>
+      <div class="cinfo">
+        <div class="cname">${esc(c.name)}${isG?'<span class="gbadge">GRUPPO</span>':''}</div>
+        <div class="cprev">${last?prevMsg(last):'<i style="opacity:.5">Nessun messaggio</i>'}</div>
       </div>
-      <div style="text-align:right;display:flex;flex-direction:column;align-items:flex-end;gap:4px">
-        <div class="c-time">${last ? fmtTime(new Date(last.ts)) : ''}</div>
-      </div>
+      <div class="ctime">${last?fmtT(last.ts):''}</div>
     `;
-    div.onclick = () => openChat(c);
-    list.appendChild(div);
+    d.onclick=()=>{openChat(c);if(window.innerWidth<=640)closeSidebar()};
+    l.appendChild(d);
   });
 }
 
-function previewMsg(m) {
-  if (m.type === 'text') return escHtml(m.content.slice(0, 40));
-  if (m.type === 'file') return '📁 ' + m.name;
-  if (m.type === 'audio') return '🎙️ Messaggio vocale';
-  if (m.type === 'image') return '🖼️ Immagine';
-  if (m.type === 'video') return '🎬 Video';
-  if (m.type === 'poll') return '📊 Sondaggio';
-  if (m.type === 'map') return '📍 Posizione';
-  if (m.type === 'youli_gift') return '🪙 Regalo YOULI';
-  return '📨 Messaggio';
+function prevMsg(m){
+  const map={text:t=>esc(t.content.slice(0,38)),file:t=>'📁 '+t.name,audio:_=>'🎙️ Vocale',image:_=>'🖼️ Immagine',video:_=>'🎬 Video',poll:_=>'📊 Sondaggio',map:_=>'📍 Posizione',youli_gift:t=>'🪙 +'+t.amount+' YL'};
+  return(map[m.type]||(_=>'📨'))(m);
 }
 
-function openChat(contact) {
-  activeContact = contact;
+function openChat(c){
+  activeCont=c;
   renderContacts();
-  $('no-chat').style.display = 'none';
-  const ac = $('active-chat'); ac.style.display = 'flex';
-  const col = colorFor(contact.name);
-  $('chat-hdr-avatar').style.background = col;
-  $('chat-hdr-avatar').textContent = contact.emoji || contact.name[0];
-  $('chat-hdr-name').textContent = contact.name;
-  const isOnline = !!connections[contact.id];
-  $('chat-hdr-status').textContent = isOnline ? '●  online' : '○  offline';
-  $('chat-hdr-status').style.color = isOnline ? 'var(--green)' : 'var(--text3)';
-  // Connetti se non ancora connesso
-  if (!connections[contact.id]) connectTo(contact.id);
-  renderMessages(contact.id);
+  $('nochat').style.display='none';
+  const ac=$('activechat');ac.style.display='flex';
+  const col=colorFor(c.name);
+  $('chhav').style.background=col;$('chhav').textContent=c.emoji||c.name[0];
+  $('chname').textContent=c.name+(c.isGroup?' 👥':'');
+  const on=c.isGroup?true:!!conns[c.id];
+  $('chstatus').textContent=on?'● online':'○ offline';
+  $('chstatus').style.color=on?'var(--green)':'var(--text3)';
+  if(!c.isGroup&&!conns[c.id])connTo(c.id);
+  renderMsgs(c.id);
 }
 
-function connectTo(peerId) {
-  if (connections[peerId]) return;
-  const conn = peer.connect(peerId, { reliable: true });
-  conn.on('open', () => { connections[peerId] = conn; updateContactStatus(peerId, true); });
-  conn.on('data', d => receiveData(d, peerId));
-  conn.on('close', () => { updateContactStatus(peerId, false); delete connections[peerId]; });
+function connTo(pid){
+  if(conns[pid])return;
+  try{
+    const c=peer.connect(pid,{reliable:true});
+    c.on('open',()=>{conns[pid]=c;updateCstatus(pid,true)});
+    c.on('data',d=>recvData(d,pid));
+    c.on('close',()=>{updateCstatus(pid,false);delete conns[pid]});
+    c.on('error',()=>{updateCstatus(pid,false);delete conns[pid]});
+  }catch(e){}
 }
 
-function updateContactStatus(peerId, online) {
-  const c = contacts.find(c => c.id === peerId);
-  if (!c) return;
-  if (activeContact?.id === peerId) {
-    $('chat-hdr-status').textContent = online ? '●  online' : '○  offline';
-    $('chat-hdr-status').style.color = online ? 'var(--green)' : 'var(--text3)';
+function updateCstatus(pid,on){
+  if(activeCont?.id===pid){
+    $('chstatus').textContent=on?'● online':'○ offline';
+    $('chstatus').style.color=on?'var(--green)':'var(--text3)';
   }
 }
 
-function addContact() {
-  const name = $('fc-name').value.trim(), id = $('fc-id').value.trim();
-  if (!name || !id) { toast('Compila nome e ID'); return; }
-  if (contacts.find(c => c.id === id)) { toast('Contatto già presente'); return; }
-  contacts.push({ name, id, emoji: randomEmoji() });
-  saveContacts();
-  renderContacts();
-  hideModal('add-contact-overlay');
-  $('fc-name').value = ''; $('fc-id').value = '';
+function addCont(){
+  const n=$('fc-n').value.trim(),i=$('fc-i').value.trim();
+  if(!n||!i){toast('Compila nome e ID');return}
+  if(contacts.find(c=>c.id===i)){toast('Contatto già presente');return}
+  contacts.push({name:n,id:i,emoji:randEmoji()});
+  saveCont();renderContacts();hideM('addcont-ov');
+  $('fc-n').value='';$('fc-i').value='';
   toast('✅ Contatto aggiunto');
 }
 
-async function pasteFromClipboard() {
-  try {
-    const t = await navigator.clipboard.readText();
-    $('fc-id').value = t.trim();
-    toast('ID incollato');
-  } catch { toast('Permesso clipboard negato'); }
-}
+function copyID(){navigator.clipboard.writeText(myPeerID||$('mypeerid').textContent).then(()=>toast('📋 ID copiato!'))}
 
-function copyID() {
-  navigator.clipboard.writeText(myPeerID).then(() => toast('📋 ID copiato!'));
-}
-
-/* ═══════════════════════════════════
-   MESSAGGI — RENDER
-═══════════════════════════════════ */
-function renderMessages(peerId) {
-  const box = $('msg-box'); box.innerHTML = '';
-  const msgs = chatMessages[peerId] || [];
-  let lastDay = '';
-  msgs.forEach(m => {
-    const day = new Date(m.ts).toLocaleDateString('it-IT', { weekday:'long', day:'numeric', month:'long' });
-    if (day !== lastDay) {
-      const d = document.createElement('div'); d.className = 'day-div';
-      d.innerHTML = `<span>${day}</span>`; box.appendChild(d); lastDay = day;
-    }
-    box.appendChild(buildMsgEl(m));
+/* ═══════════════════════
+   GROUPS
+═══════════════════════ */
+function showGroupModal(){
+  const gm=$('gmembers');gm.innerHTML='';
+  contacts.filter(c=>!c.isGroup).forEach(c=>{
+    const div=document.createElement('div');div.className='gm-member';
+    div.innerHTML=`<input type="checkbox" value="${esc(c.id)}" id="gc_${esc(c.id)}"/><div class="cav" style="width:28px;height:28px;font-size:12px;background:${colorFor(c.name)}">${c.emoji||c.name[0]}</div><label for="gc_${esc(c.id)}" style="cursor:pointer;font-size:13px">${esc(c.name)}</label>`;
+    gm.appendChild(div);
   });
-  box.scrollTop = box.scrollHeight;
+  showM('group-ov');
 }
 
-function buildMsgEl(m) {
-  const wrap = document.createElement('div');
-  wrap.className = 'msg-wrap ' + m.side;
-  const me = m.side === 'me';
-  let inner = '';
+function createGroup(){
+  const gname=$('g-n').value.trim();
+  if(!gname){toast('Inserisci il nome del gruppo');return}
+  const checked=[...$('gmembers').querySelectorAll('input:checked')].map(i=>i.value);
+  if(checked.length<1){toast('Seleziona almeno un membro');return}
+  const gid='grp_'+Date.now();
+  const members=checked.map(id=>contacts.find(c=>c.id===id)).filter(Boolean);
+  contacts.push({name:gname,id:gid,emoji:'👥',isGroup:true,members:checked});
+  saveCont();renderContacts();hideM('group-ov');
+  $('g-n').value='';
+  toast('✅ Gruppo "'+gname+'" creato con '+members.length+' membri');
+}
 
-  if (m.type === 'text') {
-    inner = `<div class="bubble">${escHtml(m.content).replace(/\n/g,'<br/>')}</div>`;
-  } else if (m.type === 'image') {
-    inner = `<img src="${m.data}" style="max-width:220px;border-radius:14px;display:block;cursor:pointer" onclick="window.open(this.src)"/>`;
-  } else if (m.type === 'video') {
-    inner = `<video src="${m.data}" controls style="max-width:240px;border-radius:14px;display:block"></video>`;
-  } else if (m.type === 'audio' && m.isVoice) {
-    inner = `<div class="audio-bubble">
-      <button class="audio-play" onclick="playAudio('${m.data}',this)">▶</button>
-      <div class="audio-wave"></div>
-      <span class="audio-duration">${m.dur || '0:00'}</span>
-    </div>`;
-  } else if (m.type === 'file' || m.type === 'audio') {
-    const icon = fileIcon(m.name || m.type);
-    inner = `<a href="${m.data}" download="${escHtml(m.name||'file')}" style="text-decoration:none">
-      <div class="file-bubble">
-        <div class="file-icon">${icon}</div>
-        <div class="file-info">
-          <div class="file-name">${escHtml(m.name||'file')}</div>
-          <div class="file-size">${m.size || ''} • Tocca per scaricare</div>
-        </div>
-      </div>
-    </a>`;
-  } else if (m.type === 'poll') {
-    inner = `<div class="bubble poll-bubble">
-      <div class="poll-q">📊 ${escHtml(m.q)}</div>
-      <button class="poll-opt" onclick="votePoll(this,'${m.id}','a')">${escHtml(m.a)} <span id="pv_${m.id}_a"></span></button>
-      <button class="poll-opt" onclick="votePoll(this,'${m.id}','b')">${escHtml(m.b)} <span id="pv_${m.id}_b"></span></button>
-    </div>`;
-  } else if (m.type === 'map') {
-    inner = `<a href="${m.url}" target="_blank" style="text-decoration:none">
-      <div class="map-bubble">
-        <img src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/${m.lng},${m.lat},14,0/220x120?access_token=pk.placeholder" onerror="this.src='https://via.placeholder.com/220x120/007aff/fff?text=📍+Posizione'" alt="Mappa"/>
-        <div class="map-label">📍 ${m.lat.toFixed(4)}, ${m.lng.toFixed(4)}</div>
-      </div>
-    </a>`;
-  } else if (m.type === 'youli_gift') {
-    inner = `<div class="youli-bubble">
-      <div style="font-size:24px">🪙</div>
-      <div style="font-size:12px;opacity:.6;margin:4px 0">Regalo YOULI da ${escHtml(m.from||'?')}</div>
-      <div class="youli-amount">+${m.amount} YL</div>
-      <div class="youli-code">${m.code}</div>
-    </div>`;
+// Override showM for group
+const origShowM=showM;
+window.showM=function(id){if(id==='group-ov'){showGroupModal();return}origShowM(id)};
+
+/* ═══════════════════════
+   MESSAGES — RENDER
+═══════════════════════ */
+function renderMsgs(pid){
+  const box=$('msgbox');box.innerHTML='';
+  const msgs=chatMsgs[pid]||[];
+  let lastDay='';
+  msgs.forEach(m=>{
+    const day=new Date(m.ts).toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long'});
+    if(day!==lastDay){const d=document.createElement('div');d.className='daydiv';d.innerHTML=`<span>${day}</span>`;box.appendChild(d);lastDay=day}
+    box.appendChild(buildMsg(m));
+  });
+  box.scrollTop=box.scrollHeight;
+}
+
+function buildMsg(m){
+  const wrap=document.createElement('div');
+  wrap.className='mwrap '+m.side;
+  const me=m.side==='me';
+  let inner='';
+  if(m.type==='text'){
+    inner=`<div class="bub">${esc(m.content).replace(/\n/g,'<br/>')}</div>`;
+  }else if(m.type==='image'){
+    inner=`<img src="${m.data}" style="max-width:210px;border-radius:14px;display:block;cursor:pointer" onclick="window.open(this.src)"/>`;
+  }else if(m.type==='video'){
+    inner=`<video src="${m.data}" controls style="max-width:230px;border-radius:14px;display:block"></video>`;
+  }else if(m.type==='audio'&&m.isVoice){
+    inner=`<div class="abub"><button class="aplay" onclick="playAud('${m.data}',this)">▶</button><div style="flex:1;height:28px;background:currentColor;opacity:.2;border-radius:3px"></div><span class="adur">${m.dur||'0:00'}</span></div>`;
+  }else if(m.type==='file'||m.type==='audio'){
+    const ico=ficon(m.name||'');
+    inner=`<a href="${m.data}" download="${esc(m.name||'file')}" class="fbub" style="text-decoration:none">
+      <div class="ficon">${ico}</div>
+      <div><div class="fname">${esc(m.name||'file')}</div><div class="fsize">${m.size||''} • scarica</div></div></a>`;
+  }else if(m.type==='poll'){
+    inner=`<div class="bub pbub"><div class="pq">📊 ${esc(m.q)}</div>
+      <button class="popt" onclick="toast('Votato: ${esc(m.a)}')">${esc(m.a)}</button>
+      <button class="popt" onclick="toast('Votato: ${esc(m.b)}')">${esc(m.b)}</button></div>`;
+  }else if(m.type==='map'){
+    inner=`<a href="${m.url}" target="_blank" style="text-decoration:none">
+      <div style="border-radius:14px;overflow:hidden;background:#e5e5ea;width:200px;height:110px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text2)">
+        📍 ${(m.lat||0).toFixed(4)}, ${(m.lng||0).toFixed(4)}</div></a>`;
+  }else if(m.type==='youli_gift'){
+    inner=`<div class="ygift"><div style="font-size:22px">🪙</div>
+      <div style="font-size:11px;opacity:.55;margin:3px 0">Da ${esc(m.fromName||'?')}</div>
+      <div class="yamount">+${m.amount} YL</div>
+      <div class="ycode">${esc(m.code)}</div>
+      <button onclick="claimGift('${esc(m.code)}','${m.amount}')" style="margin-top:8px;background:var(--youli);border:none;border-radius:8px;padding:6px 14px;font-weight:700;font-size:12px;cursor:pointer;color:#1c1c1e">RISCATTA</button>
+      </div>`;
   }
-
-  wrap.innerHTML = `
-    ${!me ? `<div class="msg-name">${escHtml(m.fromName||'')}</div>` : ''}
-    ${inner}
-    <div class="msg-time">${fmtTime(new Date(m.ts))} ${me ? '<span class="msg-status">✓</span>' : ''}</div>
-  `;
+  wrap.innerHTML=`${!me&&m.fromName?`<div class="mauthor">${esc(m.fromName)}</div>`:''}${inner}<div class="mtime">${fmtT(m.ts)}${me?' <span style="opacity:.6">✓</span>':''}</div>`;
   return wrap;
 }
 
-function appendMsg(m) {
-  const box = $('msg-box');
-  box.appendChild(buildMsgEl(m));
-  box.scrollTop = box.scrollHeight;
-  renderContacts(); // aggiorna preview
+function appendMsg(m){
+  const box=$('msgbox');
+  box.appendChild(buildMsg(m));
+  box.scrollTop=box.scrollHeight;
+  renderContacts();
 }
 
-/* ═══════════════════════════════════
-   INVIO MESSAGGI
-═══════════════════════════════════ */
-function saveAndShow(peerId, m) {
-  if (!chatMessages[peerId]) chatMessages[peerId] = [];
-  chatMessages[peerId].push(m);
+function saveAndShow(pid,m){
+  if(!chatMsgs[pid])chatMsgs[pid]=[];
+  chatMsgs[pid].push(m);
   appendMsg(m);
 }
 
-function sendPayload(data) {
-  if (!activeContact) { toast('Scegli un contatto'); return; }
-  const peerId = activeContact.id;
-  connectTo(peerId); // assicura connessione
-  const send = () => {
-    try { connections[peerId].send({ ...data, from: myPeerID, fromName: currentUser.name }); } catch(e) {}
-  };
-  if (connections[peerId]?.open) send();
-  else setTimeout(send, 800);
+/* ═══════════════════════
+   SEND
+═══════════════════════ */
+function sendPayload(data){
+  if(!activeCont){toast('Seleziona un contatto');return}
+  const pid=activeCont.id;
+  const targets=activeCont.isGroup?(activeCont.members||[]):[pid];
+  targets.forEach(tid=>{
+    connTo(tid);
+    const doSend=()=>{try{conns[tid]&&conns[tid].send({...data,from:myPeerID,fromName:CU.name})}catch{}};
+    if(conns[tid]?.open)doSend();else setTimeout(doSend,900);
+  });
 }
 
-function sendTextMessage() {
-  const val = $('msg-input').value.trim();
-  if (!val || !activeContact) return;
-  const m = { type:'text', content:val, ts:Date.now(), side:'me' };
-  saveAndShow(activeContact.id, m);
+function sendText(){
+  const v=$('msginput').value.trim();
+  if(!v||!activeCont)return;
+  const m={type:'text',content:v,ts:Date.now(),side:'me'};
+  saveAndShow(activeCont.id,m);
   sendPayload(m);
-  $('msg-input').value = ''; autoResize($('msg-input'));
+  $('msginput').value='';autoR($('msginput'));
 }
 
-function handleMsgKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendTextMessage(); }
+function msgKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendText()}}
+function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,110)+'px'}
+
+/* FILES */
+function ficon(n){
+  const ext=(n||'').split('.').pop().toLowerCase();
+  const m={pdf:'📄',py:'🐍',js:'📜',html:'🌐',css:'🎨',php:'🐘',txt:'📝',apk:'📱',exe:'💾',zip:'🗜️',rar:'🗜️',mp3:'🎵',wav:'🎵',mp4:'🎬',avi:'🎬',mov:'🎬',jpg:'🖼️',jpeg:'🖼️',png:'🖼️',gif:'🖼️',doc:'📝',docx:'📝',xls:'📊',xlsx:'📊',json:'🔧',sql:'🗄️',db:'🗄️',csv:'📊',xml:'🔧',sh:'⚡',bat:'⚡',cpp:'💻',c:'💻',java:'☕',rb:'💎',go:'🐹',rs:'🦀',ts:'📘',vue:'💚',svelte:'🔥'};
+  return m[ext]||'📁';
 }
 
-function autoResize(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+function trigF(acc){
+  $('finput').accept=acc;$('finput').click();togAmenu();
 }
 
-/* ─── FILE ─── */
-function triggerFile(accept) {
-  const fi = $('file-input');
-  fi.accept = accept === 'any' ? '' : accept;
-  fi.click();
-  toggleAttachMenu();
-}
-
-function fileIcon(name) {
-  const ext = (name||'').split('.').pop().toLowerCase();
-  const map = {
-    pdf:'📄', py:'🐍', js:'📜', html:'🌐', css:'🎨', php:'🐘', txt:'📝',
-    apk:'📱', exe:'💾', zip:'🗜️', rar:'🗜️', mp3:'🎵', wav:'🎵',
-    mp4:'🎬', avi:'🎬', mov:'🎬', jpg:'🖼️', jpeg:'🖼️', png:'🖼️',
-    gif:'🖼️', svg:'🖼️', doc:'📝', docx:'📝', xls:'📊', xlsx:'📊',
-    ppt:'📽️', pptx:'📽️', json:'🔧', xml:'🔧', sql:'🗄️', db:'🗄️'
+function handleFile(inp){
+  const file=inp.files[0];if(!file)return;
+  const r=new FileReader();
+  r.onload=e=>{
+    const t=file.type.startsWith('image/')?'image':file.type.startsWith('video/')?'video':file.type.startsWith('audio/')?'audio':'file';
+    const m={type:t,name:file.name,data:e.target.result,size:fmtSz(file.size),ts:Date.now(),side:'me'};
+    saveAndShow(activeCont.id,m);sendPayload(m);
   };
-  return map[ext] || '📁';
+  r.readAsDataURL(file);inp.value='';
 }
 
-function fmtSize(bytes) {
-  if (bytes < 1024) return bytes + ' B';
-  if (bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
-  return (bytes/1024/1024).toFixed(1) + ' MB';
+/* LOCATION */
+function sendLoc(){
+  togAmenu();
+  if(!navigator.geolocation){toast('GPS non disponibile');return}
+  navigator.geolocation.getCurrentPosition(p=>{
+    const m={type:'map',lat:p.coords.latitude,lng:p.coords.longitude,url:`https://maps.google.com?q=${p.coords.latitude},${p.coords.longitude}`,ts:Date.now(),side:'me'};
+    saveAndShow(activeCont.id,m);sendPayload(m);
+  },()=>toast('Posizione negata'));
 }
 
-function handleFileSend(input) {
-  const file = input.files[0]; if (!file) return;
-  const r = new FileReader();
-  r.onload = e => {
-    const isImg = file.type.startsWith('image/');
-    const isVid = file.type.startsWith('video/');
-    const isAudio = file.type.startsWith('audio/');
-    const type = isImg ? 'image' : isVid ? 'video' : isAudio ? 'audio' : 'file';
-    const m = { type, name:file.name, data:e.target.result, size:fmtSize(file.size), ts:Date.now(), side:'me' };
-    saveAndShow(activeContact.id, m);
-    sendPayload(m);
-  };
-  r.readAsDataURL(file);
-  input.value = '';
+/* POLL */
+function sendPoll(){
+  const q=$('pq').value.trim(),a=$('pa').value.trim(),b=$('pb').value.trim();
+  if(!q||!a||!b){toast('Compila tutti i campi');return}
+  const m={type:'poll',q,a,b,ts:Date.now(),side:'me'};
+  saveAndShow(activeCont.id,m);sendPayload(m);
+  hideM('poll-ov');$('pq').value='';$('pa').value='';$('pb').value='';
 }
 
-/* ─── POSIZIONE ─── */
-function sendLocation() {
-  toggleAttachMenu();
-  navigator.geolocation.getCurrentPosition(p => {
-    const m = { type:'map', lat:p.coords.latitude, lng:p.coords.longitude, url:`https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`, ts:Date.now(), side:'me' };
-    saveAndShow(activeContact.id, m);
-    sendPayload(m);
-  }, () => toast('Posizione negata'));
+/* YOULI GIFT */
+function sendYouliGift(){
+  togAmenu();
+  const amt=parseFloat(prompt('Quanti YOULI vuoi inviare?\n(Saldo: '+(CU.balance||0).toFixed(2)+' YL)')||'0');
+  if(!amt||isNaN(amt)||amt<=0){toast('Importo non valido');return}
+  if(amt>(CU.balance||0)){toast('Saldo insufficiente');return}
+  CU.balance=parseFloat(((CU.balance||0)-amt).toFixed(2));
+  saveU();updateBal();
+  const code=genCode();
+  // Salva nel vault
+  const v=LS.get('yl_vault')||{};
+  v[code]={value:amt,used:false,createdBy:CU.username};
+  LS.set('yl_vault',v);
+  const m={type:'youli_gift',amount:amt.toFixed(2),code,from:myPeerID,fromName:CU.name,ts:Date.now(),side:'me'};
+  saveAndShow(activeCont.id,m);sendPayload(m);
 }
 
-/* ─── POLL ─── */
-function sendPoll() {
-  const q = $('poll-q').value.trim(), a = $('poll-a').value.trim(), b = $('poll-b').value.trim();
-  if (!q || !a || !b) { toast('Compila tutti i campi'); return; }
-  const m = { type:'poll', q, a, b, id:'p'+Date.now(), ts:Date.now(), side:'me', votes:{a:0,b:0} };
-  saveAndShow(activeContact.id, m);
-  sendPayload(m);
-  hideModal('poll-overlay');
-  $('poll-q').value = ''; $('poll-a').value = ''; $('poll-b').value = '';
+function claimGift(code,amount){
+  const v=LS.get('yl_vault')||{};
+  const used=LS.get('yl_used')||[];
+  if(used.includes(code)){toast('⚠ Già riscattato');return}
+  if(v[code]&&v[code].used){toast('⚠ Già riscattato');return}
+  const val=v[code]?v[code].value:parseFloat(amount)||0;
+  CU.balance=parseFloat(((CU.balance||0)+val).toFixed(2));
+  if(v[code]){v[code].used=true;LS.set('yl_vault',v)}
+  used.push(code);LS.set('yl_used',used);
+  saveU();updateBal();
+  toast('🪙 +'+val.toFixed(2)+' YOULI aggiunti al saldo!',3000);
 }
 
-function votePoll(btn, pollId, opt) {
-  btn.style.background = 'var(--blue)'; btn.style.color = '#fff';
-  toast('Votato!');
+/* AUDIO PLAY */
+function playAud(src,btn){
+  const a=new Audio(src);btn.textContent='⏸';a.play();a.onended=()=>btn.textContent='▶';
 }
 
-/* ─── AUDIO PLAYBACK ─── */
-function playAudio(src, btn) {
-  const audio = new Audio(src);
-  btn.textContent = '⏸';
-  audio.play();
-  audio.onended = () => { btn.textContent = '▶'; };
-}
-
-/* ─── YOULI GIFT ─── */
-function sendYouliGift() {
-  toggleAttachMenu();
-  const amt = parseFloat(prompt('Quanti YOULI vuoi inviare?') || '0');
-  if (!amt || amt <= 0 || amt > currentUser.balance) { toast('Saldo insufficiente o importo non valido'); return; }
-  currentUser.balance = parseFloat((currentUser.balance - amt).toFixed(2));
-  saveUser(); updateBalUI();
-  const code = genYouliCode();
-  const m = { type:'youli_gift', amount:amt.toFixed(2), code, from:currentUser.name, ts:Date.now(), side:'me' };
-  saveAndShow(activeContact.id, m);
-  sendPayload(m);
-}
-
-/* ─── RICEVI ─── */
-function receiveData(data, fromPeerId) {
-  if (data.type === 'call_signal') return; // gestito da PeerJS
-  const contact = contacts.find(c => c.id === fromPeerId);
-  const m = { ...data, side:'them', fromName: contact?.name || data.fromName || fromPeerId };
-  if (!chatMessages[fromPeerId]) chatMessages[fromPeerId] = [];
-  chatMessages[fromPeerId].push(m);
-  // Mostra solo se la chat è aperta con questo contatto
-  if (activeContact?.id === fromPeerId) appendMsg(m);
-  // YOULI automatico
-  if (data.type === 'youli_gift') {
-    currentUser.balance = parseFloat((currentUser.balance + parseFloat(data.amount)).toFixed(2));
-    saveUser(); updateBalUI();
-    toast(`🪙 Hai ricevuto ${data.amount} YOULI!`);
+/* RECEIVE */
+function recvData(data,from){
+  if(!data||!data.type)return;
+  const cont=contacts.find(c=>c.id===from);
+  const m={...data,side:'them',fromName:cont?.name||data.fromName||from};
+  if(!chatMsgs[from])chatMsgs[from]=[];
+  chatMsgs[from].push(m);
+  if(activeCont?.id===from)appendMsg(m);
+  if(data.type==='youli_gift'){
+    toast(`🪙 ${cont?.name||'Qualcuno'} ti ha inviato ${data.amount} YOULI! Aprila per riscattarla.`,4000);
   }
   renderContacts();
 }
 
-/* ─── ATTACH MENU ─── */
-function toggleAttachMenu() {
-  $('attach-menu').classList.toggle('hidden');
+/* ATTACH / SIDEBAR TOGGLE */
+function togAmenu(){$('amenu').classList.toggle('hidden')}
+function toggleSidebar(){$('sidebar').classList.toggle('open')}
+function closeSidebar(){$('sidebar').classList.remove('open')}
+
+/* ═══════════════════════
+   AUDIO RECORDING
+═══════════════════════ */
+let mrec=null,achunks=[],recTI,recS=0;
+
+function togRec(){if(mrec&&mrec.state==='recording')return;startRec()}
+
+async function startRec(){
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({audio:true});
+    mrec=new MediaRecorder(s);achunks=[];recS=0;
+    mrec.ondataavailable=e=>achunks.push(e.data);mrec.start();
+    $('recbar').classList.remove('hidden');
+    $('msginput').style.display='none';$('sendbtn')||null;
+    $('recbtn').style.background='var(--red)';
+    recTI=setInterval(()=>{recS++;$('rectime').textContent=`${Math.floor(recS/60)}:${String(recS%60).padStart(2,'0')}`},1000);
+  }catch{toast('Microfono non disponibile')}
 }
 
-/* ═══════════════════════════════════
-   REGISTRAZIONE AUDIO
-═══════════════════════════════════ */
-let mediaRec = null, audioChunks = [], recTimerInterval, recSeconds = 0;
-
-function toggleRecording() {
-  if (mediaRec && mediaRec.state === 'recording') return;
-  startRecording();
-}
-
-async function startRecording() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-    mediaRec = new MediaRecorder(stream);
-    audioChunks = []; recSeconds = 0;
-    mediaRec.ondataavailable = e => audioChunks.push(e.data);
-    mediaRec.start();
-    $('recording-bar').classList.remove('hidden');
-    $('msg-input').style.display = 'none';
-    $('send-btn').style.display = 'none';
-    $('record-btn').style.background = 'var(--red)';
-    recTimerInterval = setInterval(() => {
-      recSeconds++;
-      const m = String(Math.floor(recSeconds/60)).padStart(1,'0');
-      const s = String(recSeconds%60).padStart(2,'0');
-      $('rec-time').textContent = `${m}:${s}`;
-    }, 1000);
-  } catch(e) { toast('Microfono non disponibile'); }
-}
-
-function stopRecording(cancel) {
-  if (!mediaRec) return;
-  clearInterval(recTimerInterval);
-  mediaRec.onstop = () => {
-    if (!cancel) {
-      const blob = new Blob(audioChunks, { type:'audio/webm' });
-      const reader = new FileReader();
-      reader.onload = e => {
-        const m = { type:'audio', isVoice:true, data:e.target.result, dur:$('rec-time').textContent, ts:Date.now(), side:'me' };
-        saveAndShow(activeContact.id, m);
-        sendPayload(m);
-      };
-      reader.readAsDataURL(blob);
+function stopRec(cancel){
+  if(!mrec)return;
+  clearInterval(recTI);
+  mrec.onstop=()=>{
+    if(!cancel&&achunks.length){
+      const blob=new Blob(achunks,{type:'audio/webm'});
+      const fr=new FileReader();
+      fr.onload=e=>{
+        const m={type:'audio',isVoice:true,data:e.target.result,dur:$('rectime').textContent,ts:Date.now(),side:'me'};
+        saveAndShow(activeCont.id,m);sendPayload(m);
+      };fr.readAsDataURL(blob);
     }
-    mediaRec.stream.getTracks().forEach(t => t.stop());
-    mediaRec = null;
+    mrec.stream.getTracks().forEach(t=>t.stop());mrec=null;
   };
-  mediaRec.stop();
-  $('recording-bar').classList.add('hidden');
-  $('msg-input').style.display = '';
-  $('send-btn').style.display = '';
-  $('record-btn').style.background = '';
+  mrec.stop();
+  $('recbar').classList.add('hidden');
+  $('msginput').style.display='';
+  $('recbtn').style.background='';
 }
 
-/* ═══════════════════════════════════
-   CHIAMATE — WebRTC via PeerJS
-═══════════════════════════════════ */
-let localStream = null, currentCall = null, callType = 'audio';
-let isMuted = false, isCamOff = false, isPiP = false;
+/* ═══════════════════════
+   CALLS — WebRTC
+═══════════════════════ */
+let locStream=null,curCall=null,callType='audio';
+let isMuted=false,isCamOff=false,isPiP=false;
 
-async function startCall(type) {
-  if (!activeContact) { toast('Seleziona un contatto'); return; }
-  callType = type;
-  try {
-    let stream;
-    if (type === 'screen') {
-      stream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio:true });
-    } else {
-      stream = await navigator.mediaDevices.getUserMedia({
-        video: type === 'video' ? { facingMode:'user' } : false,
-        audio: true
-      });
-    }
-    localStream = stream;
-    $('local-video').srcObject = stream;
-    if (type !== 'audio') $('local-video').style.display = 'block';
-    else $('local-video').style.display = 'none';
-
-    currentCall = peer.call(activeContact.id, stream, {
-      metadata: { type, callerName: currentUser.name }
-    });
-    currentCall.on('stream', remoteStream => {
-      $('remote-video').srcObject = remoteStream;
-      $('remote-video').style.display = 'block';
-      $('call-avatar').style.display = 'none';
-      $('call-status').textContent = '🔴 In chiamata';
-    });
-    currentCall.on('close', cleanupCall);
-
-    showCallUI(activeContact.name, type, true);
-  } catch(e) {
-    toast('Impossibile accedere a fotocamera/microfono: ' + e.message);
-  }
+async function startCall(type){
+  if(!activeCont||activeCont.isGroup){toast('Seleziona un contatto (non gruppo)');return}
+  callType=type;
+  try{
+    let s;
+    if(type==='screen')s=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});
+    else s=await navigator.mediaDevices.getUserMedia({video:type==='video',audio:true});
+    locStream=s;
+    $('localv').srcObject=s;
+    if(type!=='audio'){$('localv').style.display='block'}
+    curCall=peer.call(activeCont.id,s,{metadata:{type,callerName:CU.name}});
+    curCall.on('stream',rs=>{$('remotev').srcObject=rs;$('remotev').style.display='block';$('callav').style.display='none';$('callst').textContent='🔴 In chiamata'});
+    curCall.on('close',cleanCall);
+    showCallUI(activeCont.name,type,true);
+  }catch(e){toast('Errore accesso media: '+e.message)}
 }
 
-function handleIncomingCall(call) {
-  currentCall = call;
-  const meta = call.metadata || {};
-  callType = meta.type || 'audio';
-  const name = meta.callerName || 'Sconosciuto';
-  const col = colorFor(name);
-  $('inc-avatar').style.background = col;
-  $('inc-avatar').textContent = name[0].toUpperCase();
-  $('inc-name').textContent = name;
-  $('inc-type').textContent = callType === 'video' ? '📹 Videochiamata in arrivo' :
-                               callType === 'screen' ? '🖥️ Condivisione schermo' : '📞 Chiamata audio';
-  showModal('incoming-overlay');
+function handleIncoming(call){
+  curCall=call;
+  callType=call.metadata?.type||'audio';
+  const name=call.metadata?.callerName||'Sconosciuto';
+  $('incav').style.background=colorFor(name);$('incav').textContent=name[0];
+  $('incname').textContent=name;
+  $('inctype').textContent=callType==='video'?'📹 Videochiamata':callType==='screen'?'🖥️ Condivisione schermo':'📞 Chiamata audio';
+  showM('incall');
 }
 
-async function acceptCall() {
-  hideModal('incoming-overlay');
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: callType === 'video',
-      audio: true
-    });
-    localStream = stream;
-    $('local-video').srcObject = stream;
-    currentCall.answer(stream);
-    currentCall.on('stream', remoteStream => {
-      $('remote-video').srcObject = remoteStream;
-      $('remote-video').style.display = 'block';
-      $('call-avatar').style.display = 'none';
-      $('call-status').textContent = '🔴 In chiamata';
-    });
-    currentCall.on('close', cleanupCall);
-    const callerName = currentCall.metadata?.callerName || 'Contatto';
-    showCallUI(callerName, callType, false);
-  } catch(e) { toast('Errore nell\'accettare la chiamata'); }
+async function accCall(){
+  hideM('incall');
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({video:callType==='video',audio:true});
+    locStream=s;$('localv').srcObject=s;
+    if(callType==='video')$('localv').style.display='block';
+    curCall.answer(s);
+    curCall.on('stream',rs=>{$('remotev').srcObject=rs;$('remotev').style.display='block';$('callav').style.display='none';$('callst').textContent='🔴 In chiamata'});
+    curCall.on('close',cleanCall);
+    showCallUI(curCall.metadata?.callerName||'Contatto',callType,false);
+  }catch(e){toast('Errore: '+e.message)}
 }
 
-function rejectCall() {
-  currentCall && currentCall.close();
-  currentCall = null;
-  hideModal('incoming-overlay');
-}
+function rejCall(){curCall&&curCall.close();curCall=null;hideM('incall')}
 
-function showCallUI(name, type, isCaller) {
-  const col = colorFor(name);
-  $('call-avatar').style.background = col;
-  $('call-avatar').textContent = name[0].toUpperCase();
-  $('call-name').textContent = name;
-  $('call-status').textContent = isCaller ? '⏳ In attesa...' : '🔴 In chiamata';
-  $('filter-bar').classList.toggle('hidden', type === 'audio');
-  $('call-overlay').classList.remove('hidden');
-  // Timer durata
-  let sec = 0;
-  callTimer = setInterval(() => {
-    sec++;
-    const m = String(Math.floor(sec/60)).padStart(2,'0'), s = String(sec%60).padStart(2,'0');
-    $('call-label').textContent = `🔒 ${m}:${s} · WebRTC E2E`;
-  }, 1000);
-}
-
-function endCall() {
-  currentCall && currentCall.close();
-  cleanupCall();
-}
-
-function cleanupCall() {
+function showCallUI(name,type,caller){
+  $('callav').style.background=colorFor(name);$('callav').textContent=name[0];
+  $('callname').textContent=name;
+  $('callst').textContent=caller?'⏳ In attesa...':'🔴 In chiamata';
+  $('filterbar').classList.toggle('hidden',type==='audio');
+  $('callover').classList.remove('hidden');
+  let sec=0;
   clearInterval(callTimer);
-  localStream && localStream.getTracks().forEach(t => t.stop());
-  localStream = null;
-  $('remote-video').srcObject = null;
-  $('local-video').srcObject = null;
-  $('remote-video').style.display = 'none';
-  $('local-video').style.display = 'none';
-  $('call-avatar').style.display = 'flex';
-  $('call-overlay').classList.add('hidden');
-  $('call-overlay').classList.remove('pip-mode');
-  isPiP = false; isMuted = false; isCamOff = false;
-  $('btn-mute').textContent = '🎤'; $('btn-cam').textContent = '📷';
+  callTimer=setInterval(()=>{sec++;$('calllbl').textContent=`🔒 ${String(Math.floor(sec/60)).padStart(2,'0')}:${String(sec%60).padStart(2,'0')} · WebRTC E2E`},1000);
 }
 
-function toggleMute() {
-  if (!localStream) return;
-  isMuted = !isMuted;
-  localStream.getAudioTracks().forEach(t => t.enabled = !isMuted);
-  $('btn-mute').textContent = isMuted ? '🔇' : '🎤';
-  $('btn-mute').classList.toggle('active', isMuted);
+function endCall(){curCall&&curCall.close();cleanCall()}
+
+function cleanCall(){
+  clearInterval(callTimer);
+  locStream&&locStream.getTracks().forEach(t=>t.stop());locStream=null;
+  $('remotev').srcObject=null;$('localv').srcObject=null;
+  $('remotev').style.display='none';$('localv').style.display='none';
+  $('callav').style.display='flex';
+  const co=$('callover');co.classList.add('hidden');co.classList.remove('pip');
+  co.style.left='';co.style.top='';co.style.bottom='16px';co.style.right='16px';
+  isPiP=false;isMuted=false;isCamOff=false;
+  $('bmute').textContent='🎤';$('bcam').textContent='📷';
+  $('bmute').classList.remove('act');$('bcam').classList.remove('act');
 }
 
-function toggleCamera() {
-  if (!localStream) return;
-  isCamOff = !isCamOff;
-  localStream.getVideoTracks().forEach(t => t.enabled = !isCamOff);
-  $('btn-cam').textContent = isCamOff ? '🚫' : '📷';
-  $('btn-cam').classList.toggle('active', isCamOff);
-}
+function togMute(){if(!locStream)return;isMuted=!isMuted;locStream.getAudioTracks().forEach(t=>t.enabled=!isMuted);$('bmute').textContent=isMuted?'🔇':'🎤';$('bmute').classList.toggle('act',isMuted)}
+function togCam(){if(!locStream)return;isCamOff=!isCamOff;locStream.getVideoTracks().forEach(t=>t.enabled=!isCamOff);$('bcam').textContent=isCamOff?'🚫':'📷';$('bcam').classList.toggle('act',isCamOff)}
+function togFilters(){$('filterbar').classList.toggle('hidden')}
+function applyF(f,btn){$('remotev').style.filter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('act'));btn.classList.add('act')}
 
-function toggleSpeaker() { toast('Altoparlante: funzione dipende dal dispositivo'); }
-
-function toggleFilters() {
-  $('filter-bar').classList.toggle('hidden');
-}
-
-function applyFilter(filter, btn) {
-  $('remote-video').style.filter = filter;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-}
-
-/* Picture-in-Picture */
-function togglePiP() {
-  isPiP = !isPiP;
-  $('call-overlay').classList.toggle('pip-mode', isPiP);
-  $('btn-pip').classList.toggle('active', isPiP);
-  if (isPiP) {
-    makeDraggable($('call-overlay'));
-    toast('💡 Trascina la finestra dove vuoi');
+/* PiP — trascina ovunque, desktop e mobile */
+function togPiP(){
+  isPiP=!isPiP;
+  const co=$('callover');
+  co.classList.toggle('pip',isPiP);
+  $('bpip').classList.toggle('act',isPiP);
+  if(isPiP){
+    co.style.bottom='16px';co.style.right='16px';co.style.left='auto';co.style.top='auto';
+    makeDrag(co);
+    toast('💡 Trascina la finestra ovunque',2000);
+  }else{
+    co.style.cssText='';
+    co.onmousedown=null;co.ontouchstart=null;
   }
 }
 
-function makeDraggable(el) {
-  el.onmousedown = e => {
-    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'VIDEO') return;
-    let ox = e.clientX - el.getBoundingClientRect().left, oy = e.clientY - el.getBoundingClientRect().top;
-    document.onmousemove = ev => {
-      el.style.left = (ev.clientX - ox) + 'px'; el.style.top = (ev.clientY - oy) + 'px';
-      el.style.bottom = 'auto'; el.style.right = 'auto';
-    };
-    document.onmouseup = () => { document.onmousemove = null; document.onmouseup = null; };
+function makeDrag(el){
+  const drag=(ox,oy)=>({
+    move:(cx,cy)=>{
+      const r=el.getBoundingClientRect();
+      el.style.left=(r.left+cx-ox)+'px';el.style.top=(r.top+cy-oy)+'px';
+      el.style.right='auto';el.style.bottom='auto';
+      ox=cx;oy=cy;
+    }
+  });
+  el.onmousedown=e=>{
+    if(e.target.tagName==='BUTTON'||e.target.tagName==='VIDEO')return;
+    e.preventDefault();
+    const d=drag(e.clientX,e.clientY);
+    const mm=e2=>d.move(e2.clientX,e2.clientY);
+    const mu=()=>{document.removeEventListener('mousemove',mm);document.removeEventListener('mouseup',mu)};
+    document.addEventListener('mousemove',mm);document.addEventListener('mouseup',mu);
   };
-  // Touch drag
-  el.ontouchstart = e => {
-    const t = e.touches[0];
-    let ox = t.clientX - el.getBoundingClientRect().left, oy = t.clientY - el.getBoundingClientRect().top;
-    el.ontouchmove = ev => {
-      const tt = ev.touches[0];
-      el.style.left = (tt.clientX - ox) + 'px'; el.style.top = (tt.clientY - oy) + 'px';
-      el.style.bottom = 'auto'; el.style.right = 'auto';
-    };
+  el.ontouchstart=e=>{
+    if(e.target.tagName==='BUTTON'||e.target.tagName==='VIDEO')return;
+    const t=e.touches[0];const d=drag(t.clientX,t.clientY);
+    el.ontouchmove=ev=>{const t2=ev.touches[0];d.move(t2.clientX,t2.clientY);ev.preventDefault()};
+    el.ontouchend=()=>{el.ontouchmove=null;el.ontouchend=null};
   };
 }
 
-/* ═══════════════════════════════════
+/* ═══════════════════════
    WALLET / YOULI
-═══════════════════════════════════ */
-function updateBalUI() {
-  const b = (currentUser.balance || 0).toFixed(2);
-  $('bal-val').textContent = b;
-}
-
-function showWalletModal() {
-  $('wallet-modal-bal').textContent = (currentUser.balance || 0).toFixed(2);
-  $('redeem-result').style.display = 'none';
-  $('code-input').value = '';
-  $('code-feedback').textContent = '';
-  $('code-feedback').style.color = '';
-  renderRedeemHistory();
-  showModal('wallet-overlay');
-}
-
-/* ── CODICI YOULINIRI UFFICIALI ── */
-const YOULINIRI_CODES = {
-  "5329HL7614a646hN593": 5,
-  "75nC639hH1L2M2NA":    5,
-  "43510Npy462A598317d": 10
+═══════════════════════ */
+const OFFICIAL={
+  '5329HL7614a646hN593':5,
+  '75nC639hH1L2M2NA':5,
+  '43510Npy462A598317d':10
 };
 
-function resetCodeFeedback() {
-  $('code-feedback').textContent = '';
-  $('code-feedback').style.color = '';
+function updateBal(){$('balval').textContent=(CU.balance||0).toFixed(2)}
+
+function showWallet(){
+  $('wmodbal').textContent=(CU.balance||0).toFixed(2);
+  $('redeem-result').style.display='none';
+  $('cinp').value='';$('codefb').textContent='';$('codefb').style.color='';
+  renderHist();showM('wallet-ov');
 }
 
-function redeemCode() {
-  const raw = $('code-input').value.trim();
-  const fb  = $('code-feedback');
-
-  if (!raw) {
-    fb.textContent = '⚠ Inserisci un codice';
-    fb.style.color = 'var(--orange)';
-    return;
-  }
-
-  // ── 1. Controlla se già usato ──
-  const usedCodes = LS.get('yl_used_codes') || [];
-  if (usedCodes.includes(raw)) {
-    fb.textContent = '✕ Codice già utilizzato';
-    fb.style.color = 'var(--red)';
-    return;
-  }
-
-  let value = null;
-  let sourceLabel = '';
-
-  // ── 2. Codici YOULINIRI ufficiali ──
-  if (YOULINIRI_CODES[raw] !== undefined) {
-    value = YOULINIRI_CODES[raw];
-    sourceLabel = 'Codice YOULINIRI';
-  }
-
-  // ── 3. Voucher YLN-* generati dall'app ──
-  if (value === null) {
-    const vault = LS.get('yl_voucher_vault') || {};
-    const entry = vault[raw];
-    if (entry && !entry.used) {
-      value = entry.value;
-      sourceLabel = 'Voucher YLN';
-      // Segna come usato nel vault
-      entry.used = true;
-      entry.usedBy = currentUser.username;
-      entry.usedAt = new Date().toISOString();
-      vault[raw] = entry;
-      LS.set('yl_voucher_vault', vault);
-    } else if (entry && entry.used) {
-      fb.textContent = '✕ Voucher già riscattato';
-      fb.style.color = 'var(--red)';
-      return;
-    }
-  }
-
-  // ── 4. Non trovato ──
-  if (value === null) {
-    fb.textContent = '✕ Codice non valido';
-    fb.style.color = 'var(--red)';
-    $('code-input').style.animation = 'none';
-    $('code-input').offsetHeight;
-    $('code-input').style.animation = 'shake .3s ease';
-    return;
-  }
-
-  // ── 5. Accredita ──
-  currentUser.balance = parseFloat(((currentUser.balance || 0) + value).toFixed(2));
-  if (!currentUser.redemptions) currentUser.redemptions = [];
-  currentUser.redemptions.push({
-    code:   raw,
-    amount: '+' + parseFloat(value).toFixed(2),
-    date:   new Date().toLocaleDateString('it-IT'),
-    type:   'IN',
-    source: sourceLabel
-  });
-  usedCodes.push(raw);
-  LS.set('yl_used_codes', usedCodes);
-
-  saveUser();
-  updateBalUI();
-  $('wallet-modal-bal').textContent = currentUser.balance.toFixed(2);
-  $('code-input').value = '';
-
-  fb.textContent = `✓ +${parseFloat(value).toFixed(2)} YOULI accreditati!`;
-  fb.style.color = 'var(--green)';
-  renderRedeemHistory();
-  toast(`🪙 +${parseFloat(value).toFixed(2)} YOULI aggiunti al saldo!`, 3000);
+function genCode(){
+  const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  const s=n=>Array.from({length:n},()=>c[Math.random()*c.length|0]).join('');
+  return `YLN-${s(4)}-${s(4)}-${s(4)}-${s(4)}`;
 }
 
-function genYouliCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  const seg = n => Array.from({length:n}, ()=>chars[Math.random()*chars.length|0]).join('');
-  return `YLN-${seg(4)}-${seg(4)}-${seg(4)}-${seg(4)}`;
+function riscatta(){
+  const bal=CU.balance||0;
+  if(bal<1){toast('⚠ Minimo 1.00 YOULI');return}
+  const code=genCode(),amt=parseFloat(bal.toFixed(2));
+  const v=LS.get('yl_vault')||{};
+  v[code]={value:amt,used:false,createdBy:CU.username};
+  LS.set('yl_vault',v);
+  if(!CU.redemptions)CU.redemptions=[];
+  CU.redemptions.push({code,amount:amt.toFixed(2),date:new Date().toLocaleDateString('it-IT'),type:'OUT'});
+  CU.balance=0;saveU();updateBal();
+  $('wmodbal').textContent='0.00';
+  $('rcode').textContent=code;
+  $('redeem-result').style.display='block';
+  renderHist();toast('🎉 Voucher creato! Condividilo o riscattalo tu stesso.');
 }
 
-function riscattaYouli() {
-  const bal = currentUser.balance || 0;
-  if (bal < 1.0) { toast('⚠ Minimo 1.00 YOULI per riscattare'); return; }
-  const code = genYouliCode();
-  const amount = parseFloat(bal.toFixed(2));
+function copyRcode(){navigator.clipboard.writeText($('rcode').textContent).then(()=>toast('📋 Codice copiato!'))}
 
-  // Salva nel vault globale così può essere riscattato con "Inserisci Codice"
-  const vault = LS.get('yl_voucher_vault') || {};
-  vault[code] = { value: amount, createdBy: currentUser.username, used: false };
-  LS.set('yl_voucher_vault', vault);
+function resetFb(){$('codefb').textContent='';$('codefb').style.color=''}
 
-  if (!currentUser.redemptions) currentUser.redemptions = [];
-  currentUser.redemptions.push({ code, amount: amount.toFixed(2), date: new Date().toLocaleDateString('it-IT'), type: 'OUT' });
-  currentUser.balance = 0;
-  saveUser(); updateBalUI();
-  $('wallet-modal-bal').textContent = '0.00';
-  $('redeem-code-display').textContent = code;
-  $('redeem-result').style.display = 'block';
-  renderRedeemHistory();
-  toast('🎉 Voucher creato! Riscattalo quando vuoi dalla sezione codici.');
-  if (activeContact) {
-    sendPayload({ type:'text', content:`🪙 Voucher YOULI: ${code} (${amount.toFixed(2)} YL)` });
+function redeemCode(){
+  const raw=$('cinp').value.trim();
+  const fb=$('codefb');
+  if(!raw){fb.textContent='⚠ Inserisci un codice';fb.style.color='var(--orange)';return}
+  const used=LS.get('yl_used')||[];
+  if(used.includes(raw)){fb.textContent='✕ Codice già utilizzato';fb.style.color='var(--red)';return}
+  let val=null,label='';
+  // Codici ufficiali
+  if(OFFICIAL[raw]!==undefined){val=OFFICIAL[raw];label='Codice Ufficiale'}
+  // Vault YLN-*
+  if(val===null){
+    const v=LS.get('yl_vault')||{};
+    const e=v[raw];
+    if(e&&!e.used){val=e.value;label='Voucher YLN';e.used=true;e.usedBy=CU.username;LS.set('yl_vault',v)}
+    else if(e&&e.used){fb.textContent='✕ Voucher già riscattato';fb.style.color='var(--red)';return}
   }
-}
-
-function copyRedeemCode() {
-  navigator.clipboard.writeText($('redeem-code-display').textContent).then(() => toast('📋 Codice copiato!'));
-}
-
-function renderRedeemHistory() {
-  const hist = $('redeem-history');
-  const reds = currentUser.redemptions || [];
-  if (reds.length === 0) {
-    hist.innerHTML = '<div style="color:var(--text3);font-size:12px;text-align:center;padding:10px">Nessuna operazione ancora</div>';
-    return;
+  if(val===null){
+    fb.textContent='✕ Codice non valido';fb.style.color='var(--red)';
+    $('cinp').style.animation='none';void $('cinp').offsetHeight;$('cinp').style.animation='shake .3s ease';return;
   }
-  hist.innerHTML = [...reds].reverse().map(r => {
-    const isIn = r.type === 'IN' || String(r.amount).startsWith('+');
-    return `
-    <div class="history-item">
-      <div>
-        <div class="code">${escHtml(r.code)}</div>
-        <div style="color:var(--text3);font-size:10px">${r.date} · ${isIn ? '🎟 Codice' : '💰 Conversione'}</div>
-      </div>
-      <div class="amount" style="color:${isIn ? 'var(--green)' : 'var(--youli)'}">
-        ${isIn ? '' : '-'}${String(r.amount).replace(/^-/,'')} YL
-      </div>
-    </div>`;
+  CU.balance=parseFloat(((CU.balance||0)+val).toFixed(2));
+  if(!CU.redemptions)CU.redemptions=[];
+  CU.redemptions.push({code:raw,amount:'+'+parseFloat(val).toFixed(2),date:new Date().toLocaleDateString('it-IT'),type:'IN',source:label});
+  used.push(raw);LS.set('yl_used',used);
+  saveU();updateBal();$('wmodbal').textContent=CU.balance.toFixed(2);
+  $('cinp').value='';
+  fb.textContent=`✓ +${parseFloat(val).toFixed(2)} YOULI accreditati!`;fb.style.color='var(--green)';
+  renderHist();toast(`🪙 +${parseFloat(val).toFixed(2)} YOULI aggiunti!`,3000);
+}
+
+function renderHist(){
+  const h=$('whistory'),reds=CU.redemptions||[];
+  if(!reds.length){h.innerHTML='<div style="color:var(--text3);font-size:11px;text-align:center;padding:9px">Nessuna operazione</div>';return}
+  h.innerHTML=[...reds].reverse().map(r=>{
+    const isIn=r.type==='IN'||String(r.amount).startsWith('+');
+    return`<div class="hitem"><div class="hcode">${esc(r.code)}<div style="color:var(--text3);font-size:9px">${r.date}${r.source?' · '+r.source:''}</div></div><div class="hamount ${isIn?'in':''}">${isIn?'':'-'}${String(r.amount).replace(/^[+-]/,'')} YL</div></div>`;
   }).join('');
 }
 
-/* ═══════════════════════════════════
-   SNAKE GAME
-═══════════════════════════════════ */
-let snakeLoop, snakePos, snakeDir, snakeFood, snakeScore = 0, snakeEarned = 0;
-const SGRID = 14; // celle
+/* ═══════════════════════
+   SNAKE — 0.01 YL per mela
+═══════════════════════ */
+let snakeLoop,sp,sd,sf,sscore=0,searned=0;
+const SG=14;
 
-function openSnakeModal() {
-  showModal('snake-overlay');
-  if ($('attach-menu')) $('attach-menu').classList.add('hidden');
-  snakeScore = 0; snakeEarned = 0;
-  $('snake-score').textContent = 0;
-  $('snake-youli').textContent = '+0.00';
-  initSnake();
+function openSnake(){
+  if($('amenu'))$('amenu').classList.add('hidden');
+  sscore=0;searned=0;
+  $('sscore').textContent=0;$('syouli').textContent='+0.00 YL';
+  showM('snake-ov');initSnake();
 }
 
-function initSnake() {
+function initSnake(){
   clearInterval(snakeLoop);
-  const c = $('sCanvas'), ctx = c.getContext('2d');
-  const SIZE = c.width / SGRID;
-  snakePos = [{x:7,y:7}]; snakeDir = 'R';
-  snakeFood = randFood();
-
-  snakeLoop = setInterval(() => {
-    ctx.fillStyle = '#0a0a1a'; ctx.fillRect(0,0,c.width,c.height);
-    // Draw grid
-    ctx.strokeStyle = 'rgba(255,255,255,.03)';
-    for(let i=0;i<SGRID;i++){for(let j=0;j<SGRID;j++){ctx.strokeRect(i*SIZE,j*SIZE,SIZE,SIZE);}}
-    // Food
-    ctx.fillStyle = '#ff3b30';
-    ctx.beginPath(); ctx.arc(snakeFood.x*SIZE+SIZE/2, snakeFood.y*SIZE+SIZE/2, SIZE/2-1, 0, Math.PI*2); ctx.fill();
-    // Snake
-    snakePos.forEach((p,i) => {
-      const g = ctx.createLinearGradient(p.x*SIZE,p.y*SIZE,p.x*SIZE+SIZE,p.y*SIZE+SIZE);
-      g.addColorStop(0,'#007aff'); g.addColorStop(1,'#00c6ff');
-      ctx.fillStyle = i===0 ? '#34c759' : g;
-      ctx.beginPath(); ctx.roundRect(p.x*SIZE+1,p.y*SIZE+1,SIZE-2,SIZE-2,4); ctx.fill();
+  const c=$('sCanvas'),ctx=c.getContext('2d'),SZ=c.width/SG;
+  sp=[{x:7,y:7}];sd='R';sf=rSF();
+  snakeLoop=setInterval(()=>{
+    ctx.fillStyle='#0a0a1a';ctx.fillRect(0,0,c.width,c.height);
+    ctx.strokeStyle='rgba(255,255,255,.03)';
+    for(let i=0;i<SG;i++)for(let j=0;j<SG;j++)ctx.strokeRect(i*SZ,j*SZ,SZ,SZ);
+    ctx.fillStyle='#ff3b30';ctx.beginPath();ctx.arc(sf.x*SZ+SZ/2,sf.y*SZ+SZ/2,SZ/2-1,0,Math.PI*2);ctx.fill();
+    sp.forEach((p,i)=>{
+      const g=ctx.createLinearGradient(p.x*SZ,p.y*SZ,p.x*SZ+SZ,p.y*SZ+SZ);
+      g.addColorStop(0,i===0?'#34c759':'#007aff');g.addColorStop(1,i===0?'#00c75a':'#00c6ff');
+      ctx.fillStyle=g;ctx.beginPath();ctx.roundRect(p.x*SZ+1,p.y*SZ+1,SZ-2,SZ-2,3);ctx.fill();
     });
-    // Move
-    let h = {...snakePos[0]};
-    if(snakeDir==='R') h.x++; if(snakeDir==='L') h.x--;
-    if(snakeDir==='U') h.y--; if(snakeDir==='D') h.y++;
-    // Wrap
-    h.x=(h.x+SGRID)%SGRID; h.y=(h.y+SGRID)%SGRID;
-    // Eat
-    if(h.x===snakeFood.x && h.y===snakeFood.y) {
-      snakeScore++; snakeEarned = parseFloat((snakeEarned+0.1).toFixed(2));
-      currentUser.balance = parseFloat(((currentUser.balance||0)+0.1).toFixed(2));
-      saveUser(); updateBalUI();
-      $('snake-score').textContent = snakeScore;
-      $('snake-youli').textContent = '+'+snakeEarned.toFixed(2);
-      snakeFood = randFood();
-    } else { snakePos.pop(); }
-    // Self collision
-    if(snakePos.some(p=>p.x===h.x&&p.y===h.y)){ clearInterval(snakeLoop); toast('💀 Game Over! +'+snakeEarned.toFixed(2)+' YL'); return; }
-    snakePos.unshift(h);
-  }, 130);
+    let h={...sp[0]};
+    if(sd==='R')h.x++;if(sd==='L')h.x--;if(sd==='U')h.y--;if(sd==='D')h.y++;
+    h.x=(h.x+SG)%SG;h.y=(h.y+SG)%SG;
+    if(h.x===sf.x&&h.y===sf.y){
+      sscore++;searned=parseFloat((searned+0.01).toFixed(2));
+      CU.balance=parseFloat(((CU.balance||0)+0.01).toFixed(2));
+      saveU();updateBal();
+      $('sscore').textContent=sscore;$('syouli').textContent='+'+searned.toFixed(2)+' YL';
+      sf=rSF();
+    }else{sp.pop()}
+    if(sp.some(p=>p.x===h.x&&p.y===h.y)){clearInterval(snakeLoop);toast('💀 Game Over! +'+searned.toFixed(2)+' YL guadagnati');return}
+    sp.unshift(h);
+  },120);
+  // Swipe per mobile
+  let sx=null,sy=null;
+  c.ontouchstart=e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY;e.preventDefault()};
+  c.ontouchmove=e=>{
+    if(!sx)return;
+    const dx=e.touches[0].clientX-sx,dy=e.touches[0].clientY-sy;
+    if(Math.abs(dx)>Math.abs(dy)){sd=dx>0&&sd!=='L'?'R':dx<0&&sd!=='R'?'L':sd}
+    else{sd=dy>0&&sd!=='U'?'D':dy<0&&sd!=='D'?'U':sd}
+    sx=null;sy=null;e.preventDefault();
+  },{passive:false};
 }
 
-function randFood() {
-  return {x:Math.floor(Math.random()*SGRID), y:Math.floor(Math.random()*SGRID)};
+function rSF(){return{x:Math.floor(Math.random()*SG),y:Math.floor(Math.random()*SG)}}
+
+function snakeKey(e){
+  if($('snake-ov').classList.contains('hidden'))return;
+  const m={'ArrowUp':'U','ArrowDown':'D','ArrowLeft':'L','ArrowRight':'R'};
+  const op={U:'D',D:'U',L:'R',R:'L'};
+  const nd=m[e.key];if(nd&&op[nd]!==sd){sd=nd;e.preventDefault()}
 }
 
-function snakeKeyHandler(e) {
-  if(!$('snake-overlay').classList.contains('hidden')) {
-    const map={'ArrowUp':'U','ArrowDown':'D','ArrowLeft':'L','ArrowRight':'R'};
-    const opp={'U':'D','D':'U','L':'R','R':'L'};
-    const nd=map[e.key];
-    if(nd && opp[nd]!==snakeDir){snakeDir=nd;e.preventDefault();}
-  }
+/* ═══════════════════════
+   MISC
+═══════════════════════ */
+function exportData(){
+  const b=new Blob([JSON.stringify({user:CU,contacts,messages:chatMsgs},null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='youliniri_backup.json';a.click();toast('📤 Dati esportati');
 }
 
-/* ═══════════════════════════════════
-   UTIL
-═══════════════════════════════════ */
-function colorFor(name) {
-  const colors=['#007aff','#34c759','#ff9500','#ff3b30','#af52de','#ff2d55','#5ac8fa','#ff6b35'];
-  let h=0; for(const c of (name||'?')) h=(h*31+c.charCodeAt(0))&0xffff;
-  return colors[h%colors.length];
+function resetApp(){
+  if(!confirm('ATTENZIONE: Tutti i dati verranno eliminati!'))return;
+  localStorage.clear();document.cookie.split(';').forEach(c=>{const n=c.split('=')[0].trim();if(n)delCk(n)});location.reload();
 }
 
-function escHtml(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-function fmtTime(d) {
-  return d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'});
-}
-
-function exportData() {
-  const data = { user: currentUser, contacts, messages: chatMessages };
-  const b = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(b);
-  a.download = 'youliniri_backup.json'; a.click();
-  toast('📤 Dati esportati');
-}
-
-function resetApp() {
-  if(!confirm('ATTENZIONE: Tutti i dati verranno eliminati. Continuare?')) return;
-  localStorage.clear();
-  document.cookie.split(';').forEach(c => { delCookie(c.split('=')[0].trim()); });
-  location.reload();
-}
-
-function showChatMenu() { toast('Menu contestuale prossimamente!'); }
-function showProfileModal() { toast('Profilo: ' + (currentUser?.name||'') + ' — ' + (currentUser?.username||'')); }
-
-/* ─── START ─── */
-
-  // ── Seed codice utente esistente nel vault se non presente ──
-  (function seedExistingCode() {
-    const vault = LS.get('yl_voucher_vault') || {};
-    // Il codice YLN-D3QV-GGR5-VYHQ-P3TN creato dall'utente va qui sotto con il suo valore
-    // (sostituisci il valore con quello che avevi nel saldo prima di convertirlo)
-    if (!vault['YLN-D3QV-GGR5-VYHQ-P3TN']) {
-      vault['YLN-D3QV-GGR5-VYHQ-P3TN'] = { value: 1, createdBy: 'system', used: false };
-      LS.set('yl_voucher_vault', vault);
-    }
-  })();
+/* START */
 initPrivacy();
 </script>
 </body>
