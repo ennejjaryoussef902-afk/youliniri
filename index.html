@@ -13,11 +13,76 @@
   --border:rgba(0,0,0,.08);--font:-apple-system,BlinkMacSystemFont,sans-serif;
   --sidebar-w:290px;
 }
+
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--bg);color:var(--text)}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:2px}
 
-/* OVERLAY */
+/* --- LAYOUT STRUTTURALE --- */
+body { display: flex; height: 100vh; overflow: hidden; position: relative; }
+
+.sidebar { 
+    width: var(--sidebar-w); 
+    background: var(--white); 
+    border-right: 1px solid var(--border); 
+    display: flex; 
+    flex-direction: column; 
+    z-index: 10;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.chat-container { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    z-index: 20;
+    transition: transform 0.3s ease;
+    background: var(--bg);
+    position: relative;
+}
+
+/* --- ADATTAMENTO MOBILE --- */
+@media (max-width: 768px) {
+    .sidebar { width: 100%; position: absolute; inset: 0; }
+    .chat-container { 
+        width: 100%; 
+        position: absolute; 
+        inset: 0; 
+        transform: translateX(100%); 
+    }
+    .chat-container.active { transform: translateX(0); }
+}
+
+/* --- COMPONENTI TESTATA CHAT --- */
+.chat-header {
+    padding: 10px 15px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    height: 60px;
+    flex-shrink: 0;
+}
+
+.back-btn { 
+    display: none; 
+    background: none; 
+    border: none; 
+    color: var(--blue); 
+    font-size: 24px; 
+    margin-right: 12px; 
+    cursor: pointer; 
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .back-btn { display: block; }
+}
+
+#chat-title { font-weight: 700; font-size: 16px; }
+
+/* OVERLAY & MODALS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);z-index:900;display:flex;align-items:center;justify-content:center;animation:fi .2s}
 .overlay.hidden{display:none!important}
 @keyframes fi{from{opacity:0}to{opacity:1}}
@@ -64,8 +129,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:var(--b
 #app{display:flex;height:100vh;width:100%;opacity:0;transition:opacity .3s}
 #app.vis{opacity:1}
 
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);min-width:var(--sidebar-w);background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;height:100vh;transition:transform .25s;z-index:20}
+/* SIDEBAR INTERNAL */
 .shdr{padding:14px;background:linear-gradient(135deg,#007aff,#0055d4);color:#fff;flex-shrink:0}
 .merow{display:flex;align-items:center;gap:9px}
 .av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;flex-shrink:0;position:relative;cursor:pointer}
